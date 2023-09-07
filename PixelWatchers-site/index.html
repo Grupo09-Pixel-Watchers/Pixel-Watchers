@@ -13,21 +13,35 @@
 
 <body>
     <header>
-        <div class="logo">
-            <a href=""><img src="./Logo PIXEL.png" class="imagem"></a>
+        <nav class="nav-bar">
+            <div class="logo">
+                <a href="#"><img src="./Logo PIXEL.png" style="height: 80px;"></a>
+            </div>
+            <div class="nav-list">
+                <ul>
+                    <li class="nav-item"><a href="#" class="nav-link">VANGUARD</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">SOBRE</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">SERVIÇOS</a></li>
+                </ul>
+            </div>
+            <div class="mobile-menu-icon">
+                <button onclick="menuShow()"><img class="icon" src="./menu_white_36dp.svg" alt=""></button>
+            </div>
+        </nav>
+        <div class="mobile-menu">
+            <ul>
+                <li class="nav-item"><a href="#" class="nav-link">VANGUARD</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">SOBRE</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">SERVIÇOS</a></li>
+            </ul>
         </div>
-        <ul>
-            <li><a href=""><b>VANGUARD</b></a></li>
-            <li><a href=""><b>SOBRE</b></a></li>
-            <li><a href=""><b>SERVIÇOS</b></a></li>
-        </ul>
     </header>
     <main>
         <div class="content">
             <div class="title">CONHEÇA O VANGUARD</div>
             <div class="body">
                 <p>
-                     O Vanguard é mais do que apenas um sistema de monitoramento de PCs;
+                    O Vanguard é mais do que apenas um sistema de monitoramento de PCs;
                     é uma fortaleza digital que defende sua experiência de jogo contra malwares e ameaças
                     cibernéticas.
                 </p>
@@ -95,18 +109,16 @@
     <footer>
         <div id="footer_content">
             <div id="footer_contacts">
-                <h1>LOGO</h1>
-                <p>Venha para uma aventura <br>
-                    Pixel Watchers</p>
+                <img src="./Logo PIXEL.png" style="height: 70px;" alt="">
+                <p>It's all about your dreams.</p>
 
                 <div id="footer_social_media">
-
                     <a href="#" class="footer-link" id="instagram">
                         <i class="fa-brands fa-instagram"></i>
                     </a>
 
                     <a href="#" class="footer-link" id="facebook">
-                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-facebook-f"></i>
                     </a>
 
                     <a href="#" class="footer-link" id="whatsapp">
@@ -114,35 +126,43 @@
                     </a>
                 </div>
             </div>
-
+            
             <ul class="footer-list">
                 <li>
-                    <h3>SITE</h3>
+                    <h3>Blog</h3>
                 </li>
                 <li>
-                    <a href="#" class="footer-link">Sobre</a>
+                    <a href="#" class="footer-link">Tech</a>
                 </li>
                 <li>
-                    <a href="./Experiencia/experiencia.html" class="footer-link">Experiência</a>
+                    <a href="#" class="footer-link">Adventures</a>
                 </li>
                 <li>
-                    <a href="./Ingresso/ingressofake.html" class="footer-link">Ingresso</a>
+                    <a href="#" class="footer-link">Music</a>
                 </li>
             </ul>
 
             <ul class="footer-list">
                 <li>
-                    <h3>SERVIÇOES</h3>
+                    <h3>Products</h3>
                 </li>
                 <li>
-                    <a href="#" class="footer-link">Ingresso</a>
+                    <a href="#" class="footer-link">App</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Desktop</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Cloud</a>
                 </li>
             </ul>
 
             <div id="footer_subscribe">
                 <h3>Subscribe</h3>
+
                 <p>
-                    Enter your e-mail to get notified about our news solutions
+                    Enter your e-mail to get notified about
+                    our news solutions
                 </p>
 
                 <div id="input_group">
@@ -153,7 +173,6 @@
                 </div>
             </div>
         </div>
-        </div>
 
         <div id="footer_copyright">
             &#169
@@ -161,5 +180,17 @@
         </div>
     </footer>
 </body>
+<script>
+    function menuShow() {
+    let menuMobile = document.querySelector('.mobile-menu');
+    if (menuMobile.classList.contains('open')) {
+        menuMobile.classList.remove('open');
+        document.querySelector('.icon').src = "./menu_white_36dp.svg";
+    } else {
+        menuMobile.classList.add('open');
+        document.querySelector('.icon').src = "./close_white_36dp.svg";
+    }
+}
+</script>
 
 </html>
