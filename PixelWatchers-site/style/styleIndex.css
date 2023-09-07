@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Open_sans';
-    src: url(./Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf);
+    src: url(../assets/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf);
 }
 
 
@@ -83,7 +83,7 @@ main{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("./696052.jpg");
+    background-image: url("../assets/696052.jpg");
     background-size: cover;
 }
 

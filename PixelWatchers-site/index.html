@@ -8,14 +8,14 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Document</title>
-    <link rel="stylesheet" href="./styleIndex.css">
+    <link rel="stylesheet" href="./style/styleIndex.css">
 </head>
 
 <body>
     <header>
         <nav class="nav-bar">
             <div class="logo">
-                <a href="#"><img src="./Logo PIXEL.png" style="height: 80px;"></a>
+                <a href="#"><img src="./assets/Logo PIXEL.png" style="height: 80px;"></a>
             </div>
             <div class="nav-list">
                 <ul>
@@ -25,7 +25,7 @@
                 </ul>
             </div>
             <div class="mobile-menu-icon">
-                <button onclick="menuShow()"><img class="icon" src="./menu_white_36dp.svg" alt=""></button>
+                <button onclick="menuShow()"><img class="icon" src="./assets/menu_white_36dp.svg" alt=""></button>
             </div>
         </nav>
         <div class="mobile-menu">
@@ -60,7 +60,7 @@
                         soluções
                         de segurança avançadas. Estamos moldando o futuro de maneira revolucionária.</p>
                 </div>
-                <div class="imagem"><img src="./img2.png" alt="" style="width: 100%;"></div>
+                <div class="imagem"><img src="./assets/img2.png" alt="" style="width: 100%;"></div>
             </div>
         </div>
     </section>
@@ -73,7 +73,7 @@
             </div>
             <div class="content">
                 <div class="cont" id="cont1">
-                    <div class="imagem"><img src="./gamer.png" alt=""></div>
+                    <div class="imagem"><img src="./assets/gamer.png" alt=""></div>
                     <div class="title">
                         <p>e-Sports</p>
                     </div>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="cont" id="cont2">
-                    <div class="imagem"><img src="./pcgamer.png" alt=""></div>
+                    <div class="imagem"><img src="./assets/pcgamer.png" alt=""></div>
                     <div class="title">
                         <p>Segurança</p>
                     </div>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="cont" id="cont3">
-                    <div class="imagem"><img src="./Controle.png" alt=""></div>
+                    <div class="imagem"><img src="./assets/Controle.png" alt=""></div>
                     <div class="title">
                         <p>Controle</p>
                     </div>
@@ -109,7 +109,7 @@
     <footer>
         <div id="footer_content">
             <div id="footer_contacts">
-                <img src="./Logo PIXEL.png" style="height: 70px;" alt="">
+                <img src="./assets/Logo PIXEL.png" style="height: 70px;" alt="">
                 <p>It's all about your dreams.</p>
 
                 <div id="footer_social_media">
@@ -185,10 +185,10 @@
     let menuMobile = document.querySelector('.mobile-menu');
     if (menuMobile.classList.contains('open')) {
         menuMobile.classList.remove('open');
-        document.querySelector('.icon').src = "./menu_white_36dp.svg";
+        document.querySelector('.icon').src = "./assets/menu_white_36dp.svg";
     } else {
         menuMobile.classList.add('open');
-        document.querySelector('.icon').src = "./close_white_36dp.svg";
+        document.querySelector('.icon').src = "./assets/close_white_36dp.svg";
     }
 }
 </script>
