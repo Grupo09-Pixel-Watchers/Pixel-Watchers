@@ -5,8 +5,9 @@ public class Computador {
         private String SO;
         private String fabricante;
         private Integer arquitetura;
-        private Long memoria;
+        private Long memoriaTot;
         private String dtInicializado;
+
 
         public int getId() {
             return this.id;
@@ -45,12 +46,12 @@ public class Computador {
             this.dtInicializado = dtInicializado;
         }
 
-        public Long getMemoria() {
-            return memoria;
+        public Long getMemoriaTot() {
+            return memoriaTot;
         }
 
-        public void setMemoria(Long memoria) {
-            this.memoria = memoria;
+        public void setMemoriaTot(Long memoria) {
+            this.memoriaTot = memoria;
         }
 
 }

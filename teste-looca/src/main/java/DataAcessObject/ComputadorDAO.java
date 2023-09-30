@@ -1,5 +1,4 @@
 package DataAcessObject;
-
 import conexao.Conexao;
 import entidades.Computador;
 
@@ -20,7 +19,6 @@ public class ComputadorDAO {
                 ps.setString(2, computador.getFabricante());
                 ps.setString(3, String.valueOf(computador.getArquitetura()));
                 ps.setString(4, String.valueOf(computador.getDtInicializado()));
-
                 ps.execute();
             } catch (SQLException e ){
                 e.printStackTrace();
@@ -50,7 +48,7 @@ public class ComputadorDAO {
         PreparedStatement ps = null;
         try{
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setLong(1, computador.getMemoria());
+            ps.setLong(1, computador.getMemoriaTot());
             ps.setInt(2, computador.getId());
             ps.execute();
         } catch (SQLException e ){
