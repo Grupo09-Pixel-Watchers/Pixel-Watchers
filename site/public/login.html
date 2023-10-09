@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Watchers</title>
+    <link rel="stylesheet" href="./style/stylelogin.css">
+</head>
+<body>
+    <!-- Barra de navegação -->
+    <header>
+        <nav>
+            <div id="logo">
+                <a href="#"><img src="./assets/Logo PIXEL.png" style="height: 80px;"></a>
+            </div>
+        </nav>
+    </header>
+    <!-- Fim da seção da barra de navegação -->
+
+    <main>
+        <div id="content">
+            <div class="container">
+                <div class="logo_login">
+                <a href="#"><img src="./assets/LogoPixelWatchers.png" style="height: 200px;"></a>
+                </div>
+                <div id="login_form">
+                    <input type="text" id="ipt_usuario" placeholder="Nome de usuário">
+                    <input type="password" id="ipt_senha" placeholder="Senha">
+                    </div>
+                <button id="button_login">ENTRAR</button>
+                <div id="dire_cadastro">
+                    Ainda não possui um cadastro?<a href="" id="link_cadastro">Cadastre-se</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-content">
+            <div id="mobile-container">
+                <div id="mobile-logo-login">
+                    <a href="#"><img src="./assets/LogoPixelWatchers.png" style="height: 200px;"></a>
+                </div>
+                <div id="mobile-form-login">
+                    <input type="text" id="ipt_usuario_mobile" placeholder="Nome de usuário">
+                    <input type="password" id="ipt_senha_mobile" placeholder="Senha">
+                    <div id="div_error"></div>
+                </div>
+                <button id="mobile-button-cont" onclick="validarUsername()">Continuar</button>
+                <button id="mobile-button-login" onclick="entrar()">Entrar</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- <footer>
+        <div id="footer_content">
+            <div id="footer_contacts">
+                <a href="#"><img src="./assets/Logo PIXEL.png" style="height: 70px;" alt=""></a>
+                <p>De olho no futuro</p>
+
+                <div id="footer_social_media">
+                    <a href="#" class="footer-link" id="instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+
+                    <a href="#" class="footer-link" id="facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+
+                    <a href="#" class="footer-link" id="whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <ul class="footer-list">
+                <li>
+                    <h3>Pixel Watchers</h3>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Missão</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Visão</a>
+                </li>
+                <li>
+                    <a href="#" class="footer-link">Valores</a>
+                </li>
+            </ul>
+
+            <ul class="footer-list">
+                <li>
+                    <h3>Negócios</h3>
+                </li>
+                <li>
+                    <a href="#main" class="footer-link">Sentinel</a>
+                </li>
+                <li>
+                    <a href="#sec1" class="footer-link">Tecnologia</a>
+                </li>
+                <li>
+                    <a href="#sec2" class="footer-link">O que fazemos?</a>
+                </li>
+            </ul>
+
+            <div id="footer_subscribe">
+                <h3>Inscreva-se</h3>
+
+                <p>
+                    Insira seu e-mail para ficar por dentro
+                    das nossas novidades
+                </p>
+
+                <div id="input_group">
+                    <input type="email" id="email">
+                    <button>
+                        <i class="fa-regular fa-envelope"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer_copyright">
+            &#169
+            2023 todos os direitos reservados
+        </div>
+    </footer> -->
+    <!-- Fim da seção do footer -->
+
+    
+</body>
+<script>
+
+    function validarUsername(){
+        var Username = ipt_usuario_mobile.value;
+        var Senha = ipt_senha_mobile.value;
+
+        if (Username === ""){
+            document.getElementById("ipt_usuario_mobile").style.borderBottom = "1px solid red";
+        } else {
+            document.getElementById("ipt_usuario_mobile").style.display = "none";
+            document.getElementById("ipt_senha_mobile").style.display = "flex";
+            document.getElementById("mobile-button-cont").style.display = "none";
+            document.getElementById("mobile-button-login").style.display = "flex";
+        }
+    }
+
+    function entrar() {
+
+        var nomeVar = ipt_usuario_mobile.value;
+        var senhaVar = ipt_senha_mobile.value;
+
+        if (nomeVar == "" || senhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        console.log("FORM LOGIN: ", nomeVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/validarSessao", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+
+                    setTimeout(function () {
+                        window.location = "./dashboard/cards.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+
+</script>
+</html>
