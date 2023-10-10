@@ -1,24 +1,23 @@
-package DataAcessObject;
+package dataAcessObject;
 import conexao.Conexao;
 import entidades.Computador;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ComputadorDAO {
     // A classe vai servir para criar metodos que fazem conexao com o banco
-        Integer idSistema = 0;
+        Integer idComputador = 0;
         Computador computador = new Computador();
         public static boolean cadastrarComputador (Computador computador){
-            String sql = "INSERT INTO sistema (SO, fabricante, arquitetura, dtIniciado) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = null;
             try{
                 ps = Conexao.getConexao().prepareStatement(sql);
                 ps.setString(1, computador.getSO());
-                ps.setString(2, computador.getFabricante());
-                ps.setString(3, String.valueOf(computador.getArquitetura()));
-                ps.setString(4, String.valueOf(computador.getDtInicializado()));
+                ps.setString(2, computador.getProcessador());
+                ps.setLong(3, computador.getDiscoTotal());
+                ps.setLong(4, computador.getMemoriaTot());
                 ps.execute();
             } catch (SQLException e ){
                 e.printStackTrace();
@@ -26,37 +25,22 @@ public class ComputadorDAO {
             return false;
         }
 
-    public static String pegarIdSistema (Computador sistema){
-        String sql = "SELECT idSistema FROM SISTEMA";
-        PreparedStatement ps = null;
-        ResultSet rs = null; // ResultSet é uma classe utilizada para poder realizar os selects
-        try{
-            ps = Conexao.getConexao().prepareStatement(sql);
-            rs = ps.executeQuery();
-            while(rs.next()) { // o  next é para ele mover para a prox. linha
-               sistema.setId(rs.getInt(1));
-                System.out.println(sistema.getId());
+        public static String pegarIdComputador (Computador computador){
+            String sql = "SELECT idComputador FROM tbcomputador";
+            PreparedStatement ps = null;
+            ResultSet rs = null; // ResultSet é uma classe utilizada para poder realizar os selects
+            try{
+                ps = Conexao.getConexao().prepareStatement(sql);
+                rs = ps.executeQuery();
+                while(rs.next()) { // o  next é para ele mover para a prox. linha
+                   computador.setId(rs.getInt(1));
+                   System.out.println(computador.getId());
+                }
+                ps.execute();
+            } catch (SQLException e ){
+                e.printStackTrace();
             }
-            ps.execute();
-        } catch (SQLException e ){
-            e.printStackTrace();
+            return sql;
         }
-        return sql;
-    }
-    public static boolean cadastrarMemoria(Computador computador){
-        String sql = "INSERT INTO stts_pc (memoria, fk_pc) VALUES (?, ?)";
-        PreparedStatement ps = null;
-        try{
-            ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setLong(1, computador.getMemoriaTot());
-            ps.setInt(2, computador.getId());
-            ps.execute();
-        } catch (SQLException e ){
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
 }
 

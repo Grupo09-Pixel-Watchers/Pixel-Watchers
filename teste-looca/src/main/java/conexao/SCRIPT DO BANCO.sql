@@ -1,4 +1,5 @@
-CREATE DATABASE prj_sprint;
+DROP DATABASE prj_sprint;
+CREATE DATABASE IF NOT EXISTS prj_sprint;
 USE prj_sprint;
 
 CREATE TABLE tbEmpresa(
@@ -51,3 +52,5 @@ CREATE TABLE status_pc(
 	fkComputador INT,
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
 );
+
+SELECT * FROM status_pc;

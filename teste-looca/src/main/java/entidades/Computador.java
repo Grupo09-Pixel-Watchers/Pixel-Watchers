@@ -3,11 +3,9 @@ package entidades;
 public class Computador {
         private int id;
         private String SO;
-        private String fabricante;
-        private Integer arquitetura;
         private Long memoriaTot;
-        private String dtInicializado;
-
+        private String processador;
+        private Long discoTotal;
 
         public int getId() {
             return this.id;
@@ -24,28 +22,6 @@ public class Computador {
             this.SO = So;
         }
 
-        public String getFabricante() {
-            return fabricante;
-        }
-        public void setFabricante(String fabricante) {
-            this.fabricante = fabricante;
-        }
-
-        public Integer getArquitetura() {
-            return arquitetura;
-        }
-        public void setArquitetura(Integer arquitetura) {
-            this.arquitetura = arquitetura;
-        }
-
-        public String getDtInicializado() {
-            return dtInicializado;
-        }
-
-        public void setDtInicializado(String dtInicializado) {
-            this.dtInicializado = dtInicializado;
-        }
-
         public Long getMemoriaTot() {
             return memoriaTot;
         }
@@ -53,5 +29,21 @@ public class Computador {
         public void setMemoriaTot(Long memoria) {
             this.memoriaTot = memoria;
         }
+
+    public String getProcessador() {
+        return processador;
+    }
+
+    public void setProcessador(String processador) {
+        this.processador = processador;
+    }
+
+    public Long getDiscoTotal() {
+        return discoTotal;
+    }
+
+    public void setDiscoTotal(Long discoTotal) {
+        this.discoTotal = discoTotal;
+    }
 
 }

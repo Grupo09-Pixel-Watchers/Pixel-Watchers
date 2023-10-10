@@ -1,13 +1,13 @@
-import DataAcessObject.ComputadorDAO;
-import DataAcessObject.MemoriaDAO;
+import com.github.britooo.looca.api.group.discos.DiscoGrupo;
+import dataAcessObject.ComputadorDAO;
+import dataAcessObject.MemoriaDAO;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.memoria.Memoria;
+import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.sistema.Sistema;
-import com.github.britooo.looca.api.util.Conversor;
 import entidades.Computador;
 import entidades.MemoriaEmUso;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,59 +16,60 @@ public class App {
     public static void main(String[] args) {
         Looca looca = new Looca();
         Computador computador = new Computador();
-        MemoriaEmUso mem = new MemoriaEmUso();
+        MemoriaEmUso memoriaUso = new MemoriaEmUso(); // objeto da Memoria em Uso
 
+        Memoria memoria = looca.getMemoria();
+        Processador processador = looca.getProcessador();
+        DiscoGrupo disco = looca.getGrupoDeDiscos();
         Sistema sistema = looca.getSistema();
-        Memoria memoriaLooca = looca.getMemoria();
 
-        // Armazenando as informações do SO usando o metodo sistema.getSistemaOperacional()
+        // Variáveis que guardam as informações para o cadastro
+        String nomeProcessador = processador.getNome();
+        computador.setProcessador(nomeProcessador);
+
         String sistemaOperacional = sistema.getSistemaOperacional();
-
-        // Armazenando as informações do fabricante usando o metodo sistema.getFabricante()
-        String fabricante = sistema.getFabricante();
-
-        // Armazenando a arquitetura do SO usando o metodo sistema.getArquitetura()
-        Integer arquitetura = sistema.getArquitetura();
-
-        // Armazenando a data que foi inicializado usando o metodo sistema.getinicializado()
-        String dtInicializado = String.valueOf(sistema.getInicializado());
-
         computador.setSO(sistemaOperacional);
-        computador.setFabricante(fabricante);
-        computador.setArquitetura(arquitetura);
-        computador.setDtInicializado(dtInicializado);
+
+
+        Long memoriaTotal = (memoria.getTotal());
+        computador.setMemoriaTot(memoriaTotal);
+
+        Long discoTotal = (disco.getTamanhoTotal());
+        computador.setDiscoTotal((discoTotal));
 
 
         ComputadorDAO.cadastrarComputador(computador);
-        ComputadorDAO.pegarIdSistema(computador);
+        ComputadorDAO.pegarIdComputador(computador);
 
         System.out.println("Computador cadastrado com sucesso!");
         System.out.printf("""
-                Informações do sistema da máquina:
-                SO: %s
-                Fabricante: %s
-                Arquitetura: %s
-                Data Inicializado: %s
-                """, sistemaOperacional, fabricante, arquitetura, dtInicializado);
+                Informações da máquina:
+                Processador: %s
+                Sistema Operacional: %s
+                Memória total: %d
+                Disco total: %s
+                """, nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal);
 
-        long TEMPO = (1000 * 1);
+        long TEMPO = (1500);
         Timer timer = new Timer();
         TimerTask tarefa = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    // Ver pq que nnnão cadastra se tiver na classe MemoriaDAO
+                    // Ver pq que não cadastra se tiver na classe MemoriaDAO
                     LocalDateTime data = LocalDateTime.now();
-                    mem.setIdMemoria(String.valueOf(data));
-//                    MemoriaDAO.pegarDtCaptura(data);
+                    memoriaUso.setIdMemoria(String.valueOf(data));
+////                    MemoriaDAO.pegarDtCaptura(data);
+//
+//                    // Ver pq que não cadastra se tiver na classe MemoriaDAO tambem
+////                   MemoriaDAO.pegarMemoriaEmUso(memoria);
+                    Long memoriaEmUso = memoria.getEmUso();
+                    memoriaUso.setMemoriaUso(memoriaEmUso);
 
-                    // Ver pq que não cadastra se tiver na classe MemoriaDAO tambem
-                    Long memoria = memoriaLooca.getEmUso();
-//                    MemoriaDAO.pegarMemoriaEmUso(memoria);
-                    mem.setMemoriaUso(memoria);
-
-                    System.out.println("Memória: "+Conversor.formatarBytes(memoria));
-                    MemoriaDAO.cadastrarMemoriaEmUso(mem, computador);
+                    Double processadorEmUso = processador.getUso();
+                    memoriaUso.setProcessadorUso(processadorEmUso);
+//                    System.out.println("Memória: "+memoriaUso.getMemoriaUso());
+                    MemoriaDAO.cadastrarMemoriaEmUso(memoriaUso, computador);
                 } catch (Exception e ){
                     e.printStackTrace();
                 }
