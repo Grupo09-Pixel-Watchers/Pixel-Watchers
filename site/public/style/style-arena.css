@@ -1,0 +1,204 @@
+@font-face {
+    font-family: 'Open_sans';
+    src: url(../assets/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf);
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open_sans';
+    color: white;
+}
+
+body{
+    background-color: black;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 20%;
+    width: 85%;
+    background-color: #28012a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1{
+    color: white;
+    font-weight: bold;
+    font-size: 2.3em;
+}
+
+.side-menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 15%;
+    background-color: #28012a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1% 0;
+}
+
+main{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 80%;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.a{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.perfil{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 28%;
+    width: 100%;
+}
+
+.menu-lateral{
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.botoes-perfil{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.botoes-perfil .botao{
+    height: 45%;
+}
+
+.botao{
+    height: 25%;
+    width: 70%;
+    border-radius: 1px;
+    background-color: white ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+}
+
+.botao p{
+    text-align: center;
+    font-weight: bold;
+    color: black;
+}
+
+.nome-perfil{
+    color: white;
+    margin-top: 10%;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.container-arenas{
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+
+.arenas{
+    width: 80%;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.arena{
+    width: 27%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    cursor: pointer;
+    background-image: url('../assets/arenas.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0 3%;
+    border-radius: 3px;
+}
+
+.arena:hover{
+    transform: scale(1.1);
+    transition: 1s;
+}
+
+.arena p{
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.rodape{
+    width: 100%;
+    height: 15%;
+    align-items: start;
+    justify-content: center;
+    display: flex;
+}
+
+.nova-arena{
+    width: 10%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #28012a;
+    cursor: pointer;
+}
+
+.nova-arena:hover{
+    transform: scale(1.05);
+    transition: 0.4s;
+}
+
+.nova-arena p{
+    text-align: center;
+    width: 90%;
+    font-weight: bold;
+}
