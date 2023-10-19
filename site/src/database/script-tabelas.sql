@@ -6,8 +6,8 @@ create table empresa(
 	idEmpresa int primary key auto_increment,
     nomeFantasia varchar(100),
     razaoSocial varchar(100),
-    CNPJ char (15),
-    telefone char(11)
+    CNPJ char (18),
+    telefone char(15)
 );
 
 create table arena(
@@ -15,8 +15,8 @@ create table arena(
     nomeArena varchar(100),
     cep char(9),
     logradouro varchar(100),
-    numero varchar(10),
-    bairro varchar(50),
+    numero varchar(6),
+    bairro varchar(100),
     cidade varchar(100),
     uf char(2),
     fkEmpresa int,
@@ -29,7 +29,7 @@ create table usuario(
     sobrenome varchar(110),
     email varchar(100),
     senha varchar(100),
-    tipoUsuario varchar(13),
+    tipoUsuario char(5),
     fkEmpresa int,
     foreign key (fkEmpresa) references empresa (idEmpresa)
 );
@@ -46,3 +46,18 @@ create table computador(
     fkArena int,
     foreign key (fkArena) references arena (idArena)
 );
+
+
+-- Função para buscar o ID da empresa de acordo com o CNPJ
+DELIMITER $$
+CREATE FUNCTION fn_empresa(fnCnpj char(18)) 
+RETURNS int
+deterministic
+BEGIN
+	DECLARE vId int;
+    
+    set vId = (select idEmpresa from empresa where CNPJ = fnCnpj);
+    
+    return(vId);
+END$$;
+DELIMITER ;
