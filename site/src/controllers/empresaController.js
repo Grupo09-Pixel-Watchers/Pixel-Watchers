@@ -29,9 +29,11 @@ function cadastrar(req, res) {
 
     empresaModel.buscarPorCnpj(cnpj).then((resultado) => {
       if (resultado.length > 0) {
+        var repetido = true
         res
           .status(401)
           .json({ mensagem: `a empresa com o cnpj ${cnpj} já existe` });
+          return repetido;
       } 
       
       else {

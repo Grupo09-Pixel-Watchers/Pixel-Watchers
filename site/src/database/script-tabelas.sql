@@ -4,46 +4,46 @@ use pixelWatchers;
 
 create table empresa(
 	idEmpresa int primary key auto_increment,
-    nomeFantasia varchar(100),
-    razaoSocial varchar(100),
-    CNPJ char (18),
-    telefone char(15)
+    nomeFantasia varchar(100) not null,
+    razaoSocial varchar(100) not null,
+    CNPJ char (18) unique not null,
+    telefone char(15) not null
 );
 
 create table arena(
 	idArena int primary key auto_increment,
-    nomeArena varchar(100),
-    cep char(9),
-    logradouro varchar(100),
-    numero varchar(6),
-    bairro varchar(100),
-    cidade varchar(100),
-    uf char(2),
-    fkEmpresa int,
+    nomeArena varchar(100) not null,
+    cep char(9) not null,
+    logradouro varchar(100) not null,
+    numero varchar(6) not null,
+    bairro varchar(100) not null,
+    cidade varchar(100) not null,
+    uf char(2) not null,
+    fkEmpresa int not null,
     foreign key (fkEmpresa) references empresa (idEmpresa)
 );
 
 create table usuario(
 	idUsuario int primary key auto_increment,
-    nome varchar(100),
-    sobrenome varchar(110),
-    email varchar(100),
-    senha varchar(100),
-    tipoUsuario char(5),
-    fkEmpresa int,
+    nome varchar(100) not null,
+    sobrenome varchar(110) not null,
+    email varchar(100) unique not null,
+    senha varchar(100) not null,
+    tipoUsuario char(5) not null,
+    fkEmpresa int not null,
     foreign key (fkEmpresa) references empresa (idEmpresa)
 );
 
 create table computador(
 	idComputador int primary key auto_increment,
-    nome varchar(100),
-    so varchar(100),
-    processador varchar(100),
-    qtdMemoria varchar(8),
-    placaMae varchar(100),
-    placaVideo varchar(100),
-    disco varchar(100),
-    fkArena int,
+    nome varchar(100) not null,
+    so varchar(100) not null,
+    processador varchar(100) not null,
+    qtdMemoria varchar(8) not null,
+    placaMae varchar(100) not null, 
+    placaVideo varchar(100) not null,
+    disco varchar(100) not null,
+    fkArena int not null,
     foreign key (fkArena) references arena (idArena)
 );
 
@@ -61,3 +61,4 @@ BEGIN
     return(vId);
 END$$;
 DELIMITER ;
+
