@@ -14,20 +14,20 @@
     Coloque o CNPJ: <input type="text" id="ipt_cnpj"><br>
     Coloque o telefone <input type="text" id="ipt_telefone">
 
-    <button onclick="cadastrar()">CADASTRAR</button><br><br>
+    <button onclick="cadastrarEmpresa()">CADASTRAR</button><br><br>
 
     Coloque o seu nome: <input type="text" id="ipt_nomeUsuario"><br>
     Coloque o seu sobrenome: <input type="text" id="ipt_sobrenomeUsuario"><br>
     Coloque a seu email : <input type="email" id="ipt_email"><br>
     Coloque a sua senha : <input type="password" id="ipt_senha">
 
-    <button onclick="cadastrar2()">CADASTRAR</button>
+    <button onclick="cadastrarAdmin()">CADASTRAR</button>
 
 </body>
 
 </html>
 <script>
-    function cadastrar() {
+    function cadastrarEmpresa() {
         //Recupere o valor da nova input pelo nome do id
         // Agora vá para o método fetch logo abaixo
         var nomeEmpresaVar = ipt_nomeEmpresa.value;
@@ -45,7 +45,7 @@
         }
 
         // Enviando o valor da nova input
-        fetch("/usuarios/cadastrar", {
+        fetch("/empresas/cadastrarEmpresa", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -81,7 +81,7 @@
         return false;
     }
 
-    function cadastrar2() {
+    function cadastrarAdmin() {
         //Recupere o valor da nova input pelo nome do id
         // Agora vá para o método fetch logo abaixo
         var nomeUsuarioVar = ipt_nomeUsuario.value;
@@ -99,7 +99,7 @@
         }
 
         // Enviando o valor da nova input
-        fetch("/usuarios/cadastrar2", {
+        fetch("/usuarios/cadastrarAdmin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
