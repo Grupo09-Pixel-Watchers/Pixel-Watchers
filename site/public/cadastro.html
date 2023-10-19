@@ -18,7 +18,8 @@
 
     Coloque o seu nome: <input type="text" id="ipt_nomeUsuario"><br>
     Coloque o seu sobrenome: <input type="text" id="ipt_sobrenomeUsuario"><br>
-    Coloque a sua senha : <input type="text" id="ipt_senha">
+    Coloque a seu email : <input type="email" id="ipt_email"><br>
+    Coloque a sua senha : <input type="password" id="ipt_senha">
 
     <button onclick="cadastrar2()">CADASTRAR</button>
 
@@ -85,14 +86,14 @@
         // Agora vá para o método fetch logo abaixo
         var nomeUsuarioVar = ipt_nomeUsuario.value;
         var sobrenomeUsuarioVar = ipt_sobrenomeUsuario.value;
+        var emailVar = ipt_email.value
         var senhaVar = ipt_senha.value;
-        var idEmpresa = 1;
+        var fkEmpresaVar = 1;
 
         if (
             nomeUsuarioVar == "" ||
             sobrenomeUsuarioVar == "" ||
-            senhaVar == "" ||
-            idEmpresa == ""
+            senhaVar == ""
         ) {
             alert("Campos em branco")
         }
@@ -108,8 +109,9 @@
                 // Agora vá para o arquivo routes/usuario.js
                 nomeUsuarioServer: nomeUsuarioVar,
                 sobrenomeUsuarioServer: sobrenomeUsuarioVar,
+                emailServer: emailVar,
                 senhaServer: senhaVar,
-                idEmpresaServer: idEmpresa
+                fkEmpresaServer: fkEmpresaVar
             }),
         })
             .then(function (resposta) {

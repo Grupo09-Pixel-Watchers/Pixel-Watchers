@@ -1,5 +1,5 @@
 var usuarioModel = require("../models/usuarioModel");
-var aquarioModel = require("../models/aquarioModel");
+// var aquarioModel = require("../models/aquarioModel");
 
 // function autenticar(req, res) {
 //     var email = req.body.emailServer;
@@ -92,22 +92,25 @@ function cadastrar2(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nomeUsuario = req.body.nomeUsuarioServer;
     var sobrenomeUsuario = req.body.sobrenomeUsuarioServer;
-    var senha = req.body.senhaServer;
-    var idEmpresa = req.body.idEmpresaServer;
+    var emailUsuario = req.body.emailServer;
+    var senhaUsuario = req.body.senhaServer;
+    var fkEmpresa = req.body.fkEmpresaServer;
 
     // Faça as validações dos valores
     if (nomeUsuario == undefined) {
         res.status(400).send("Seu nome está undefined!");
     } else if (sobrenomeUsuario == undefined) {
         res.status(400).send("Seu sobrenome está undefined!");
-    } else if (senha == undefined) {
+    } else if (emailUsuario == undefined) {
+        res.status(400).send("Seu email está undefined!");
+    } else if (senhaUsuario == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    } else if (idEmpresa == undefined) {
-        res.status(400).send("Seu idEmpresa está undefined!");
+    } else if (fkEmpresa == undefined) {
+        res.status(400).send("Seu fkEmpresa está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar2(nomeUsuario, sobrenomeUsuario, senha, idEmpresa)
+        usuarioModel.cadastrar2(nomeUsuario, sobrenomeUsuario, emailUsuario, senhaUsuario, fkEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);
