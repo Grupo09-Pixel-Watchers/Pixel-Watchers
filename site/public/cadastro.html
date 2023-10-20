@@ -5,24 +5,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./style/style-cadastro.css">
 </head>
 
 <body>
-
-    Coloque o nome da empresa: <input type="text" id="ipt_nomeEmpresa"><br>
-    Coloque a razão social: <input type="text" id="ipt_razaoSocial"><br>
-    Coloque o CNPJ: <input type="text" id="ipt_cnpj"><br>
-    Coloque o telefone <input type="text" id="ipt_telefone">
-
-    <button onclick="cadastrarEmpresa()">CADASTRAR</button><br><br>
-
-    Coloque o seu nome: <input type="text" id="ipt_nomeUsuario"><br>
-    Coloque o seu sobrenome: <input type="text" id="ipt_sobrenomeUsuario"><br>
-    Coloque a seu email : <input type="email" id="ipt_email"><br>
-    Coloque a sua senha : <input type="password" id="ipt_senha">
-
-    <button onclick="cadastrarAdmin()">CADASTRAR</button>
-
+    <div class="container">
+        <div class="left-side">
+            <div class="logo"><img src="./assets/LogoPixelWatchers.png" alt="" style="width: 70%;"></div>
+            <div class="content-left">
+                <div class="tittle">Bem-vindo de volta!</div>
+                <div class="sub-tittle">Acesse sua conta agora mesmo.</div>
+                <div class="button" onclick="irParaLogin()">Entrar</div>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="content-right">
+                <div class="tittle">Crie sua Conta</div>
+                <div class="sub-tittle" id="sub-titulo">Preencha os dados da sua empresa</div>
+                <div class="form">
+                    <div class="pt1" id="pt1">
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/companhia.png" alt=""></div>
+                            <input type="text" id="ipt_nomeEmpresa" placeholder="Empresa">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/aperto-de-mao.png" alt=""></div>
+                            <input type="text" id="ipt_razaoSocial" placeholder="Razão Social">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/cartao-de-debito.png" alt=""></div>
+                            <input type="text" id="ipt_cnpj" placeholder="CNPJ">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/telefone.png" alt=""></div>
+                            <input type="text" id="ipt_telefone" placeholder="Telefone">
+                        </div>
+                    </div>
+                    <div class="pt1" id="pt2">
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/do-utilizador.png" alt=""></div>
+                            <input type="text" id="ipt_nomeUsuario" placeholder="Nome">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/assinatura.png" alt=""></div>
+                            <input type="text" id="ipt_sobrenomeUsuario" placeholder="Sobrenome">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/o-email.png" alt=""></div>
+                            <input type="email" id="ipt_email" placeholder="Email">
+                        </div>
+                        <div class="caixa">
+                            <div class="imagem"><img src="./assets/senha.png" alt=""></div>
+                            <input type="password" id="ipt_senha" placeholder="Senha">
+                        </div>
+                    </div>
+                </div>
+                <div class="botoes">
+                    <div class="button" id="btn_voltar" onclick="voltar()">Voltar</div>
+                    <div class="button" id="btn_avancar" onclick="validarEmpresa()">Próximo</div>
+                    <div class="button" id="btn_cadastrar" onclick="validarUsuario()">Cadastrar</div>
+                </div>
+                <div class="avanco">
+                    <div class="marcador" id="marcador01">1</div>
+                    <div class="marcador" id="marcador02">2</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 </body>
@@ -34,9 +83,8 @@
     $('#ipt_telefone').mask('(00)00000-0000');
     $('#ipt_cnpj').mask('00.000.000/0000-00');
 
-    function cadastrarEmpresa() {
-        //Recupere o valor da nova input pelo nome do id
-        // Agora vá para o método fetch logo abaixo
+    function validarEmpresa() {
+
         var nomeEmpresaVar = ipt_nomeEmpresa.value;
         var razaoSocialVar = ipt_razaoSocial.value;
         var cnpjVar = ipt_cnpj.value;
@@ -51,7 +99,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Há Campos em branco!',
+                text: 'Preencha todos os campos!',
             })
 
             return
@@ -77,64 +125,72 @@
 
         }
         else {
-
-            // Enviando o valor da nova input
-            fetch("/empresas/cadastrarEmpresa", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    // crie um atributo que recebe o valor recuperado aqui
-                    // Agora vá para o arquivo routes/usuario.js
-                    nomeEmpresaServer: nomeEmpresaVar,
-                    razaoSocialServer: razaoSocialVar,
-                    cnpjServer: cnpjVar,
-                    telefoneServer: telefoneVar
-                }),
-            })
-                .then(function (resposta) {
-                    console.log("resposta: ", resposta);
-
-                    if (resposta.ok) {
-                        console.log(resposta);
-
-                        resposta.json().then(json => {
-                            console.log(json);
-                            console.log(JSON.stringify(json));
-                        });
-
-                    } else if (cadastrarEmpresa) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'O CNPJ informado já foi cadastrado!',
-                        })
-                    }
-                    else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Algo deu errado!',
-                        })
-                    }
-                })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
-
-            return false;
+            avancar()
         }
     }
 
-    function cadastrarAdmin() {
-        //Recupere o valor da nova input pelo nome do id
-        // Agora vá para o método fetch logo abaixo
+    function cadastrarEmpresa() {
+
+        var nomeEmpresaVar = ipt_nomeEmpresa.value;
+        var razaoSocialVar = ipt_razaoSocial.value;
+        var cnpjVar = ipt_cnpj.value;
+        var telefoneVar = ipt_telefone.value;
+
+        fetch("/empresas/cadastrarEmpresa", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeEmpresaServer: nomeEmpresaVar,
+                razaoSocialServer: razaoSocialVar,
+                cnpjServer: cnpjVar,
+                telefoneServer: telefoneVar
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    console.log(resposta);
+
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+                    });
+                    cadastrarAdmin()
+
+
+                } else if (cadastrarEmpresa) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'O CNPJ informado já foi cadastrado!',
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Algo deu errado!',
+                    })
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        return false;
+    }
+
+
+    function validarUsuario() {
+
         var nomeUsuarioVar = ipt_nomeUsuario.value;
         var sobrenomeUsuarioVar = ipt_sobrenomeUsuario.value;
         var emailVar = ipt_email.value
         var senhaVar = ipt_senha.value;
-        var fkEmpresaVar = 1;
 
         if (
             nomeUsuarioVar == "" ||
@@ -149,46 +205,100 @@
         }
 
         else {
-
-            // Enviando o valor da nova input
-            fetch("/usuarios/cadastrarAdmin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    // crie um atributo que recebe o valor recuperado aqui
-                    // Agora vá para o arquivo routes/usuario.js
-                    nomeUsuarioServer: nomeUsuarioVar,
-                    sobrenomeUsuarioServer: sobrenomeUsuarioVar,
-                    emailServer: emailVar,
-                    senhaServer: senhaVar,
-                    fkEmpresaServer: fkEmpresaVar
-                }),
-            })
-                .then(function (resposta) {
-                    console.log("resposta: ", resposta);
-
-                    if (resposta.ok) {
-                        console.log(resposta);
-
-                        resposta.json().then(json => {
-                            console.log(json);
-                            console.log(JSON.stringify(json));
-                        });
-
-                    } else {
-                        throw "Houve um erro ao tentar realizar o cadastro!";
-                    }
-                })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                });
-
-            return false;
+            cadastrarEmpresa()
         }
     }
 
+
+
+    function cadastrarAdmin() {
+
+        var nomeUsuarioVar = ipt_nomeUsuario.value;
+        var sobrenomeUsuarioVar = ipt_sobrenomeUsuario.value;
+        var emailVar = ipt_email.value
+        var senhaVar = ipt_senha.value;
+        var cnpjVar = ipt_cnpj.value;
+
+        fetch("/usuarios/cadastrarAdmin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeUsuarioServer: nomeUsuarioVar,
+                sobrenomeUsuarioServer: sobrenomeUsuarioVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                cnpjServer: cnpjVar,
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    console.log(resposta);
+
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+                    });
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Boa!',
+                        text: 'Seu cadastro foi concluído com sucesso',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    })
+
+                    setTimeout(() => {
+                    window.location = "login.html";
+                }, "2000")
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Algo deu errado!',
+                    })
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        return false;
+    }
+
+    function avancar() {
+        document.getElementById('pt1').style.display = 'none'
+        document.getElementById('pt2').style.display = 'flex'
+        document.getElementById('pt2').style.transition = '2s'
+        document.getElementById('btn_avancar').style.display = 'none'
+        document.getElementById('btn_cadastrar').style.display = 'flex'
+        document.getElementById('btn_voltar').style.display = 'flex'
+        document.getElementById('marcador02').style.backgroundColor = '#871bc6'
+        document.getElementById('marcador02').style.color = '#fff'
+        document.getElementById('marcador02').style.transition = '1s'
+        document.getElementById('sub-titulo').innerHTML = 'Preencha seus dados pessoais'
+    }
+
+    function voltar() {
+        document.getElementById('pt1').style.display = 'flex'
+        document.getElementById('pt2').style.display = 'none'
+        document.getElementById('pt2').style.transition = '2s'
+        document.getElementById('btn_avancar').style.display = 'flex'
+        document.getElementById('btn_cadastrar').style.display = 'none'
+        document.getElementById('btn_voltar').style.display = 'none'
+        document.getElementById('marcador02').style.backgroundColor = '#fff'
+        document.getElementById('marcador02').style.color = '#871bc6'
+        document.getElementById('marcador02').style.transition = '1s'
+        document.getElementById('sub-titulo').innerHTML = 'Preencha os dados da sua empresa'
+    }
+
+    function irParaLogin(){
+        window.location = 'login.html'
+    }
     //   function listar() {
     //     fetch("/empresas/listar", {
     //       method: "GET",

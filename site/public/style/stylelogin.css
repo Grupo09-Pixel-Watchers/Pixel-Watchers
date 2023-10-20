@@ -16,7 +16,7 @@
 
 body{
     background-color: rgb(11, 7, 11);
-    height: 100vh;
+    height: 100%;
     width: 100%;
     overflow-x: hidden;
 }
@@ -72,6 +72,7 @@ main .container #login_form{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 50%;
     padding: 1vh;
     width: 100%;
     border: none;
@@ -81,6 +82,7 @@ main .container #login_form{
     outline: none;
     transition: all 400ms;
     margin-top: 3vh;
+    color: white;
 }
 
 .container .logo_login{
@@ -97,12 +99,19 @@ main .container #login_form{
     scale: 1.05;
 }
 
+input::placeholder{
+    font-weight: bold;
+}
+
 .container #dire_cadastro{
     color: #f5f5f5;
     size: 10vh;
 }
 
-#button_login{
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
     width: 45%;
     padding: 2vh;
@@ -112,250 +121,54 @@ main .container #login_form{
     transition: all 700ms;
 }
 
-#button_login:hover{
+.button:hover{
     box-shadow: 0 0 10px  #871bc6, 0 0 10px #871bc6;
     scale: 1.1;
 }
 
-#button_login:active{
+.button:active{
     scale: 1.2;
 }
 
-/* Fim da estilização da seção main */
-
-/* Estilização da seção footer */
-
-/* :root {
-    --color-neutral-0: #0e0c0c;
-    --color-neutral-10: #171717;
-    --color-neutral-30: #a8a29e;
-    --color-neutral-40: #f5f5f5;
+#button_avancar{
+    display: none;
 }
 
-footer {
-    width: 100%;
-    color: var(--color-neutral-40);
-}
-
-.footer-link {
-    text-decoration: none;
-}
-
-#footer_content {
-    background-color: var(--color-neutral-10);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding: 3rem 3.5rem;
-}
-
-#footer_contacts h1 {
-    margin-bottom: 0.75rem;
-}
-
-#footer_social_media {
-    display: flex;
-    gap: 2rem;
-    margin-top: 1.5rem;
-} 
-
-#footer_social_media .footer-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    width: 2.5rem;
-    color: var(--color-neutral-40);
-    border-radius: 50%;
-    transition: all 0.4s;
-}
-
-#footer_social_media .footer-link i {
-    font-size: 1.25rem;    
-}
-
-#footer_social_media .footer-link:hover {
-    opacity: 0.8;
-}
-
-#instagram {
-    background: linear-gradient(#7f37c9, #ff2992, #ff9807);
-}
-
-#facebook {
-    background-color: #4267b3;
-}
-
-#whatsapp {
-    background-color: #25d366;
-}
-
-.footer-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    list-style: none;
-}
-
-.footer-list .footer-link {
-    color: var(--color-neutral-30);
-    transition: all 0.4s;
-}
-
-.footer-list .footer-link:hover {
-    color: #7f37c9;
-}
-
-#footer_subscribe {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-#footer_subscribe p {
-    color: var(--color-neutral-30);
-}
-
-#input_group {
-    display: flex;
-    align-items: center;
-    background-color: var(--color-neutral-0);
-    border-radius: 4px;
-}
-
-#input_group input {
-    all: unset;
-    padding: 0.75rem;
-    width: 100%;
-}
-
-#input_group button {
-    background-color: #7f37c9;
-    border: none;
-    color: var(--color-neutral-40);
-    padding: 0px 1.25rem;
-    font-size: 1.125rem;
-    height: 100%;
-    border-radius: 0px 4px 4px 0px;
-    cursor: pointer;
-    transition: all 0.4s;
-}
-
-#input_group button:hover {
-    opacity: 0.8;
-}
-
-#footer_copyright {
-    display: flex;
-    justify-content: center;
-    background-color: var(--color-neutral-0);
-    font-size: 0.9rem;
-    padding: 1.5rem;
-    font-weight: 100;
-} */
-
-/* Fim da estilização footer */
-
-/* Media query */
-/* Mobile form */
 @media only screen and (max-width: 600px){
 
-    nav #logo{
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+    .container input{
+        height: 100%;
+        margin-top: 15%;
+        width: 100%;
     }
 
     main .container{
+        height: 80vh;
+        width: 70vw;
+    }
+
+    #ipt_senha{
         display: none;
     }
 
-    #mobile-content{
+    #ipt_email{
         display: flex;
-        background-image: linear-gradient(to bottom, transparent,#212121);
-        border-radius: 1vh;
-        border: 0.5vh solid #871bc6;
-        padding: 5vh;
     }
 
-    #ipt_senha_mobile{
+    #button_avancar{
+        display: flex;
+    }
+
+    #button_login{
         display: none;
     }
 
-    #mobile-button-login{
-        display: none;
+    #dire_cadastro{
+        font-size: 0.7em;
     }
 
-    #mobile-form-login{
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 10vh;
-    }
 
-    #div_error{
-        font-family: 'Open_sans';
-        color: red;
-    }
-
-    button{
-        display: flex;
-        margin-top: 5vh;
-        margin-left: 25%;
-        font-weight: 600;
-        width: 45%;
-        padding: 2vh;
-        border: none;
-        border-radius: 0.5vh;
-        background-color: #871bc6;
-        transition: all 700ms;
-    }
-    
-    button:hover{
-        box-shadow: 0 0 10px  #871bc6, 0 0 10px #871bc6;
-        scale: 1.1;
-    }
-    
-    button:active{
-        scale: 1.2;
-    }
-
-    input{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1vh;
-        width: 100%;
-        border: none;
-        background-color: transparent;
-        font-weight: 600;
-        border-bottom: 1px solid #871bc6;
-        outline: none;
-        transition: all 400ms;
-        margin-top: 3vh;
-        color: #f5f5f5;
-    }
-
-    #span_text{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    input:hover{
-        border: none;
-        box-shadow: 0 0 10px  #871bc6, 0 0 11px #871bc6;
-        border-radius: 0.5vh;
-    }
-    
-    input:active{
-        scale: 1.05;
-    }
-
-    #mobile-button-login{
-        align-items: center;
-        justify-content: center;
-    }
 }
 
 /* Fim :) */

@@ -1,0 +1,246 @@
+@font-face {
+    font-family: 'Open_sans';
+    src: url(../assets/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf);
+}
+
+html{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open_sans';
+    color: white;
+}
+
+
+body{
+    background-color: rgb(11, 7, 11);
+    width: 100vw;
+    height: 75vh;
+    display: flex;
+    overflow-x: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+.container{
+    width: 70vw;
+    height: 75vh;
+    display: flex;
+    border: 0.5vh solid #871bc6;
+    border-radius: 1vh;
+}
+
+.left-side{
+    height: 100%;
+    width: 25%;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.right-side{
+    height: 100%;
+    width: 75%;
+    background-image: linear-gradient(to bottom, transparent,#212121);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-left{
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    height: 50%;
+}
+
+.content-right{
+    width: 70%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.tittle{
+    width: 100%;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.sub-tittle{
+    width: 100%;
+    color: white;
+    text-align: left;
+    font-size: 0.9em;
+}
+.button{
+    width: 100%;
+    border: 2px solid white;
+    border-radius: 0.5vh;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.form{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pt1{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#pt2{
+    display: none;
+}
+
+.right-side .sub-tittle{
+    text-align: center;
+    margin-top: -4%;
+}
+
+.right-side .button{
+    width: 45%;
+    height: 100%;
+    border: none;
+    border-radius: 0.5vh;
+    background-color: #871bc6;
+    transition: all 700ms;
+    margin: 0 3%;
+}
+
+.right-side .button:hover{
+    box-shadow: 0 0 10px  #871bc6, 0 0 10px #871bc6;
+    scale: 1.1;
+}
+
+.right-side .button :active{
+    scale: 1.2;
+}
+
+
+
+
+input{
+    width: 90%;
+    height: 100%;
+    padding-left: 5%;
+    color: white;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #871bc6;
+    outline: none;
+    transition: all 400ms;
+}
+
+input::placeholder{
+    font-weight: bold;
+}
+
+input:hover{
+    border: none;
+    box-shadow: 0 0 10px  #871bc6, 0 0 11px #871bc6;
+    border-radius: 0.5vh;
+}
+
+input:active{
+    scale: 1.05;
+}
+
+
+.content-right .tittle{
+    text-align: center;
+}
+
+.avanco{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+}
+
+
+.marcador{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: white;
+    margin: 0 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#marcador01{
+    background-color: #871bc6;
+}
+
+#marcador02{
+    color: #871bc6;
+}
+.caixa{
+    height: 23%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.imagem{
+    height: 98%;
+    width: 9%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.caixa img{
+    width: 60%;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botoes{
+    display: flex;
+    height: 12%;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn_cadastrar, #btn_voltar{
+    display: none;
+}
+

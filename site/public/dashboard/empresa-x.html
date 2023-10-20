@@ -10,7 +10,7 @@
 
 <body>
     <header>
-        <h1>Pixel Watchers</h1>
+        <h1 id="h1_empresa"></h1>
     </header>
     <div class="side-menu">
         <div class="perfil">
@@ -18,7 +18,7 @@
                 <div class="a"></div>
             </div>
             <div class="nome-perfil">
-                <p>Kauã Juhrs</p>
+                <p id="nome"></p>
             </div>
         </div>
         <div class="menu-lateral">
@@ -90,6 +90,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+  document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
+  document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
+
+
   const ctx1 = document.getElementById('myChart1');
 
   new Chart(ctx1, {

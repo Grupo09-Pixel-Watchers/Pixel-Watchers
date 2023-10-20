@@ -61,4 +61,3 @@ BEGIN
     return(vId);
 END$$;
 DELIMITER ;
-
