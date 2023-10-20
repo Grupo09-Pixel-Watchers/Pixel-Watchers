@@ -1,26 +1,39 @@
 import DataAcessObject.ComputadorDAO;
 import DataAcessObject.StatusPcDAO;
-import Entidades.Computador;
-import Entidades.DiscoDisponivel;
-import Entidades.MemoriaEmUso;
-import Entidades.ProcessadorUso;
+import Entidades.*;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
+import com.github.britooo.looca.api.group.discos.Volume;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.processador.Processador;
+import com.github.britooo.looca.api.util.Conversor;
+
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class App {
     public static void main(String[] args) {
+        // Fazer o login do usuário tambem. //// juhrs vai fazer
+        System.out.println("""
+                  ____ ____  _ ____    ___  ____ _  _    _  _ _ _  _ ___  ____   /
+                  [__  |___  | |__|    |__] |___ |\\/| __ |  | | |\\ | |  \\ |  |  /\s
+                  ___] |___ _| |  |    |__] |___ |  |     \\/  | | \\| |__/ |__| . \s
+                                                                                 \s
+                """);
+
+        // objetos que foram criados na mão
         Looca looca = new Looca();
         Computador computador = new Computador();
-        MemoriaEmUso memoriaUso = new MemoriaEmUso(); // objeto da Memoria em Uso
-        ProcessadorUso processadorUso = new ProcessadorUso();
-        DiscoDisponivel discoDisponivel = new DiscoDisponivel();
+        StatusPc idCaptura = new StatusPc();
+        StatusPc memoriaUso = new StatusPc();
+        StatusPc processadorUso = new StatusPc();
+        StatusPc discoDisponivel = new StatusPc();
+        StatusPc dtHoraCaptura = new StatusPc();
 
+
+        // Objetos do looca
         Memoria memoria = looca.getMemoria();
         Processador processador = looca.getProcessador();
         DiscoGrupo disco = looca.getGrupoDeDiscos();
@@ -41,18 +54,29 @@ public class App {
         Long discoTotal = (disco.getTamanhoTotal());
         computador.setDiscoTotal((discoTotal));
 
+
+
+        computador.gerarTextoInicio();
+
+            System.out.printf(String.format("""
+             +==============================================================================+
+             ||                         Informações da máquina                             ||
+             +==============================================================================+
+             ||                                                                            ||
+             ||   Processador: %s                    ||
+             ||   Sistema Operacional: %s                                             ||
+             ||   Memória total: %s                                                  ||
+             ||   Disco total: %s                                                   ||
+             ||                                                                            ||
+             +==============================================================================+
+                """, nomeProcessador, sistemaOperacional,
+                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal)));
+
         ComputadorDAO.cadastrarComputador(computador);
         ComputadorDAO.pegarIdComputador(computador);
-
-        System.out.println("Computador cadastrado com sucesso!");
-        System.out.printf("""
-                Informações da máquina:
-                Processador: %s
-                Sistema Operacional: %s
-                Memória total: %d
-                Disco total: %s
-                """, nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal);
-
+        StatusPcDAO.pegarIdCaptura(idCaptura);
+//
+        Integer pontosMontagem = disco.getVolumes().size();
         long TEMPO = (2000);
         Timer timer = new Timer();
         TimerTask tarefa = new TimerTask() {
@@ -60,7 +84,7 @@ public class App {
             public void run() {
                 try {
                     LocalDateTime data = LocalDateTime.now();
-                    memoriaUso.setIdMemoria(String.valueOf(data));
+                    dtHoraCaptura.setDtHoraCaptura(String.valueOf(data));
 
                     Long memoriaEmUso = memoria.getEmUso();
                     memoriaUso.setMemoriaUso(memoriaEmUso);
@@ -69,16 +93,16 @@ public class App {
                     processadorUso.setProcessadorEmUso(processadorEmUso);
 
                     Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
-                    discoDisponivel.setDiscoDisponivel(Double.valueOf(discoEmUso));
+                    discoDisponivel.setDiscoDisponivel(discoEmUso);
 
-                    String pontoMontagem = disco.getVolumes().get(0).getPontoDeMontagem();
-                    StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, computador);
+                    StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
 
-                    if (disco.getVolumes().size() == 1){
-                        System.out.println("Tudo normal");
+                    if (disco.getVolumes().size() > pontosMontagem){
+                        System.out.println("Algo de errado");
                     } else {
-                        System.out.println("Alerta! \nDispositivo desconhecido conectado");
+                        System.out.println("tudo certo");
                     }
+
 
                 } catch (Exception e ){
                     e.printStackTrace();

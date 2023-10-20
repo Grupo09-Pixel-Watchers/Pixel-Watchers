@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ComputadorDAO {
-    // A classe vai servir para criar metodos que fazem conexao com o banco
         Integer idComputador = 0;
         Computador computador = new Computador();
         public static boolean cadastrarComputador (Computador computador){
-            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal) " +
+                                                "VALUES (?, ?, ?, ?)";
             PreparedStatement ps = null;
             try{
                 ps = Conexao.getConexao().prepareStatement(sql);
@@ -34,7 +34,6 @@ public class ComputadorDAO {
                 rs = ps.executeQuery();
                 while(rs.next()) { // o  next é para ele mover para a prox. linha
                    computador.setId(rs.getInt(1));
-                   System.out.println(computador.getId());
                 }
                 ps.execute();
             } catch (SQLException e ){

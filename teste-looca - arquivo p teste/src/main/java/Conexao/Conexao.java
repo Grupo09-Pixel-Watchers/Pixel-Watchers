@@ -4,17 +4,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    //Variável do link do banco de dados
+    //Atributos para conexão do banco de dados
     private static final String url = "jdbc:mysql://localhost:3306/prj_sprint";
-
-    //Variável do usuario do banco
     private static final String user = "root";
-
-    //Variável da senha do banco
     private static final String password = "";
-
-
     private static Connection conn; // objeto p/ conexão utilizando a classe Connection
+
 
     // Método para verificar se a conexao foi bem sucedida
     public static Connection getConexao(){
