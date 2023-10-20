@@ -12,6 +12,7 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var avisosRouter = require("./src/routes/avisos");
 var empresasRouter = require("./src/routes/empresas");
+var arenasRouter = require("./src/routes/arenas");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +24,7 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/avisos", avisosRouter);
 app.use("/empresas", empresasRouter);
+app.use("/arenas", arenasRouter);
 
 app.listen(PORTA, function () {
     console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/sentinel/cadastro/index.html \n
