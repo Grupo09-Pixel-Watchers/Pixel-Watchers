@@ -179,20 +179,21 @@ main{
 
 .graficos{
     height: 48%;
-    width: 60%;
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
 }
 
 .grafico{
-    width: 47%;
+    width: 28%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid white;
+    margin: 0 1%;
 }
 
 .indicador p{

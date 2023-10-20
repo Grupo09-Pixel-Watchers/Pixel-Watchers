@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    Coloque o nome da empresa: <input type="text" id="ipt_nomeEmpresa"><br>
+    Coloque a razão social: <input type="text" id="ipt_razaoSocial"><br>
+    Coloque o CNPJ: <input type="text" id="ipt_cnpj"><br>
+    Coloque o telefone <input type="text" id="ipt_telefone">
+
+    <button onclick="cadastrarEmpresa()">CADASTRAR</button><br><br>
+
+    Coloque o seu nome: <input type="text" id="ipt_nomeUsuario"><br>
+    Coloque o seu sobrenome: <input type="text" id="ipt_sobrenomeUsuario"><br>
+    Coloque a seu email : <input type="email" id="ipt_email"><br>
+    Coloque a sua senha : <input type="password" id="ipt_senha">
+
+    <button onclick="cadastrarAdmin()">CADASTRAR</button>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    $('#ipt_telefone').mask('(00)00000-0000');
+    $('#ipt_cnpj').mask('00.000.000/0000-00');
+
+    function cadastrarEmpresa() {
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeEmpresaVar = ipt_nomeEmpresa.value;
+        var razaoSocialVar = ipt_razaoSocial.value;
+        var cnpjVar = ipt_cnpj.value;
+        var telefoneVar = ipt_telefone.value;
+
+        if (
+            nomeEmpresaVar == "" ||
+            razaoSocialVar == "" ||
+            cnpjVar == "" ||
+            telefoneVar == ""
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Há Campos em branco!',
+            })
+
+            return
+        }
+
+        if (telefoneVar.length < 14) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira um telefone válido!',
+            })
+            return
+
+        }
+
+        if (cnpjVar.length < 18) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira um CNPJ válido!',
+            })
+            return
+
+        }
+        else {
+
+            // Enviando o valor da nova input
+            fetch("/empresas/cadastrarEmpresa", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeEmpresaServer: nomeEmpresaVar,
+                    razaoSocialServer: razaoSocialVar,
+                    cnpjServer: cnpjVar,
+                    telefoneServer: telefoneVar
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        console.log(resposta);
+
+                        resposta.json().then(json => {
+                            console.log(json);
+                            console.log(JSON.stringify(json));
+                        });
+
+                    } else if (cadastrarEmpresa) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'O CNPJ informado já foi cadastrado!',
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo deu errado!',
+                        })
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+            return false;
+        }
+    }
+
+    function cadastrarAdmin() {
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeUsuarioVar = ipt_nomeUsuario.value;
+        var sobrenomeUsuarioVar = ipt_sobrenomeUsuario.value;
+        var emailVar = ipt_email.value
+        var senhaVar = ipt_senha.value;
+        var fkEmpresaVar = 1;
+
+        if (
+            nomeUsuarioVar == "" ||
+            sobrenomeUsuarioVar == "" ||
+            senhaVar == ""
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Preencha todos os campos!',
+            })
+        }
+
+        else {
+
+            // Enviando o valor da nova input
+            fetch("/usuarios/cadastrarAdmin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeUsuarioServer: nomeUsuarioVar,
+                    sobrenomeUsuarioServer: sobrenomeUsuarioVar,
+                    emailServer: emailVar,
+                    senhaServer: senhaVar,
+                    fkEmpresaServer: fkEmpresaVar
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        console.log(resposta);
+
+                        resposta.json().then(json => {
+                            console.log(json);
+                            console.log(JSON.stringify(json));
+                        });
+
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+            return false;
+        }
+    }
+
+    //   function listar() {
+    //     fetch("/empresas/listar", {
+    //       method: "GET",
+    //     })
+    //       .then(function (resposta) {
+    //         resposta.json().then((empresas) => {
+    //           empresas.forEach((empresa) => {
+    //             listaEmpresas.innerHTML += `<option value='${empresa.id}'>${empresa.cnpj}</option>`;
+    //           });
+    //         });
+    //       })
+    //       .catch(function (resposta) {
+    //         console.log(`#ERRO: ${resposta}`);
+    //       });
+    //   }
+
+</script>
