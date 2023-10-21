@@ -1,6 +1,7 @@
 import DataAcessObject.AlertaDAO;
 import DataAcessObject.ComputadorDAO;
 import DataAcessObject.StatusPcDAO;
+import DataAcessObject.UsuarioDAO;
 import Entidades.*;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
@@ -11,8 +12,7 @@ import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.util.Conversor;
 
 import java.time.LocalDateTime;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -36,8 +36,10 @@ public class App {
         StatusPc processadorUso = new StatusPc();
         StatusPc discoDisponivel = new StatusPc();
         StatusPc dtHoraCaptura = new StatusPc();
+        Usuario usuario = new Usuario();
+        Scanner entrada = new Scanner(System.in);
         Alerta alerta = new Alerta();
-
+        boolean autenticado = false;
 
 
         // Objetos do looca
@@ -61,121 +63,87 @@ public class App {
         Long discoTotal = (disco.getTamanhoTotal());
         computador.setDiscoTotal((discoTotal));
 
+        do {
+            UsuarioDAO.pegarUsuario(usuario);
+            System.out.println("Digite o usuario: ");
+            String emailLogin = entrada.nextLine();
+
+            System.out.println("Digite a senha: ");
+            String senhaLogin = entrada.nextLine();
+
+            if (!Objects.equals(emailLogin, usuario.getEmail()) || !Objects.equals(senhaLogin, usuario.getSenha())) {
+                System.out.println("usuario ou senha inválidos!");
+            } else {
+                System.out.println("Usuário encontrado!");
+                computador.gerarTextoInicio();
 
 
-        computador.gerarTextoInicio();
+                ComputadorDAO.cadastrarComputador(computador);
+                ComputadorDAO.pegarIdComputador(computador);
+                StatusPcDAO.pegarIdCaptura(idCaptura);
+                StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal);
 
-            System.out.printf(String.format("""
-             +==============================================================================+
-             ||                         Informações da máquina                             ||
-             +==============================================================================+
-             ||                                                                            ||
-             ||   Processador: %s                                                          ||
-             ||   Sistema Operacional: %s                                                  ||
-             ||   Memória total: %s                                                        ||
-             ||   Disco total: %s                                                          ||
-             ||                                                                            ||
-             +==============================================================================+
-                """, nomeProcessador, sistemaOperacional,
-                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal)));
+                Integer pontosMontagem = disco.getVolumes().size();
+                long TEMPO = (2000);
+                Timer timer = new Timer();
+                TimerTask tarefa = new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            LocalDateTime data = LocalDateTime.now();
+                            dtHoraCaptura.setDtHoraCaptura(String.valueOf(data));
 
-        ComputadorDAO.cadastrarComputador(computador);
-        ComputadorDAO.pegarIdComputador(computador);
-        StatusPcDAO.pegarIdCaptura(idCaptura);
-//
-        Integer pontosMontagem = disco.getVolumes().size();
-        long TEMPO = (2000);
-        Timer timer = new Timer();
-        TimerTask tarefa = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    LocalDateTime data = LocalDateTime.now();
-                    dtHoraCaptura.setDtHoraCaptura(String.valueOf(data));
+                            Long memoriaEmUso = memoria.getEmUso();
+                            memoriaUso.setMemoriaUso(memoriaEmUso);
 
-                    Long memoriaEmUso = memoria.getEmUso();
-                    memoriaUso.setMemoriaUso(memoriaEmUso);
+                            Double processadorEmUso = processador.getUso();
+                            processadorUso.setProcessadorEmUso(processadorEmUso);
 
-                    Double processadorEmUso = processador.getUso();
-                    processadorUso.setProcessadorEmUso(processadorEmUso);
+                            Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
+                            discoDisponivel.setDiscoDisponivel(discoEmUso);
 
-                    Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
-                    discoDisponivel.setDiscoDisponivel(discoEmUso);
+                            StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
 
-                    StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
+                            if (disco.getVolumes().size() > pontosMontagem){
+                                System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
+                            } else {
+                                System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
+                            }
 
-                    if (disco.getVolumes().size() > pontosMontagem){
-                        System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
-                    } else {
-                        System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
+
+                        } catch (Exception e ){
+                            e.printStackTrace();
+                        }
                     }
+                };
+                timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+                autenticado = true;
 
 
-                } catch (Exception e ){
-                    e.printStackTrace();
+                ProgramScanner programScanner = new ProgramScanner();
+
+                System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
+
+                try {
+                    programScanner.scanForBlacklistedApps();
+                    // Se chegou aqui, nenhum programa proibido foi encontrado
+                    System.out.println("A máquina está segura para uso.");
+                } catch (ProgramScanner.ProgramProibidoEncontradoException e) {
+                    System.out.println(e.getMessage());
+                    LocalDateTime data = LocalDateTime.now();
+                    alerta.setDtHoraAlerta(String.valueOf(data));
+                    alerta.setDescricao("Arquivo suspeito encontrado");
+                    AlertaDAO.cadastrarAlerta(alerta, computador);
+
+                    System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
                 }
+
             }
-        };
-        timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+        } while(!autenticado);
 
 
-        LocalDateTime data = LocalDateTime.now();
-
-        System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
 
         // Caminho da raiz do disco (pode variar dependendo do sistema operacional)
-        File rootDirectory = new File("C:\\");
 
-        // Lista de programas proibidos (pastas)
-        List<String> folderBlacklist = Arrays.asList("HxD", "The Cheat", "CoSMOS", "WeMod", "Squalr", "TestSign", "KDMapper", "Windows API", "ArtMoney", "Cheat Engine");
-
-        // Lista de programas proibidos (arquivos)
-        List<String> fileBlacklist = Arrays.asList("Squalr.exe", "ArtMoney.exe", "Cheat Engine.exe", "HxD.exe", "CoSMOS.exe", "WeMod.exe");
-
-
-        try {
-            findBlacklistedAppsInDirectory(rootDirectory, folderBlacklist, fileBlacklist);
-            // Se chegou aqui, nenhum programa proibido foi encontrado
-            System.out.println("A máquina está segura para uso.");
-
-        } catch (ProgramProibidoEncontradoException e) {
-            System.out.println(e.getMessage());
-            alerta.setDtHoraAlerta(String.valueOf(data));
-            alerta.setDescricao("Arquivo suspeito encontrado");
-            AlertaDAO.cadastrarAlerta(alerta, computador);
-        }
-    }
-
-    public static void findBlacklistedAppsInDirectory(File directory, List<String> folderBlacklist, List<String> fileBlacklist) throws ProgramProibidoEncontradoException {
-        if (directory.exists() && directory.isDirectory()) {
-            // Lista de arquivos e pastas no diretório
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory() && folderBlacklist.contains(file.getName())) {
-                        // Se a pasta estiver na lista de programas proibidos, lançamos uma exceção
-                        throw new ProgramProibidoEncontradoException("Pasta proibida encontrada: " + file.getAbsolutePath());
-
-                    }
-                    if (file.isFile() && fileBlacklist.contains(file.getName())) {
-                        // Se o arquivo estiver na lista de programas proibidos, lançamos uma exceção
-                        throw new ProgramProibidoEncontradoException("Arquivo proibido encontrado: " + file.getAbsolutePath());
-                    }
-                }
-                for (File subDirectory : files) {
-                    if (subDirectory.isDirectory()) {
-                        // Verifica subdiretórios de forma recursiva
-                        findBlacklistedAppsInDirectory(subDirectory, folderBlacklist, fileBlacklist);
-                    }
-                }
-            }
-        }
-    }
-
-    public static class ProgramProibidoEncontradoException extends Exception {
-        // Exceção personalizada para indicar que um programa proibido foi encontrado
-        public ProgramProibidoEncontradoException(String message) {
-            super(message);
-        }
     }
 }

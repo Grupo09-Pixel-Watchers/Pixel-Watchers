@@ -17,7 +17,22 @@ public class StatusPcDAO {
     Integer idCaptura = 0;
     StatusPc statusPc = new StatusPc();
 
-    public void exibirCapturas() {
+    public static void exibirInformacoesMaquina(String nomeProcessador, String sistemaOperacional,
+                Long memoriaTotal,Long discoTotal){
+
+            System.out.println(String.format("""
+             +==============================================================================+
+             ||                         Informações da máquina                             ||
+             +==============================================================================+
+                                                                                         
+                Processador: %s                                                          
+                Sistema Operacional: %s                                                  
+                Memória total: %s                                                        
+                Disco total: %s                                                          
+                                                                                         
+             +==============================================================================+
+                """, nomeProcessador, sistemaOperacional,
+                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal)));
 
     }
     public static String pegarIdCaptura (StatusPc statusPc){
@@ -52,33 +67,35 @@ public class StatusPcDAO {
             ps.execute();
 
             String dataFormatadaa = dtHora.getDtHoraCaptura();
-            Date dataFormater = new SimpleDateFormat("ddMMyyHHmmss").parse(dataFormatadaa);
-            String dataFormatada = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dataFormater);
+            Date dataAtual = new Date();
+            // Definir o formato desejado
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            // Formatar a data
+            String dataFormatada = formato.format(dataAtual);
+
+
+//            Date dataFormater = new SimpleDateFormat("ddMMyyHHmmss").parse(dataFormatadaa);
+//            String dataFormatada = new SimpleDateFormat("dd-MM-yy HH:mm:ss").format(dataFormater);
             System.out.printf(String.format("""
                 +================================================+
                 ||               Dados da captura               ||
                 +================================================+
-                ||                                              ||      
-                ||                registro: %d                  ||
-                ||                                              ||
-                ||              cpu em uso: %s                  ||
-                ||            Memórria em uso: %s               ||
-                ||           Disco Disponivel: %s               ||
-                ||          data/hora da captura: %s            ||
-                ||                                              ||
+                                                                                                                  
+                              cpu em uso: %.2f                
+                            Memórria em uso: %s               
+                           Disco Disponivel: %s               
+                       data/hora da captura: %s            
+                                                              
                 +================================================+      
                 
-                """, dtHora.getIdCaptura(), // tenta pegar o ID aqui dog e arruma as formatações pls
+                """,// tenta pegar o ID aqui dog e arruma as formatações pls
                     statusProcessador.getProcessadorEmUso(),
                     Conversor.formatarBytes(statusMemoria.getMemoriaUso()),
                     Conversor.formatarBytes(Disco.getDiscoDisponivel()),
                     dataFormatada));
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
-
 
 }
