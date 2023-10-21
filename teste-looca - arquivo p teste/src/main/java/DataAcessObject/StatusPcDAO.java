@@ -58,15 +58,15 @@ public class StatusPcDAO {
                 +================================================+
                 ||               Dados da captura               ||
                 +================================================+
-                ||      
-                ||                registro: %d                 ||
+                ||                                              ||      
+                ||                registro: %d                  ||
                 ||                                              ||
-                ||              cpu em uso: %s                ||
-                ||            Memórria em uso: %s                       ||
-                ||           Disco Disponivel: %s                   ||
-                ||          data/hora da captura: %s                        ||
-                ||                                                  ||
-                +===================================================+      
+                ||              cpu em uso: %s                  ||
+                ||            Memórria em uso: %s               ||
+                ||           Disco Disponivel: %s               ||
+                ||          data/hora da captura: %s            ||
+                ||                                              ||
+                +================================================+      
                 
                 """, dtHora.getIdCaptura(), // tenta pegar o ID aqui dog e arruma as formatações pls
                     statusProcessador.getProcessadorEmUso(),

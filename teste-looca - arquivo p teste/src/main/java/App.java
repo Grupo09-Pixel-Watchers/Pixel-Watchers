@@ -1,3 +1,4 @@
+import DataAcessObject.AlertaDAO;
 import DataAcessObject.ComputadorDAO;
 import DataAcessObject.StatusPcDAO;
 import Entidades.*;
@@ -12,6 +13,10 @@ import com.github.britooo.looca.api.util.Conversor;
 import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
@@ -31,6 +36,8 @@ public class App {
         StatusPc processadorUso = new StatusPc();
         StatusPc discoDisponivel = new StatusPc();
         StatusPc dtHoraCaptura = new StatusPc();
+        Alerta alerta = new Alerta();
+
 
 
         // Objetos do looca
@@ -63,10 +70,10 @@ public class App {
              ||                         Informações da máquina                             ||
              +==============================================================================+
              ||                                                                            ||
-             ||   Processador: %s                    ||
-             ||   Sistema Operacional: %s                                             ||
-             ||   Memória total: %s                                                  ||
-             ||   Disco total: %s                                                   ||
+             ||   Processador: %s                                                          ||
+             ||   Sistema Operacional: %s                                                  ||
+             ||   Memória total: %s                                                        ||
+             ||   Disco total: %s                                                          ||
              ||                                                                            ||
              +==============================================================================+
                 """, nomeProcessador, sistemaOperacional,
@@ -98,9 +105,9 @@ public class App {
                     StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
 
                     if (disco.getVolumes().size() > pontosMontagem){
-                        System.out.println("Algo de errado");
+                        System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
                     } else {
-                        System.out.println("tudo certo");
+                        System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
                     }
 
 
@@ -110,5 +117,65 @@ public class App {
             }
         };
         timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+
+
+        LocalDateTime data = LocalDateTime.now();
+
+        System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
+
+        // Caminho da raiz do disco (pode variar dependendo do sistema operacional)
+        File rootDirectory = new File("C:\\");
+
+        // Lista de programas proibidos (pastas)
+        List<String> folderBlacklist = Arrays.asList("HxD", "The Cheat", "CoSMOS", "WeMod", "Squalr", "TestSign", "KDMapper", "Windows API", "ArtMoney", "Cheat Engine");
+
+        // Lista de programas proibidos (arquivos)
+        List<String> fileBlacklist = Arrays.asList("Squalr.exe", "ArtMoney.exe", "Cheat Engine.exe", "HxD.exe", "CoSMOS.exe", "WeMod.exe");
+
+
+        try {
+            findBlacklistedAppsInDirectory(rootDirectory, folderBlacklist, fileBlacklist);
+            // Se chegou aqui, nenhum programa proibido foi encontrado
+            System.out.println("A máquina está segura para uso.");
+
+        } catch (ProgramProibidoEncontradoException e) {
+            System.out.println(e.getMessage());
+            alerta.setDtHoraAlerta(String.valueOf(data));
+            alerta.setDescricao("Arquivo suspeito encontrado");
+            AlertaDAO.cadastrarAlerta(alerta, computador);
+        }
+    }
+
+    public static void findBlacklistedAppsInDirectory(File directory, List<String> folderBlacklist, List<String> fileBlacklist) throws ProgramProibidoEncontradoException {
+        if (directory.exists() && directory.isDirectory()) {
+            // Lista de arquivos e pastas no diretório
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory() && folderBlacklist.contains(file.getName())) {
+                        // Se a pasta estiver na lista de programas proibidos, lançamos uma exceção
+                        throw new ProgramProibidoEncontradoException("Pasta proibida encontrada: " + file.getAbsolutePath());
+
+                    }
+                    if (file.isFile() && fileBlacklist.contains(file.getName())) {
+                        // Se o arquivo estiver na lista de programas proibidos, lançamos uma exceção
+                        throw new ProgramProibidoEncontradoException("Arquivo proibido encontrado: " + file.getAbsolutePath());
+                    }
+                }
+                for (File subDirectory : files) {
+                    if (subDirectory.isDirectory()) {
+                        // Verifica subdiretórios de forma recursiva
+                        findBlacklistedAppsInDirectory(subDirectory, folderBlacklist, fileBlacklist);
+                    }
+                }
+            }
+        }
+    }
+
+    public static class ProgramProibidoEncontradoException extends Exception {
+        // Exceção personalizada para indicar que um programa proibido foi encontrado
+        public ProgramProibidoEncontradoException(String message) {
+            super(message);
+        }
     }
 }

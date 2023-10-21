@@ -1,6 +1,6 @@
-package dataAcessObject;
-import conexao.Conexao;
-import entidades.Computador;
+package DataAcessObject;
+import Conexao.Conexao;
+import Entidades.Computador;
 import entidades.MemoriaEmUso;
 
 import java.sql.PreparedStatement;
@@ -22,8 +22,8 @@ public class MemoriaDAO {
                     ||==========================||
                     || Registros da máquina     ||
                     ||==========================||
-                    || Memória: %d      ||
-                    || CPU: %f           ||
+                    || Memória: %d              ||
+                    || CPU: %f                  ||
                     ||==========================||
                     """, memoria.getMemoriaUso(), memoria.getProcessadorUso());
         } catch (SQLException e) {
