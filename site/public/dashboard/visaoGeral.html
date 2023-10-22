@@ -2,205 +2,212 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../style/style-empresa-x.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../style/styleVisaoGeral.css">
 </head>
 
 <body>
-    <header>
-        <h1 id="h1_empresa"></h1>
-    </header>
-    <div class="side-menu">
-        <div class="perfil">
-            <div class="foto-perfil">
-                <div class="a"></div>
-            </div>
-            <div class="nome-perfil">
-                <p id="nome"></p>
-            </div>
-        </div>
-        <div class="menu-lateral">
-            <div class="botao">
-                <p>Editar Arena</p>
-            </div>
-            <div class="botao">
-                <p>Excluir arena</p>
-            </div>
-            <div class="botao">
-                <p>Editar Perfil</p>
-            </div>
-        </div>
-        <div class="botoes-perfil">
-            <div class="botao">
-                <p>Adcionar Usuário</p>
-            </div>
-            <div class="botao">
-                <p>Sair</p>
-            </div>
-        </div>
+  <header>
+    <h1 id="h1_arena"></h1>
+  </header>
+  <div class="side-menu">
+    <div class="perfil">
+      <div class="foto-perfil">
+        <div class="a"></div>
+      </div>
+      <div class="nome-perfil">
+        <p id="nome"></p>
+      </div>
     </div>
-    <main>
-        <div class="content">
-            <div class="titulo">
-                <p>Visão Geral</p>
-            </div>
-            <div class="indicadores">
-                <div class="indicador">
-                    <p>PCs ativos: 5/5</p>
-                </div>
-                <div class="indicador">
-                    <p>PCs dentro das métricas: 4/5</p>
-                </div>
-                <div class="indicador">
-                    <p>Maior uso de memória: PC-2</p>
-                </div>
-                <div class="indicador">
-                    <p>Maior uso de processador: PC-5</p>
-                </div>
-            </div>
-            <div class="dashboard">
-                <div class="graficos">
-                    <div class="grafico">
-                        <canvas id="myChart1"></canvas>
-                    </div>
-                    <div class="grafico">
-                        <canvas id="myChart2"></canvas>
-                    </div>
-                    <div class="grafico">
-                        <canvas id="myChart3"></canvas>
-                    </div>
-                </div>
-                <div class="graficos">
-                    <div class="grafico">
-                        <canvas id="myChart4"></canvas>
-                    </div>
-                    <div class="grafico">
-                        <canvas id="myChart5"></canvas>
-                    </div>
-                </div>
-            </div>
+    <div class="menu-lateral">
+      <div onclick="window.location = 'index.html'" class="botao">
+        <p>Home</p>
+    </div>
+      <div onclick="window.location = 'visaoGeral.html'" class="botao">
+        <p>Visão Geral</p>
+      </div>
+      <div onclick="window.location = 'todosPCs.html'" class="botao">
+        <p>Visão Específica</p>
+      </div>
+      <div class="botao">
+        <p>Editar Perfil</p>
+      </div>
+    </div>
+    <div class="botoes-perfil">
+      <div id="add_user" onclick="window.location = 'novoUser.html'" class="botao">
+        <p>Adcionar Usuário</p>
+      </div>
+      <div onclick="sair()" class="botao">
+        <p>Sair</p>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="content">
+      <div class="titulo">
+        <p>Visão Geral</p>
+      </div>
+      <div class="indicadores">
+        <div class="indicador">
+          <p>PCs ativos: 5/5</p>
         </div>
-    </main>
+        <div class="indicador">
+          <p>PCs dentro das métricas: 4/5</p>
+        </div>
+        <div class="indicador">
+          <p>Maior uso de memória: PC-2</p>
+        </div>
+        <div class="indicador">
+          <p>Maior uso de processador: PC-5</p>
+        </div>
+      </div>
+      <div class="dashboard">
+        <div class="graficos">
+          <div class="grafico">
+            <div class="title">PC-1</div>
+            <canvas id="myChart1"></canvas>
+          </div>
+          <div class="grafico">
+            <div class="title">PC-2</div>
+            <canvas id="myChart2"></canvas>
+          </div>
+          <div class="grafico">
+            <div class="title">PC-3</div>
+            <canvas id="myChart3"></canvas>
+          </div>
+        </div>
+        <div class="graficos">
+          <div class="grafico">
+            <div class="title">PC-4</div>
+            <canvas id="myChart4"></canvas>
+          </div>
+          <div class="grafico">
+            <div class="title">PC-5</div>
+            <canvas id="myChart5"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 
 </html>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-  document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
+  if (sessionStorage.TIPO_USUARIO == 'colab') {
+    document.getElementById('add_user').style.display = 'none'
+  }
+  document.getElementById('h1_arena').innerHTML = sessionStorage.NOME_ARENA;
   document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
 
+  window.onload = obterDadosGraficos()
 
-  const ctx1 = document.getElementById('myChart1');
+  function obterDadosGraficos() {
+    obterDadosGrafico(1, sessionStorage.ID_ARENA)
+    obterDadosGrafico(2, sessionStorage.ID_ARENA)
+    obterDadosGrafico(3, sessionStorage.ID_ARENA)
+    obterDadosGrafico(4, sessionStorage.ID_ARENA)
+    obterDadosGrafico(5, sessionStorage.ID_ARENA)
+  }
 
-  new Chart(ctx1, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco'],
-      datasets: [{
-        label: '% De uso no momento',
-        data: [75, 80, 60],
-        borderWidth: 1,
-        backgroundColor: '#28012a',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+  function obterDadosGrafico(idComputador, idArena) {
+
+    // if (proximaAtualizacao != undefined) {
+    //   clearTimeout(proximaAtualizacao);
+    // }
+
+    fetch(`/status/geral/${idComputador},${idArena}`, { cache: 'no-store' }).then(function (response) {
+      if (response.ok) {
+        response.json().then(function (resposta) {
+          console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+          resposta.reverse();
+          plotarGrafico(resposta, idComputador);
+
+        });
+      } else {
+        console.error('Nenhum dado encontrado ou erro na API');
       }
-    }
-  });
-  
-  const ctx2 = document.getElementById('myChart2');
+    })
+      .catch(function (error) {
+        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+      });
+  }
 
-  new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco'],
-      datasets: [{
-        label: '% De uso no momento',
-        data: [69, 66, 82],
-        borderWidth: 1,
-        backgroundColor: '#28012a',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-  
-  const ctx3 = document.getElementById('myChart3');
 
-  new Chart(ctx3, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco'],
-      datasets: [{
-        label: '% De uso no momento',
-        data: [15, 12, 55],
-        borderWidth: 1,
-        backgroundColor: '#28012a',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-  
-  const ctx4 = document.getElementById('myChart4');
+  function plotarGrafico(resposta, idComputador) {
 
-  new Chart(ctx4, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco'],
-      datasets: [{
-        label: '% De uso no momento',
-        data: [98, 90, 59],
-        borderWidth: 1,
-        backgroundColor: '#28012a',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-  
-  const ctx5 = document.getElementById('myChart5');
+    console.log('iniciando plotagem do gráfico...');
 
-  new Chart(ctx5, {
-    type: 'bar',
-    data: {
-      labels: ['CPU', 'RAM', 'Disco'],
+    // Criando estrutura para plotar gráfico - labels
+    let labels = [];
+
+    // Criando estrutura para plotar gráfico - dados
+    let dados = {
+      labels: labels,
       datasets: [{
-        label: '% De uso no momento',
-        data: [61, 70, 80],
-        borderWidth: 1,
-        backgroundColor: '#28012a',
+        label: '% de Uso no momento',
+        data: [],
+        fill: false,
+        backgroundColor: '#871bc69f',
       }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
+    };
+
+    console.log('----------------------------------------------')
+    console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
+    console.log(resposta)
+
+    // Inserindo valores recebidos em estrutura para plotar o gráfico
+    for (i = 0; i < resposta.length; i++) {
+      var registro = resposta[i];
+      labels.push('RAM');
+      labels.push('CPU');
+      labels.push('Disco');
+      dados.datasets[0].data.push(registro.memoria);
+      dados.datasets[0].data.push(registro.processador);
+      dados.datasets[0].data.push(registro.disco);
     }
-  });
+
+    console.log('----------------------------------------------')
+    console.log('O gráfico será plotado com os respectivos valores:')
+    console.log('Labels:')
+    console.log(labels)
+    console.log('Dados:')
+    console.log(dados.datasets)
+    console.log('----------------------------------------------')
+
+    // Criando estrutura para plotar gráfico - config
+    const config = {
+      type: 'bar',
+      data: dados,
+    };
+
+    // Adicionando gráfico criado em div na tela
+    let myChart = new Chart(
+      document.getElementById(`myChart${idComputador}`),
+      config
+    );
+
+    // setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+  }
+
+  function sair() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'OK!',
+            text: 'Saindo da sua conta...!',
+            showConfirmButton: false,
+            timer: 2000
+        })
+        sessionStorage.clear()
+        setTimeout(function () {
+            window.location = "../login.html"
+        }, 2000);
+    }
+
 </script>

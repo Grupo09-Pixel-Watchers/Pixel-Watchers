@@ -9,7 +9,7 @@ function cadastrarArena(req, res) {
     var cidadeArena = req.body.cidadeServer;
     var ufArena = req.body.ufServer;
     var empresaArena = req.body.empresaServer;
-    
+
     arenaModel.cadastrarArena(nomeArena, cepArena, logradouroArena, numeroArena, bairroArena, cidadeArena, ufArena, empresaArena)
         .then(
             function (resultado) {
@@ -27,6 +27,26 @@ function cadastrarArena(req, res) {
         );
 }
 
+
+function buscarArenasDaEmpresa(req, res) {
+
+    var idEmpresa = req.params.idEmpresa;
+
+    arenaModel.buscarArenasDaEmpresa(idEmpresa).then(function (resultado) {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).send("Nenhum resultado encontrado!")
+            return;
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar as arenas.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
-    cadastrarArena
+    cadastrarArena,
+    buscarArenasDaEmpresa
 }

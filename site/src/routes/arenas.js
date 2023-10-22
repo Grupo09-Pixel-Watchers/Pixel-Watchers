@@ -7,5 +7,9 @@ router.post("/cadastrarArena", function (req, res) {
     arenaController.cadastrarArena(req, res);
 })
 
+router.get("/buscarArenasDaEmpresa/:idEmpresa", function (req, res) {
+    arenaController.buscarArenasDaEmpresa(req, res);
+})
+
 
 module.exports = router;

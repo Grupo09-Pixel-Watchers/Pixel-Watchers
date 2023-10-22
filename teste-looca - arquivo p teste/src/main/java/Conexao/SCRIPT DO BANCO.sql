@@ -76,8 +76,42 @@ BEGIN
 END$$;
 DELIMITER ;
 
-INSERT INTO tbusuario (nome, sobrenome, email, senha)VALUES ('MC', 'Lovin','gui@gmail.com', '123');
+-- INSERT INTO tbusuario (nome, sobrenome, email, senha)VALUES ('MC', 'Lovin','gui@gmail.com', '123');
 
-SELECT * FROM tbComputador;
+/*insert into tbComputador values (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
+								(null, 'Windows 11','Intel Core i7 7700k','1000','16', 2, 1),
+                                (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
+                                (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1 ,1),
+                                (null, 'Windows 11','Intel Core i7 7700k','1000','16',1 ,1);
+                                
 
-SELECT * FROM Alerta;
+insert into status_pc (memoriaUso, processadorUso, discoDisponivel, fkComputador)
+					  values (77, 62, 58.1, 1),
+							 (71, 60, 58.1, 1),
+                             (69, 59, 58.2, 1),
+                             (65, 50, 58.2, 1),
+                             (60, 45, 58.1, 1),
+                             
+                             (98, 90, 80.2, 2),
+                             (99, 90, 80.3, 2),
+                             (97, 90, 80.3, 2),
+                             (100, 95, 80.4, 2),
+                             (98, 94, 79.1, 2),
+                             
+                             (12, 20, 10.2, 3),
+                             (16, 25, 10.2, 3),
+                             (18, 25, 10.3, 3),
+                             (17, 23, 10.4, 3),
+                             (15, 22, 10.4, 3),
+                             
+                             (70, 66, 90.2, 4),
+                             (76, 66, 90.3, 4),
+                             (77, 69, 90.2, 4),
+                             (81, 68, 90.2, 4),
+                             (80, 70, 90.2, 4),
+                             
+                             (07, 11, 37.2, 5),
+                             (05, 10, 37.3, 5),
+                             (05, 10, 37.3, 5),
+                             (02, 09, 37.3, 5),
+                             (08, 12, 37.2, 5); */

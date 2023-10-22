@@ -120,7 +120,59 @@ function cadastrarAdmin(req, res) {
     }
 }
 
+
+function cadastrarNovoUser(req, res) {
+    var nomeUsuario = req.body.nomeUsuarioServer;
+    var sobrenomeUsuario = req.body.sobrenomeUsuarioServer;
+    var emailUsuario = req.body.emailUsuarioServer;
+    var senhaUsuario = req.body.senhaUsuarioServer;
+    var tpUsuario = req.body.tpUsuarioServer;
+    var empresaUsuario = req.body.empresaUsuarioServer
+
+
+    usuarioModel.buscarPorEmail(emailUsuario).then((resultado) => {
+        if (resultado.length > 0) {
+            var repetido = true
+            res
+                .status(401)
+                .json({ mensagem: `o usuario com o email ${emailUsuario} já existe` });
+            return repetido;
+        }
+        else {
+
+            // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+            usuarioModel.cadastrarNovoUser(nomeUsuario, sobrenomeUsuario, emailUsuario, senhaUsuario, tpUsuario, empresaUsuario)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
+                );
+
+        }
+    });
+}
+
+function buscarPorEmail(req, res) {
+    var emailUsuario = req.body.emailUsuarioServer;
+
+    usuarioModel.buscarPorEmail(emailUsuario).then((resultado) => {
+        res.status(200).json(resultado);
+    });
+}
+
+
 module.exports = {
     cadastrarAdmin,
-    autenticar
+    autenticar,
+    cadastrarNovoUser,
+    buscarPorEmail
 }

@@ -13,6 +13,8 @@ var usuarioRouter = require("./src/routes/usuarios");
 var avisosRouter = require("./src/routes/avisos");
 var empresasRouter = require("./src/routes/empresas");
 var arenasRouter = require("./src/routes/arenas");
+var computadoresRouter = require("./src/routes/computadores");
+var statusRouter = require("./src/routes/status");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -25,9 +27,11 @@ app.use("/usuarios", usuarioRouter);
 app.use("/avisos", avisosRouter);
 app.use("/empresas", empresasRouter);
 app.use("/arenas", arenasRouter);
+app.use("/computadores", computadoresRouter);
+app.use("/status", statusRouter);
 
 app.listen(PORTA, function () {
-    console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/sentinel/cadastro/index.html \n
+    console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/cadastro.html \n
     Você está rodando sua aplicação em Ambiente de ${process.env.AMBIENTE_PROCESSO} \n
     \t\tSe "desenvolvimento", você está se conectando ao banco LOCAL (MySQL Workbench). \n
     \t\tSe "producao", você está se conectando ao banco REMOTO (SQL Server em nuvem Azure) \n

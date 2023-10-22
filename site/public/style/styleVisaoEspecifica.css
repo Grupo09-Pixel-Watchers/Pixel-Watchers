@@ -22,7 +22,7 @@ header{
     right: 0;
     height: 20%;
     width: 85%;
-    background-color: #28012a;
+    background-color: #871bc69f;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,7 +47,7 @@ h1{
     left: 0;
     height: 100%;
     width: 15%;
-    background-color: #28012a;
+    background-color: #871bc69f;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -64,7 +64,7 @@ main{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
 }
 
 .a{
@@ -77,14 +77,14 @@ main{
 .perfil{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
     height: 28%;
     width: 100%;
 }
 
 .menu-lateral{
-    height: 30%;
+    height: 40%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -107,7 +107,7 @@ main{
 }
 
 .botao{
-    height: 25%;
+    height: 20%;
     width: 70%;
     border-radius: 1px;
     background-color: white ;
@@ -131,50 +131,72 @@ main{
     font-weight: bold;
 }
 
-.container-pcs{
-    height: 100%;
+.content{
+    height: 98%;
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    
 }
 
-.pcs{
-    width: 80%;
-    height: 40%;
+.titulo{
+    height: 8%;
+    width: 23%;
+    border: 5px solid #871bc69f;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.indicadores{
+    width: 100%;
+    height: 14%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: row;
-    justify-content: center;
 }
 
-.pc{
-    width: 25%;
+.indicador{
     height: 100%;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    cursor: pointer;
-    background-image: url('../assets/compuradores.png');
-    background-size: cover;
-    background-position: center;
-    margin: 0 3%;
-}
-
-.pc:hover{
-    transform: scale(1.1);
-    transition: 1s;
-}
-
-.pc p{
-    font-size: 1.2em;
-    font-weight: bold;
-    width: 80%;
-    height: 100%;
+    width: 20%;
+    margin: 0 1%;
+    background-color: #871bc69f;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.dashboard{
+    height: 73%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.graficos{
+    height: 48%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.grafico{
+    width: 28%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1%;
+    flex-direction: column;
+}
+
+.indicador p{
+    width: 95%;
     text-align: center;
 }

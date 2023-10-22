@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../style/style-arena.css">
+    <link rel="stylesheet" href="../style/styleIndexDash.css">
 </head>
+
 <body>
     <header>
-        <h1>Pixel Watchers</h1>
+        <h1 id="h1_empresa"></h1>
     </header>
     <div class="side-menu">
         <div class="perfil">
             <div class="foto-perfil">
                 <div class="a"></div>
             </div>
-            <div class="nome-perfil"><p>Kauã Juhrs</p></div>
+            <div class="nome-perfil">
+                <p id="nome"></p>
+            </div>
         </div>
         <div class="menu-lateral">
-            <div class="botao"><p>Editar Arena</p></div>
-            <div class="botao"><p>Excluir arena</p></div>
-            <div class="botao"><p>Editar Perfil</p></div>
+            <div onclick="window.location = 'index.html'" class="botao">
+                <p>Home</p>
+            </div>
+            <div class="botao">
+                <p>Editar Arena</p>
+            </div>
+            <div class="botao">
+                <p>Excluir arena</p>
+            </div>
+            <div class="botao">
+                <p>Editar Perfil</p>
+            </div>
         </div>
         <div class="botoes-perfil">
-            <div class="botao"><p>Adcionar Usuário</p></div>
-            <div class="botao"><p>Sair</p></div>
+            <div id="add_user" onclick="window.location = 'novoUser.html'" class="botao">
+                <p>Adcionar Usuário</p>
+            </div>
+            <div onclick="sair()" class="botao">
+                <p>Sair</p>
+            </div>
         </div>
     </div>
     <main>
-        <div class="container-arenas">
-            <div class="arenas">
-                <div class="arena"><p>Arena Shopping Jd. Sul</p></div>
-                <div class="arena"><p>Arena Shopping Morumbi</p></div>
-                <div class="arena"><p id="santa_cruz">Arena Shopping Santa Cruz</p></div>
-            </div>
-            <div class="arenas">
-                <div class="arena"><p>Arena Faria Lima</p></div>
-                <div class="arena"><p>Arena Shopping Center Norte</p></div>
-                <div class="arena"><p>Arena Paulista</p></div>
-            </div>
+        <div class="container-arenas" id="container_arenas">
+            <span>Suas arenas ficarão aqui!</span>
         </div>
         <div class="rodape">
             <div class="nova-arena">
@@ -47,4 +55,67 @@
         </div>
     </main>
 </body>
+
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    if (sessionStorage.TIPO_USUARIO == 'colab') {
+        document.getElementById('add_user').style.display = 'none'
+    }
+    document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
+    document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
+
+    window.onload = atualizarArenas(sessionStorage.FK_EMPRESA_USUARIO)
+
+    function atualizarArenas(idEmpresa) {
+
+        fetch(`/arenas/buscarArenasDaEmpresa/${idEmpresa}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Arenas recebidas: ${JSON.stringify(resposta)}`);
+                    console.log(resposta)
+                    criarDivs(resposta);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+
+    }
+
+    function criarDivs(arenas) {
+
+        document.getElementById('container_arenas').innerHTML = ''
+        for (var i = 0; i < arenas.length; i++) {
+            document.getElementById('container_arenas').innerHTML +=
+                `<div class="arena" onclick="verArena(${arenas[i].idArena})" id="arena${i + 1}">
+                <p id="nome_arena">${arenas[i].nomeArena}</p>
+            </div>`
+        }
+    }
+
+    function verArena(idArena) {
+        sessionStorage.ID_ARENA = idArena
+        sessionStorage.NOME_ARENA = document.getElementById('nome_arena').innerText
+        window.location = 'visaoGeral.html'
+    }
+
+    function sair() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'OK!',
+            text: 'Saindo da sua conta...!',
+            showConfirmButton: false,
+            timer: 2000
+        })
+        sessionStorage.clear()
+        setTimeout(function () {
+            window.location = "../login.html"
+        }, 2000);
+    }
+
+</script>

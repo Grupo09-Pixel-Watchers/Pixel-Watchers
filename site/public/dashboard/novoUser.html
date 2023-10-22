@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../style/styleNovaArena.css">
+    <link rel="stylesheet" href="../style/styleNovoUser.css">
 </head>
 
 <body>
@@ -50,48 +50,43 @@
                 <img src="../assets/LogoPixelWatchers.png" alt="" style="height: 100%;">
             </div>
             <div class="title">
-                Cadastre uma nova arena!
+                Cadastre um novo usuário!
             </div>
             <div class="sub-title">
-                <p>tenha uma visualização mais organizada e prática</p>
+                <p>Aumente sua equipe!</p>
             </div>
             <div class="form">
                 <div class="campo">
-                    <label for="ipt_nome">Nome da arena</label>
+                    <label for="ipt_nome">Nome</label>
                     <input type="text" id="ipt_nome">
                 </div>
 
                 <div class="campo">
-                    <label for="ipt_cep">CEP</label>
-                    <input type="text" id="ipt_cep">
+                    <label for="ipt_sobrenome">Sobrenome</label>
+                    <input type="text" id="ipt_sobrenome">
                 </div>
 
                 <div class="campo">
-                    <label for="ipt_logradouro">Logradouro</label>
-                    <input type="text" id="ipt_logradouro">
+                    <label for="ipt_email">Email</label>
+                    <input type="email" id="ipt_email">
                 </div>
 
                 <div class="campo">
-                    <label for="ipt_numero">Numero</label>
-                    <input type="text" id="ipt_numero">
+                    <label for="ipt_senha">Senha</label>
+                    <input type="password" id="ipt_senha">
                 </div>
 
                 <div class="campo">
-                    <label for="ipt_bairro">Bairro</label>
-                    <input type="text" id="ipt_bairro">
+                    <label for="slct_tpUser">Tipo de usuário</label>
+                    <select name="" id="slct_tpUser">
+                        <option selected disabled>Selecione uma opção!</option>
+                        <option value="admin">Administrador</option>
+                        <option value="colab">Colaborador</option>
+                    </select>
                 </div>
 
-                <div class="campo">
-                    <label for="ipt_cidade">Cidade</label>
-                    <input type="text" id="ipt_cidade">
-                </div>
-
-                <div class="campo">
-                    <label for="ipt_uf">UF</label>
-                    <input type="text" id="ipt_uf">
-                </div>
             </div>
-            <div class="button" onclick="cadastrarArena()">
+            <div class="button" onclick="cadastrarNovoUser()">
                 Cadastrar!
             </div>
         </div>
@@ -103,36 +98,29 @@
 
 
 </html>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     if(sessionStorage.TIPO_USUARIO == 'colab'){
         document.getElementById('add_user').style.display = 'none'
     }
+
     document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
     document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
+    function cadastrarNovoUser() {
 
-    $('#ipt_cep').mask('00000-000');
-
-    function cadastrarArena() {
-
-        var nomeArenaVar = ipt_nome.value;
-        var cepVar = ipt_cep.value;
-        var logradouroVar = ipt_logradouro.value;
-        var numeroVar = ipt_numero.value;
-        var bairroVar = ipt_bairro.value;
-        var cidadeVar = ipt_cidade.value;
-        var ufVar = ipt_uf.value;
+        var nomeVar = ipt_nome.value;
+        var sobrenomeVar = ipt_sobrenome.value;
+        var emailVar = ipt_email.value;
+        var senhaVar = ipt_senha.value;
+        var tpUserVar = slct_tpUser.value;
         var empresaVar = sessionStorage.FK_EMPRESA_USUARIO;
 
+
         if (
-            nomeArenaVar == "" ||
-            cepVar == "" ||
-            logradouroVar == "" ||
-            numeroVar == "" ||
-            bairroVar == "" ||
-            cidadeVar == "" ||
-            ufVar == ""
+            nomeVar == "" ||
+            sobrenomeVar == "" ||
+            emailVar == "" ||
+            senhaVar == ""
         ) {
             Swal.fire({
                 icon: 'error',
@@ -143,40 +131,38 @@
             return
         }
 
-        if (cepVar.length < 9) {
+        if ((tpUserVar != 'colab') && (tpUserVar != 'admin')) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Insira um CEP válido!',
+                text: 'Escolha o tipo de usuário',
             })
-            return
 
+            return
         }
 
-        if (ufVar.length < 2) {
+        if (emailVar.indexOf('@') == -1) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Insira um UF válido!',
+                text: 'Insira um Email válido!',
             })
             return
 
         }
         else {
-            fetch("/arenas/cadastrarArena", {
+            fetch("/usuarios/cadastrarNovoUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    nomeArenaServer: nomeArenaVar,
-                    cepServer: cepVar,
-                    logradouroServer: logradouroVar,
-                    numeroServer: numeroVar,
-                    bairroServer: bairroVar,
-                    cidadeServer: cidadeVar,
-                    ufServer: ufVar,
-                    empresaServer: empresaVar,
+                    nomeUsuarioServer: nomeVar,
+                    sobrenomeUsuarioServer: sobrenomeVar,
+                    emailUsuarioServer: emailVar,
+                    senhaUsuarioServer: senhaVar,
+                    tpUsuarioServer: tpUserVar,
+                    empresaUsuarioServer: empresaVar
                 }),
             })
                 .then(function (resposta) {
@@ -193,7 +179,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Boa!',
-                            text: 'Arena cadastrada com sucesso!',
+                            text: 'Novo usuário cadastrado com sucesso!',
                             timer: 2000,
                             showConfirmButton: false,
                         })
@@ -202,11 +188,19 @@
                             window.location = "index.html";
                         }, "2000")
 
-                    } else {
+                    } else if (cadastrarNovoUser) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Algo deu errado!',
+                            text: 'O email informado já existe',
+                        })
+                    }
+
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo deu errado',
                         })
                     }
                 })
