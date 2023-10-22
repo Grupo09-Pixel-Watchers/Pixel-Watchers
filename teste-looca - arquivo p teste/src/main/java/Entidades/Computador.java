@@ -8,6 +8,7 @@ public class Computador {
         private Long memoriaTot;
         private String processador;
         private Long discoTotal;
+        private Integer qtdDiscos;
 
         public void gerarTextoInicio(){
             System.out.println("""
@@ -54,4 +55,11 @@ public class Computador {
             this.discoTotal = discoTotal;
         }
 
+        public Integer getQtdDiscos() {
+            return qtdDiscos;
+        }
+
+        public void setQtdDiscos(Integer qtdDiscos) {
+            this.qtdDiscos = qtdDiscos;
+        }
 }

@@ -63,6 +63,9 @@ public class App {
         Long discoTotal = (disco.getTamanhoTotal());
         computador.setDiscoTotal((discoTotal));
 
+        Integer qtdDicos = disco.getVolumes().size();
+        computador.setQtdDiscos(qtdDicos);
+
         do {
             UsuarioDAO.pegarUsuario(usuario);
             System.out.println("Digite o usuario: ");
@@ -81,7 +84,7 @@ public class App {
                 ComputadorDAO.cadastrarComputador(computador);
                 ComputadorDAO.pegarIdComputador(computador);
                 StatusPcDAO.pegarIdCaptura(idCaptura);
-                StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal);
+                StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
 
                 Integer pontosMontagem = disco.getVolumes().size();
                 long TEMPO = (2000);
@@ -130,9 +133,11 @@ public class App {
                     System.out.println("A máquina está segura para uso.");
                 } catch (ProgramScanner.ProgramProibidoEncontradoException e) {
                     System.out.println(e.getMessage());
+
                     LocalDateTime data = LocalDateTime.now();
                     alerta.setDtHoraAlerta(String.valueOf(data));
                     alerta.setDescricao("Arquivo suspeito encontrado");
+                    alerta.setCaminhoAqrquivo(programScanner.getAbsoluteFilePath());
                     AlertaDAO.cadastrarAlerta(alerta, computador);
 
                     System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
@@ -140,8 +145,6 @@ public class App {
 
             }
         } while(!autenticado);
-
-
 
         // Caminho da raiz do disco (pode variar dependendo do sistema operacional)
 

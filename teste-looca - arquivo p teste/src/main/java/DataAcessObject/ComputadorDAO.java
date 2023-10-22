@@ -9,8 +9,8 @@ public class ComputadorDAO {
         Integer idComputador = 0;
         Computador computador = new Computador();
         public static boolean cadastrarComputador (Computador computador){
-            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal) " +
-                                                "VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal, qtdDiscos) " +
+                                                "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = null;
             try{
                 ps = Conexao.getConexao().prepareStatement(sql);
@@ -18,6 +18,7 @@ public class ComputadorDAO {
                 ps.setString(2, computador.getProcessador());
                 ps.setLong(3, computador.getDiscoTotal());
                 ps.setLong(4, computador.getMemoriaTot());
+                ps.setInt(5, computador.getQtdDiscos());
                 ps.execute();
             } catch (SQLException e ){
                 e.printStackTrace();

@@ -18,7 +18,7 @@ public class StatusPcDAO {
     StatusPc statusPc = new StatusPc();
 
     public static void exibirInformacoesMaquina(String nomeProcessador, String sistemaOperacional,
-                Long memoriaTotal,Long discoTotal){
+                Long memoriaTotal,Long discoTotal, Integer qtdDiscos){
 
             System.out.println(String.format("""
              +==============================================================================+
@@ -28,11 +28,12 @@ public class StatusPcDAO {
                 Processador: %s                                                          
                 Sistema Operacional: %s                                                  
                 Memória total: %s                                                        
-                Disco total: %s                                                          
+                Disco total: %s 
+                Quantidade de Discos: %s                                                         
                                                                                          
              +==============================================================================+
                 """, nomeProcessador, sistemaOperacional,
-                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal)));
+                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal), qtdDiscos));
 
     }
     public static String pegarIdCaptura (StatusPc statusPc){
@@ -73,9 +74,6 @@ public class StatusPcDAO {
             // Formatar a data
             String dataFormatada = formato.format(dataAtual);
 
-
-//            Date dataFormater = new SimpleDateFormat("ddMMyyHHmmss").parse(dataFormatadaa);
-//            String dataFormatada = new SimpleDateFormat("dd-MM-yy HH:mm:ss").format(dataFormater);
             System.out.printf(String.format("""
                 +================================================+
                 ||               Dados da captura               ||
@@ -88,7 +86,7 @@ public class StatusPcDAO {
                                                               
                 +================================================+      
                 
-                """,// tenta pegar o ID aqui dog e arruma as formatações pls
+                """,
                     statusProcessador.getProcessadorEmUso(),
                     Conversor.formatarBytes(statusMemoria.getMemoriaUso()),
                     Conversor.formatarBytes(Disco.getDiscoDisponivel()),

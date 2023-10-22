@@ -4,6 +4,7 @@ public class Alerta {
     private Integer idAlerta;
     private String descricao;
     private String dtHoraAlerta;
+    private String caminhoAqrquivo;
     private Integer fkComputador;
 
     public Integer getIdAlerta() {
@@ -36,5 +37,13 @@ public class Alerta {
 
     public void setFkComputador(Integer fkComputador) {
         this.fkComputador = fkComputador;
+    }
+
+    public String getCaminhoAqrquivo() {
+        return caminhoAqrquivo;
+    }
+
+    public void setCaminhoAqrquivo(String caminhoAqrquivo) {
+        this.caminhoAqrquivo = caminhoAqrquivo;
     }
 }
