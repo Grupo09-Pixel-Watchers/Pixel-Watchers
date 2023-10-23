@@ -21,13 +21,13 @@ public class UsuarioDAO {
                 usuario.setEmail(rs.getString(4));
                 usuario.setSenha(rs.getString(5));
             }
-//            System.out.println(String.format("""
-//                        Dados do usuário
-//                        id: %d
-//                        nome: %s
-//                        email: %s
-//                        senha: %s
-//                        """, usuario.getIdUsuario(), usuario.getNome(), usuario.getEmail(), usuario.getSenha()));
+            System.out.println(String.format("""
+                        Dados do usuário
+                        id: %d
+                        nome: %s
+                        email: %s
+                        senha: %s
+                        """, usuario.getIdUsuario(), usuario.getNome(), usuario.getEmail(), usuario.getSenha()));
             ps.execute();
         } catch (SQLException e ){
             e.printStackTrace();
