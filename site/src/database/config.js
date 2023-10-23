@@ -19,7 +19,7 @@ var sqlServerConfig = {
 
 // CONEXÃO DO MYSQL WORKBENCH
 var mySqlConfig = {
-    host: "192.168.15.65",
+    host: "localhost",
     database: "prj_sprint",
     user: "UserDB",
     password: "1234",
