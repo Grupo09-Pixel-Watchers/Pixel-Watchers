@@ -1,1 +1,7 @@
+version: '2.3'
 
+services: 
+  banco:
+    image: guiscarabelli/imagembanco:latest
+    ports: 3306:3306
+    
