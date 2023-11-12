@@ -39,6 +39,7 @@ CREATE TABLE tbComputador(
 	idComputador INT PRIMARY KEY AUTO_INCREMENT,
     sistemaOperacional VARCHAR(30),
     processador VARCHAR(100),
+    tempProcessador DOUBLE,
     discoTotal LONG,
     memoriaTotal LONG,
     qtdDiscos INT,
