@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="teste-looca:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="706f09da-40ba-4ea7-a6d8-68349d742d97" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2U53BmO1OKN24jJSTyvSs5kcVI4" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gusta/OneDrive/Área de Trabalho/Atos/teste-looca - arquivo p teste&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;h2&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Guilherme Scarabelli\Desktop\Faculdade\Pixel-Watchers\teste-looca - arquivo p teste\src\main\java\DataAcessObject" />
+      <recent name="C:\Users\Guilherme Scarabelli\Desktop\Faculdade\Pixel-Watchers\teste-looca - arquivo p teste\src\main\java\Entidades" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.App (1)">
+    <configuration name="App (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App" />
+      <module name="teste-looca" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App" />
+      <module name="teste-looca" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="teste-looca.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/teste_looca_jar/teste-looca.jar" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.App (1)" />
+      <item itemvalue="Application.App" />
+      <item itemvalue="JAR Application.teste-looca.jar" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.App (1)" />
+        <item itemvalue="Application.App" />
+        <item itemvalue="JAR Application.teste-looca.jar" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="706f09da-40ba-4ea7-a6d8-68349d742d97" name="Changes" comment="" />
+      <created>1692215482780</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1692215482780</updated>
+      <workItem from="1692215483789" duration="1315000" />
+      <workItem from="1692224590356" duration="621000" />
+      <workItem from="1692226020851" duration="1570000" />
+      <workItem from="1692246001311" duration="1997000" />
+      <workItem from="1692283013572" duration="357000" />
+      <workItem from="1692295961989" duration="5344000" />
+      <workItem from="1692326099038" duration="1262000" />
+      <workItem from="1692394892286" duration="8550000" />
+      <workItem from="1692472272077" duration="1750000" />
+      <workItem from="1692659760637" duration="4289000" />
+      <workItem from="1692710382917" duration="41000" />
+      <workItem from="1692713867625" duration="98000" />
+      <workItem from="1692733365171" duration="309000" />
+      <workItem from="1692733741333" duration="3752000" />
+      <workItem from="1692738428383" duration="5868000" />
+      <workItem from="1692832986907" duration="1402000" />
+      <workItem from="1693267366996" duration="66000" />
+      <workItem from="1693267955310" duration="21000" />
+      <workItem from="1693348724594" duration="274000" />
+      <workItem from="1693349016665" duration="236000" />
+      <workItem from="1695152587604" duration="1389000" />
+      <workItem from="1695154044206" duration="1297000" />
+      <workItem from="1695155372633" duration="895000" />
+      <workItem from="1695156295272" duration="7739000" />
+      <workItem from="1695699016158" duration="2799000" />
+      <workItem from="1695776190407" duration="3538000" />
+      <workItem from="1695855728554" duration="106000" />
+      <workItem from="1695856047029" duration="1305000" />
+      <workItem from="1696028426517" duration="3000" />
+      <workItem from="1696033187315" duration="8654000" />
+      <workItem from="1696194992901" duration="1253000" />
+      <workItem from="1696197243447" duration="2452000" />
+      <workItem from="1696291797623" duration="1444000" />
+      <workItem from="1696367676541" duration="2109000" />
+      <workItem from="1696462006141" duration="1850000" />
+      <workItem from="1696545216960" duration="5647000" />
+      <workItem from="1696712015399" duration="2196000" />
+      <workItem from="1696804041936" duration="47000" />
+      <workItem from="1696886588481" duration="8421000" />
+      <workItem from="1696971896415" duration="595000" />
+      <workItem from="1696972511296" duration="254000" />
+      <workItem from="1697506897175" duration="2752000" />
+      <workItem from="1697573565904" duration="467000" />
+      <workItem from="1697577376418" duration="29000" />
+      <workItem from="1697677402366" duration="103000" />
+      <workItem from="1697677520477" duration="1163000" />
+      <workItem from="1697753866088" duration="11956000" />
+      <workItem from="1697837044426" duration="449000" />
+      <workItem from="1697837524752" duration="2377000" />
+      <workItem from="1697851844800" duration="4269000" />
+      <workItem from="1697902216510" duration="4051000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

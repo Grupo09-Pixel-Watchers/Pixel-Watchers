@@ -59,6 +59,18 @@ CREATE TABLE status_pc(
     tipoAlerta VARCHAR(150),
     fkComputador INT,
     FOREIGN KEY (fkComputador) REFERENCES tbComputador(idComputador));
+    
+CREATE TABLE ArquivosProibidos (
+    idArquivoProibido INT AUTO_INCREMENT PRIMARY KEY,
+    nomeArquivo VARCHAR(80),
+    motivoProibicao TEXT
+);
+
+CREATE TABLE PastasProibidas (
+    idPastaProibida INT AUTO_INCREMENT PRIMARY KEY,
+    nomePasta VARCHAR(80),
+    motivoProibicao TEXT
+);
 
 CREATE TABLE ArquivosProibidos (
     idArquivoProibido INT AUTO_INCREMENT PRIMARY KEY,
@@ -123,10 +135,16 @@ insert into status_pc (memoriaUso, processadorUso, discoDisponivel, fkComputador
                              (05, 10, 37.3, 5),
                              (02, 09, 37.3, 5),
                              (08, 12, 37.2, 5);
+<<<<<<< HEAD
                              (08, 12, 37.2, 5);*/
 
 
 
+=======
+                             
+                             
+					
+>>>>>>> 963205f8faee25a8158f6d30b8dac4b1c30c2f07
 INSERT INTO arquivosProibidos (nomeArquivo, motivoProibicao) VALUES
     ('Squalr.exe', 'Uso indevido de cheats'),
     ('ArtMoney.exe', 'Uso indevido de cheats'),
@@ -145,4 +163,9 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('KDMapper', 'Possível ferramenta de modificação de sistema'),
     ('Windows API', 'Possível ferramenta de modificação de sistema'),
     ('ArtMoney', 'Uso indevido de cheats'),
+<<<<<<< HEAD
     ('Cheat Engine', 'Uso indevido de cheats');
+=======
+    ('Cheat Engine', 'Uso indevido de cheats');*/
+                             
+>>>>>>> 963205f8faee25a8158f6d30b8dac4b1c30c2f07
