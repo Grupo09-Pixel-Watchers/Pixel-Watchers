@@ -67,13 +67,13 @@ public class App {
         computador.setQtdDiscos(qtdDicos);
 
         do {
-            UsuarioDAO.pegarUsuario(usuario);
             System.out.println("Digite o usuario: ");
             String emailLogin = entrada.nextLine();
 
             System.out.println("Digite a senha: ");
             String senhaLogin = entrada.nextLine();
 
+            UsuarioDAO.pegarUsuario(usuario);
             if (!Objects.equals(emailLogin, usuario.getEmail()) || !Objects.equals(senhaLogin, usuario.getSenha())) {
                 System.out.println("usuario ou senha inválidos!");
             } else {
@@ -122,7 +122,6 @@ public class App {
                 timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
                 autenticado = true;
 
-
                 ProgramScanner programScanner = new ProgramScanner();
 
                 System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
@@ -136,12 +135,27 @@ public class App {
 
                     LocalDateTime data = LocalDateTime.now();
                     alerta.setDtHoraAlerta(String.valueOf(data));
-                    alerta.setDescricao("Arquivo suspeito encontrado");
-                    alerta.setCaminhoAqrquivo(programScanner.getAbsoluteFilePath());
-                    AlertaDAO.cadastrarAlerta(alerta, computador);
+                    alerta.setCaminhoArquivo(programScanner.getAbsoluteFilePath());
+
+                    String tipoAlerta;
+                    if (e.getMessage().startsWith("Pasta proibida")) {
+                        tipoAlerta = "Pasta Proibida";
+                        alerta.setDescricao("Pasta proibida encontrada");
+                    } else if (e.getMessage().startsWith("Arquivo proibido")) {
+                        tipoAlerta = "Arquivo Proibido";
+                        alerta.setDescricao("Arquivo proibido encontrado");
+                    } else {
+                        tipoAlerta = "Desconhecido";
+                        alerta.setDescricao("Alerta desconhecido encontrado");
+                    }
+
+                    // Aqui deve ser o id do computador
+                    AlertaDAO.cadastrarAlerta(alerta, computador, tipoAlerta);
 
                     System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
                 }
+
+
 
             }
         } while(!autenticado);
