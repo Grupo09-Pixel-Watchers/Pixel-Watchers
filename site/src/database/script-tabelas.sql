@@ -51,6 +51,7 @@ CREATE TABLE status_pc(
     memoriaUso LONG,
     processadorUso DOUBLE,
     discoDisponivel LONG,
+	tempProcessador DOUBLE,
     dtHoraCaptura DATETIME DEFAULT now(),
 	fkComputador INT,
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
@@ -61,8 +62,21 @@ CREATE TABLE Alerta(
     descricao VARCHAR(200),
     dtHoraAlerta DATETIME DEFAULT now(),
     caminhoArquivo VARCHAR(200),
+    tipoAlerta VARCHAR(150),
     fkComputador INT,
     FOREIGN KEY (fkComputador) REFERENCES tbComputador(idComputador));
+    
+CREATE TABLE ArquivosProibidos (
+    idArquivoProibido INT AUTO_INCREMENT PRIMARY KEY,
+    nomeArquivo VARCHAR(80),
+    motivoProibicao TEXT
+);
+
+CREATE TABLE PastasProibidas (
+    idPastaProibida INT AUTO_INCREMENT PRIMARY KEY,
+    nomePasta VARCHAR(80),
+    motivoProibicao TEXT
+);
 
     -- Função para buscar o ID da empresa de acordo com o CNPJ
 DELIMITER $$
@@ -114,4 +128,27 @@ insert into status_pc (memoriaUso, processadorUso, discoDisponivel, fkComputador
                              (05, 10, 37.3, 5),
                              (05, 10, 37.3, 5),
                              (02, 09, 37.3, 5),
-                             (08, 12, 37.2, 5); */
+                             (08, 12, 37.2, 5);
+                             
+                             
+					
+INSERT INTO arquivosProibidos (nomeArquivo, motivoProibicao) VALUES
+    ('Squalr.exe', 'Uso indevido de cheats'),
+    ('ArtMoney.exe', 'Uso indevido de cheats'),
+    ('Cheat Engine.exe', 'Uso indevido de cheats'),
+    ('HxD.exe', 'Uso indevido de cheats'),
+    ('CoSMOS.exe', 'Uso indevido de cheats'),
+    ('WeMod.exe', 'Uso indevido de cheats');
+
+INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
+    ('HxD', 'Uso indevido de cheats'),
+    ('The Cheat', 'Uso indevido de cheats'),
+    ('CoSMOS', 'Uso indevido de cheats'),
+    ('WeMod', 'Uso indevido de cheats'),
+    ('Squalr', 'Uso indevido de cheats'),
+    ('TestSign', 'Possível ferramenta de modificação de sistema'),
+    ('KDMapper', 'Possível ferramenta de modificação de sistema'),
+    ('Windows API', 'Possível ferramenta de modificação de sistema'),
+    ('ArtMoney', 'Uso indevido de cheats'),
+    ('Cheat Engine', 'Uso indevido de cheats');*/
+                             
