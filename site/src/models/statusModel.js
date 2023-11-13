@@ -52,6 +52,7 @@ function buscarVisaoEspecifica(idComputador, limite_linhas) {
         processadorUso as processador,
         discoDisponivel as disco,
         fkComputador as computador,
+        tempProcessador as temp,
                         dtHoraCaptura,
                         DATE_FORMAT(dtHoraCaptura,'%H:%i:%s') as dtHoraCaptura
                     from status_pc

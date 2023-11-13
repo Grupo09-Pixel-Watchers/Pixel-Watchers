@@ -51,16 +51,16 @@
             </div>
             <div class="indicadores">
                 <div class="indicador">
-                    <p>média de uso de memória nos ultimos 7 dias: 86%</p>
+                    <p>Quantidade de alertas registrados nas ultimas 24 horas: 12</p>
                 </div>
                 <div class="indicador">
-                    <p>média de uso de processador nos ultimos 7 dias: 57%</p>
+                    <p>Ultimo alerta: 13/11/2023 13:32:26 (Alta temperatura)</p>
                 </div>
                 <div class="indicador">
-                    <p>Maior uso de memória capturado nas ultimas 24 horas: 92%</p>
+                    <p>Componente que mais gerou alertas nas últimas 24 horas: Memória (7)</p>
                 </div>
                 <div class="indicador">
-                    <p>Maior uso de processador capturado nas ultimas 24 horas: 100%</p>
+                    <p>Status: revisão recomendada!</p>
                 </div>
             </div>
             <div class="dashboard">
@@ -78,6 +78,10 @@
                     <div class="grafico">
                         <div class="title">Uso de disco em tempo real</div>
                         <canvas id="myChart3"></canvas>
+                    </div>
+                    <div class="grafico">
+                        <div class="title">Temperatura em tempo real (ºC)</div>
+                        <canvas id="myChart4"></canvas>
                     </div>
                 </div>
             </div>
@@ -115,6 +119,7 @@
                     plotarGrafico('memoria', '% Uso de RAM', resposta, 1);
                     plotarGrafico('processador', '% Uso de CPU', resposta, 2);
                     plotarGrafico('disco', '% Uso de Disco', resposta, 3);
+                    plotarGrafico('temp', 'Temperatura do processador', resposta, 4);
 
                 });
             } else {
@@ -169,6 +174,12 @@
                 var registro = resposta[i];
                 labels.push(registro.dtHoraCaptura);
                 dados.datasets[0].data.push(registro.disco);
+            }
+        } else if (dado == 'temp') {
+            for (i = 0; i < resposta.length; i++) {
+                var registro = resposta[i];
+                labels.push(registro.dtHoraCaptura);
+                dados.datasets[0].data.push(registro.temp);
             }
         }
 
