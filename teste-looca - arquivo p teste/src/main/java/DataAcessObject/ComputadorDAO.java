@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class ComputadorDAO {
         Integer idComputador = 0;
         Computador computador = new Computador();
-        public static boolean cadastrarComputador (Computador computador){
-            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal, qtdDiscos) " +
-                                                "VALUES (?, ?, ?, ?, ?)";
+        public static boolean cadastrarComputador (Computador computador, String idUnico, String arena){
+            String sql = "INSERT INTO tbcomputador (SistemaOperacional, processador, discoTotal, memoriaTotal, qtdDiscos, idUnico, fkArena) " +
+                                                "VALUES (?, ?, ?, ?, ?, ?, (select idArena from tbArena where nomeArena = ?))";
             PreparedStatement ps = null;
             try{
                 ps = Conexao.getConexao().prepareStatement(sql);
@@ -19,7 +19,10 @@ public class ComputadorDAO {
                 ps.setLong(3, computador.getDiscoTotal());
                 ps.setLong(4, computador.getMemoriaTot());
                 ps.setInt(5, computador.getQtdDiscos());
+                ps.setString(6,idUnico);
+                ps.setString(7,arena);
                 ps.execute();
+                System.out.println("Computador cadastrado com sucesso");
             } catch (SQLException e ){
                 e.printStackTrace();
             }
