@@ -1,7 +1,4 @@
-import DataAcessObject.AlertaDAO;
-import DataAcessObject.ComputadorDAO;
-import DataAcessObject.StatusPcDAO;
-import DataAcessObject.UsuarioDAO;
+import DataAcessObject.*;
 import Entidades.*;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
@@ -41,6 +38,9 @@ public class App {
         Alerta alerta = new Alerta();
         boolean autenticado = false;
 
+        System.out.println(looca.getProcessador().getId());
+        System.out.println(looca.getProcessador().getIdentificador());
+
 
         // Objetos do looca
         Memoria memoria = looca.getMemoria();
@@ -78,10 +78,28 @@ public class App {
                 System.out.println("usuario ou senha inválidos!");
             } else {
                 System.out.println("Usuário encontrado!");
+
+
+
+                UsuarioDAO.pegarEmpresaUsuario(usuario);
+                ArenaDAO.pegarArenasDaEmpresa(usuario);
+                if (ArenaDAO.pegarArenasDaEmpresa(usuario).size() == 0){
+                    System.out.println("Você ainda não tem uma arena cadastrada, acesse nosso site para fazer isso");
+                    return;
+                }
+                else {
+                    System.out.println("Em qual arena você deseja cadastrar esse computador?");
+                    for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
+                        System.out.println("""
+                                +----------------------------------------------------
+                                | %d - %s""".formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                    }
+                    Integer numArena = entrada.nextInt();
+                    String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
+                    IdentificadorUnico.GerarId(computador, nomeArena);
+                }
+
                 computador.gerarTextoInicio();
-
-
-                ComputadorDAO.cadastrarComputador(computador);
                 ComputadorDAO.pegarIdComputador(computador);
                 StatusPcDAO.pegarIdCaptura(idCaptura);
                 StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);

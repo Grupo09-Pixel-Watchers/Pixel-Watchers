@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS prj_sprint;
 CREATE DATABASE IF NOT EXISTS prj_sprint;
 USE prj_sprint;
+
 CREATE TABLE tbEmpresa(
 	idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
     nomeFantasia VARCHAR(150) NOT NULL,
@@ -9,6 +10,7 @@ CREATE TABLE tbEmpresa(
     telefone char(14) NOT NULL,
     limiteAlerta INT DEFAULT 60
 );
+
 CREATE TABLE tbUsuario(
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
@@ -19,6 +21,7 @@ CREATE TABLE tbUsuario(
 	fkEmpresa INT,
     FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa (idEmpresa)
 );
+
 CREATE TABLE tbArena(
 	idArena INT PRIMARY KEY AUTO_INCREMENT,
     nomeArena VARCHAR(150) NOT NULL,
@@ -31,6 +34,7 @@ CREATE TABLE tbArena(
     fkEmpresa INT,
     FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa (idEmpresa)
 );
+
 CREATE TABLE tbComputador(
 	idComputador INT PRIMARY KEY AUTO_INCREMENT,
     sistemaOperacional VARCHAR(30),
@@ -38,9 +42,11 @@ CREATE TABLE tbComputador(
     discoTotal LONG,
     memoriaTotal LONG,
     qtdDiscos INT,
+    idUnico VARCHAR(100),
     fkArena INT,
     FOREIGN KEY (fkArena) REFERENCES tbArena (idArena)
 );
+
 CREATE TABLE status_pc(
 	idCaptura INT PRIMARY KEY AUTO_INCREMENT,
     memoriaUso LONG,
@@ -50,9 +56,10 @@ CREATE TABLE status_pc(
     dtHoraCaptura DATETIME DEFAULT now(),
 	fkComputador INT,
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
-    );
+);
 
-	CREATE TABLE Alertas(
+CREATE TABLE Alerta(
+    idAlerta INT PRIMARY KEY AUTO_INCREMENT,
     descricao VARCHAR(200),
     dtHoraAlerta DATETIME DEFAULT now(),
     caminhoArquivo VARCHAR(200),
@@ -84,46 +91,45 @@ BEGIN
 END$$;
 DELIMITER ;
 
-SELECT * FROM Alertas;
+-- INSERT INTO tbusuario (nome, sobrenome, email, senha)VALUES ('MC', 'Lovin','gui@gmail.com', '123');
 
-INSERT INTO tbusuario (nome, sobrenome, email, senha) VALUES ('MC', 'Lovin','gui@gmail.com', '123');
 /*insert into tbComputador values (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
 								(null, 'Windows 11','Intel Core i7 7700k','1000','16', 2, 1),
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1 ,1),
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16',1 ,1);
 
-insert into status_pc (memoriaUso, processadorUso, discoDisponivel, fkComputador)
-					  values (77, 62, 58.1, 1),
-							 (71, 60, 58.1, 1),
-                             (69, 59, 58.2, 1),
-                             (65, 50, 58.2, 1),
-                             (60, 45, 58.1, 1),
 
-                             (98, 90, 80.2, 2),
-                             (99, 90, 80.3, 2),
-                             (97, 90, 80.3, 2),
-                             (100, 95, 80.4, 2),
-                             (98, 94, 79.1, 2),
+insert into status_pc (memoriaUso, processadorUso, discoDisponivel, tempProcessador, fkComputador)
+					  values (77, 62, 58.1, 50.1, 1),
+							 (71, 60, 58.1, 51.1, 1),
+                             (69, 59, 58.2, 51.1, 1),
+                             (65, 50, 58.2, 56.1, 1),
+                             (60, 45, 58.1, 55.1, 1),
 
-                             (12, 20, 10.2, 3),
-                             (16, 25, 10.2, 3),
-                             (18, 25, 10.3, 3),
-                             (17, 23, 10.4, 3),
-                             (15, 22, 10.4, 3),
+							 (98, 90, 80.2, 75.2, 2),
+                             (99, 90, 80.3, 75.3, 2),
+                             (97, 90, 80.3, 76.2, 2),
+                             (100, 95, 80.4, 71.2, 2),
+                             (98, 94, 79.1, 70.2, 2),
 
-                             (70, 66, 90.2, 4),
-                             (76, 66, 90.3, 4),
-                             (77, 69, 90.2, 4),
-                             (81, 68, 90.2, 4),
-                             (80, 70, 90.2, 4),
+                             (12, 20, 10.2, 40.7, 3),
+                             (16, 25, 10.2, 42.5, 3),
+                             (18, 25, 10.3, 43.0, 3),
+                             (17, 23, 10.4, 41.6, 3),
+                             (15, 22, 10.4, 39.1, 3),
 
-                             (07, 11, 37.2, 5),
-                             (05, 10, 37.3, 5),
-                             (05, 10, 37.3, 5),
-                             (02, 09, 37.3, 5),
-                             (08, 12, 37.2, 5);
-                             (08, 12, 37.2, 5);*/
+                             (70, 66, 90.2, 50.5, 4),
+                             (76, 66, 90.3, 48.2, 4),
+                             (77, 69, 90.2, 51.1, 4),
+                             (81, 68, 90.2, 45.5, 4),
+                             (80, 70, 90.2, 46.2, 4),
+
+                             (07, 11, 37.2, 30.8, 5),
+                             (05, 10, 37.3, 33.9, 5),
+                             (05, 10, 37.3, 34.3, 5),
+                             (02, 09, 37.3, 32.2, 5),
+                             (08, 12, 37.2, 27.6, 5);
 
 
 
@@ -145,4 +151,4 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('KDMapper', 'Possível ferramenta de modificação de sistema'),
     ('Windows API', 'Possível ferramenta de modificação de sistema'),
     ('ArtMoney', 'Uso indevido de cheats'),
-    ('Cheat Engine', 'Uso indevido de cheats');
+    ('Cheat Engine', 'Uso indevido de cheats');*/
