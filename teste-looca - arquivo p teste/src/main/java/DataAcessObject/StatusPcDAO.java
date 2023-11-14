@@ -25,7 +25,7 @@ public class StatusPcDAO {
              ||                         Informações da máquina                             ||
              +==============================================================================+
                                                                                          
-                Processador: %s                                                          
+                Processador: %s                                                         
                 Sistema Operacional: %s                                                  
                 Memória total: %s                                                        
                 Disco total: %s 
