@@ -16,8 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) throws InterruptedException {
-
+    public static void main(String[] args) {
         // Fazer o login do usuário tambem. //// juhrs vai fazer
         System.out.println("""
                   ____ ____  _ ____    ___  ____ _  _    _  _ _ _  _ ___  ____   /
@@ -68,15 +67,6 @@ public class App {
         computador.setQtdDiscos(qtdDicos);
 
         do {
-            ComputadorDAO.cadastrarComputador(computador);
-            ComputadorDAO.pegarIdComputador(computador);
-//            alerta.setTipoAlerta("PC cadastrado");
-//            alerta.setDescricao("PC cadastrado");
-//            String tipoAlerta = "sim";
-//            LocalDateTime data = LocalDateTime.now();
-//            alerta.setDtHoraAlerta(String.valueOf(data));
-//            AlertaDAO.cadastrarAlerta(alerta, computador, tipoAlerta);
-
             System.out.println("Digite o usuario: ");
             String emailLogin = entrada.nextLine();
 
@@ -110,13 +100,7 @@ public class App {
                 }
 
                 computador.gerarTextoInicio();
-<<<<<<< HEAD
-
-
-
-=======
                 ComputadorDAO.pegarIdComputador(computador);
->>>>>>> 012acdfe0081620a40911fcdb747f46809008fb6
                 StatusPcDAO.pegarIdCaptura(idCaptura);
                 StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
 
@@ -150,7 +134,6 @@ public class App {
 
                         } catch (Exception e ){
                             e.printStackTrace();
-
                         }
                     }
                 };
