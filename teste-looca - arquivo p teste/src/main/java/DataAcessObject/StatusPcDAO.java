@@ -64,7 +64,7 @@ public class StatusPcDAO {
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
             ps.setDouble(3, Disco.getDiscoDisponivel());
             ps.setString(4, dtHora.getDtHoraCaptura());
-            ps.setInt(5, computador.getId());
+            ps.setString(5, computador.getId());
             ps.execute();
 
             String dataFormatadaa = dtHora.getDtHoraCaptura();

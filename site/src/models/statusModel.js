@@ -56,7 +56,7 @@ function buscarVisaoEspecifica(idComputador, limite_linhas) {
                         dtHoraCaptura,
                         DATE_FORMAT(dtHoraCaptura,'%H:%i:%s') as dtHoraCaptura
                     from status_pc
-                    where fkComputador = ${idComputador}
+                    where fkComputador = '${idComputador}'
                     order by idCaptura desc limit ${limite_linhas}`;
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");

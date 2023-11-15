@@ -80,23 +80,41 @@ public class App {
                 System.out.println("Usuário encontrado!");
 
 
-
                 UsuarioDAO.pegarEmpresaUsuario(usuario);
                 ArenaDAO.pegarArenasDaEmpresa(usuario);
-                if (ArenaDAO.pegarArenasDaEmpresa(usuario).size() == 0){
+                if (ArenaDAO.pegarArenasDaEmpresa(usuario).isEmpty()){
                     System.out.println("Você ainda não tem uma arena cadastrada, acesse nosso site para fazer isso");
                     return;
                 }
                 else {
-                    System.out.println("Em qual arena você deseja cadastrar esse computador?");
-                    for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
-                        System.out.println("""
+                    String idPC = IdentificadorUnico.GerarId();
+                    if (!ComputadorDAO.JaExiste(idPC)){
+                        System.out.println();
+                        System.out.println("Parece que essa é a primeira vez que você utiliza o Sentinel nesse PC");
+                        System.out.println("Em qual arena você deseja cadastrar esse computador?");
+                        System.out.println();
+                        for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
+                            if (i == ArenaDAO.pegarArenasDaEmpresa(usuario).size()-1){
+                                System.out.println("""
+                                +----------------------------------------------------
+                                | %d - %s
+                                +----------------------------------------------------"""
+                                        .formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                            }
+                            else {
+                                System.out.println("""
                                 +----------------------------------------------------
                                 | %d - %s""".formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                            }
+                        }
+                        Integer numArena = entrada.nextInt();
+                        String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
+
+                        System.out.println("Certo, agora dê um apelido para esse computador");
+                        entrada.nextLine();
+                        String nomePC = entrada.nextLine();
+                        ComputadorDAO.cadastrarComputador(computador, idPC, nomeArena, nomePC);
                     }
-                    Integer numArena = entrada.nextInt();
-                    String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
-                    IdentificadorUnico.GerarId(computador, nomeArena);
                 }
 
                 computador.gerarTextoInicio();

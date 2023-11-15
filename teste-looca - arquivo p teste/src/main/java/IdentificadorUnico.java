@@ -7,7 +7,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class IdentificadorUnico {
-    public static void GerarId(Computador computador, String arena){
+    public static String GerarId(){
         try {
             // Obtém o endereço MAC
             InetAddress localHost = InetAddress.getLocalHost();
@@ -24,11 +24,11 @@ public class IdentificadorUnico {
 
             // Combina as informações para criar um identificador único
             String uniqueIdentifier = macAddress.toString() + userName;
-
+            return uniqueIdentifier;
             // Imprime o identificador único
-            ComputadorDAO.cadastrarComputador(computador, uniqueIdentifier, arena);
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

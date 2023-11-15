@@ -20,7 +20,7 @@ public class AlertaDAO {
             ps.setString(2, alerta.getDtHoraAlerta());
             ps.setString(3, alerta.getCaminhoArquivo());
             ps.setString(4, tipoAlerta);  // Tipo de alerta (Pasta ou Arquivo)
-            ps.setLong(5, computador.getId());
+            ps.setString(5, computador.getId());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0; // Retorna verdadeiro se pelo menos uma linha for afetada
         } catch (SQLException e) {

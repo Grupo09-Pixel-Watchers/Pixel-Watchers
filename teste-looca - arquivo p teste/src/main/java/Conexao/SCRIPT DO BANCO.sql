@@ -36,13 +36,13 @@ CREATE TABLE tbArena(
 );
 
 CREATE TABLE tbComputador(
-	idComputador INT PRIMARY KEY AUTO_INCREMENT,
+	idComputador VARCHAR(100) PRIMARY KEY,
+    apelidoPc VARCHAR(100),
     sistemaOperacional VARCHAR(30),
     processador VARCHAR(100),
     discoTotal LONG,
     memoriaTotal LONG,
     qtdDiscos INT,
-    idUnico VARCHAR(100),
     fkArena INT,
     FOREIGN KEY (fkArena) REFERENCES tbArena (idArena)
 );
@@ -54,7 +54,7 @@ CREATE TABLE status_pc(
     discoDisponivel LONG,
 	tempProcessador DOUBLE,
     dtHoraCaptura DATETIME DEFAULT now(),
-	fkComputador INT,
+	fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
 );
 
@@ -64,7 +64,7 @@ CREATE TABLE Alerta(
     dtHoraAlerta DATETIME DEFAULT now(),
     caminhoArquivo VARCHAR(200),
     tipoAlerta VARCHAR(150),
-    fkComputador INT,
+    fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador(idComputador));
 
 CREATE TABLE ArquivosProibidos (

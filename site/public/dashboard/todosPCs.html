@@ -89,8 +89,8 @@
         document.getElementById('container_pcs').innerHTML = ''
         for (var i = 0; i < pcs.length; i++) {
             document.getElementById('container_pcs').innerHTML +=
-                `<div class="pc" onclick="verPc(${pcs[i].idComputador})" id="pc${i + 1}">
-                <p>PC-${pcs[i].idComputador}</p>
+                `<div class="pc" onclick="verPc('${pcs[i].idComputador}')">
+                <p>${pcs[i].apelidoPc}</p>
             </div>`
         }
     }

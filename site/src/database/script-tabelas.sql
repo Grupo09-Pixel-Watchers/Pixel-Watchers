@@ -36,7 +36,8 @@ CREATE TABLE tbArena(
 );
 
 CREATE TABLE tbComputador(
-	idComputador INT PRIMARY KEY AUTO_INCREMENT,
+	idComputador VARCHAR(100) PRIMARY KEY,
+    apelidoPc VARCHAR(100),
     sistemaOperacional VARCHAR(30),
     processador VARCHAR(100),
     discoTotal LONG,
@@ -53,7 +54,7 @@ CREATE TABLE status_pc(
     discoDisponivel LONG,
 	tempProcessador DOUBLE,
     dtHoraCaptura DATETIME DEFAULT now(),
-	fkComputador INT,
+	fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
 );
 
@@ -63,9 +64,9 @@ CREATE TABLE Alerta(
     dtHoraAlerta DATETIME DEFAULT now(),
     caminhoArquivo VARCHAR(200),
     tipoAlerta VARCHAR(150),
-    fkComputador INT,
+    fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador(idComputador));
-    
+
 CREATE TABLE ArquivosProibidos (
     idArquivoProibido INT AUTO_INCREMENT PRIMARY KEY,
     nomeArquivo VARCHAR(80),
@@ -97,7 +98,7 @@ DELIMITER ;
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1 ,1),
                                 (null, 'Windows 11','Intel Core i7 7700k','1000','16',1 ,1);
-                                
+
 
 insert into status_pc (memoriaUso, processadorUso, discoDisponivel, tempProcessador, fkComputador)
 					  values (77, 62, 58.1, 50.1, 1),
@@ -105,33 +106,33 @@ insert into status_pc (memoriaUso, processadorUso, discoDisponivel, tempProcessa
                              (69, 59, 58.2, 51.1, 1),
                              (65, 50, 58.2, 56.1, 1),
                              (60, 45, 58.1, 55.1, 1),
-                             
+
 							 (98, 90, 80.2, 75.2, 2),
                              (99, 90, 80.3, 75.3, 2),
                              (97, 90, 80.3, 76.2, 2),
                              (100, 95, 80.4, 71.2, 2),
                              (98, 94, 79.1, 70.2, 2),
-                             
+
                              (12, 20, 10.2, 40.7, 3),
                              (16, 25, 10.2, 42.5, 3),
                              (18, 25, 10.3, 43.0, 3),
                              (17, 23, 10.4, 41.6, 3),
                              (15, 22, 10.4, 39.1, 3),
-                             
+
                              (70, 66, 90.2, 50.5, 4),
                              (76, 66, 90.3, 48.2, 4),
                              (77, 69, 90.2, 51.1, 4),
                              (81, 68, 90.2, 45.5, 4),
                              (80, 70, 90.2, 46.2, 4),
-                             
+
                              (07, 11, 37.2, 30.8, 5),
                              (05, 10, 37.3, 33.9, 5),
                              (05, 10, 37.3, 34.3, 5),
                              (02, 09, 37.3, 32.2, 5),
                              (08, 12, 37.2, 27.6, 5);
-                             
-                             
-					
+
+
+
 INSERT INTO arquivosProibidos (nomeArquivo, motivoProibicao) VALUES
     ('Squalr.exe', 'Uso indevido de cheats'),
     ('ArtMoney.exe', 'Uso indevido de cheats'),
@@ -151,4 +152,3 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('Windows API', 'Possível ferramenta de modificação de sistema'),
     ('ArtMoney', 'Uso indevido de cheats'),
     ('Cheat Engine', 'Uso indevido de cheats');*/
-                             
