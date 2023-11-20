@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class AlertaDAO {
 
     public static boolean cadastrarAlerta(Alerta alerta, Computador computador, String tipoAlerta) {
-        String sql = "INSERT INTO Alertas (descricao, dtHoraAlerta, caminhoArquivo, tipoAlerta, fkComputador) " +
+        String sql = "INSERT INTO Alerta (descricao, dtHoraAlerta, caminhoArquivo, tipoAlerta, fkComputador) " +
                 "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = null;
         try {

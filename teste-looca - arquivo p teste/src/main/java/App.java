@@ -7,7 +7,16 @@ import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.sistema.Sistema;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.util.Conversor;
+import oshi.SystemInfo;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.Sensors;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -37,10 +46,6 @@ public class App {
         Scanner entrada = new Scanner(System.in);
         Alerta alerta = new Alerta();
         boolean autenticado = false;
-
-        System.out.println(looca.getProcessador().getId());
-        System.out.println(looca.getProcessador().getIdentificador());
-
 
         // Objetos do looca
         Memoria memoria = looca.getMemoria();
@@ -141,12 +146,26 @@ public class App {
                             Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
                             discoDisponivel.setDiscoDisponivel(discoEmUso);
 
+                            // Crie uma instância do SystemInfo
+                            SystemInfo systemInfo = new SystemInfo();
+
+                            // Obtenha a camada de abstração de hardware
+                            HardwareAbstractionLayer hardware = systemInfo.getHardware();
+
+                            // Obtenha as informações do sensor
+                            Sensors sensors = hardware.getSensors();
+
+                            // Obtenha a temperatura do processador
+                            Double cpuTemperature = sensors.getCpuTemperature();
+                            processadorUso.setTempProcessador(cpuTemperature);
+
                             StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
 
                             if (disco.getVolumes().size() > pontosMontagem){
                                 System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
                             } else {
                                 System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
+
                             }
 
 
@@ -190,10 +209,8 @@ public class App {
 
                     System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
                 }
-
-
-
             }
+
         } while(!autenticado);
 
         // Caminho da raiz do disco (pode variar dependendo do sistema operacional)
