@@ -152,3 +152,9 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('Windows API', 'Possível ferramenta de modificação de sistema'),
     ('ArtMoney', 'Uso indevido de cheats'),
     ('Cheat Engine', 'Uso indevido de cheats');*/
+
+
+    /*  insert into tbEmpresa values (null, 'Empresa', 'RazaoSocial', '1231230912391', '(11)92372-0293', 60);
+		insert into tbUsuario values (null, 'Kaua', 'Juhrs', 'a@gmail.com', 'a', 'admin', 1);
+        insert into tbArena values (null, 'asd', '02932-000', 'Rua 1', '11', 'jd Flores', 'São Paulo', 'SP', 1);
+	*/
