@@ -67,13 +67,13 @@ CREATE TABLE Alerta(
     fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador(idComputador));
 
-CREATE TABLE arquivosProibidos (
+CREATE TABLE ArquivosProibidos (
     idArquivoProibido INT AUTO_INCREMENT PRIMARY KEY,
     nomeArquivo VARCHAR(80),
     motivoProibicao TEXT
 );
 
-CREATE TABLE pastasProibidas (
+CREATE TABLE PastasProibidas (
     idPastaProibida INT AUTO_INCREMENT PRIMARY KEY,
     nomePasta VARCHAR(80),
     motivoProibicao TEXT

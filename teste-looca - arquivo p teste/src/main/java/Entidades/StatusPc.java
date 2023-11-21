@@ -5,7 +5,6 @@ public class StatusPc {
     private Double processadorEmUso;
     private Long memoriaUso;
     private Long discoDisponivel;
-    private Double tempProcessador;
     private String dtHoraCaptura;
 
     public Integer getIdCaptura() {
@@ -48,11 +47,4 @@ public class StatusPc {
         this.dtHoraCaptura = dtHoraCaptura;
     }
 
-    public Double getTempProcessador() {
-        return tempProcessador;
-    }
-
-    public void setTempProcessador(Double tempProcessador) {
-        this.tempProcessador = tempProcessador;
-    }
 }
