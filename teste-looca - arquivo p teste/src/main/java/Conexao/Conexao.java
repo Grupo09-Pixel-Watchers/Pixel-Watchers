@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class Conexao {
     //Atributos para conexão do banco de dados
-    private static final String url = "jdbc:mysql://10.18.33.125:3306/prj_sprint";
+    private static final String url = "jdbc:mysql://localhost:3306/prj_sprint";
     private static final String user = "UserDB";
     private static final String password = "1234";
     private static Connection conn; // objeto p/ conexão utilizando a classe Connection
