@@ -1,12 +1,15 @@
 package DataAcessObject;
 import Conexao.Conexao;
 import Entidades.Usuario;
+import Slack.Slack;
+import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UsuarioDAO {
+
     public static String pegarUsuario (Usuario usuario){
         String sql = "SELECT idUsuario, nome, sobrenome, email, senha FROM tbusuario";
         PreparedStatement ps = null;

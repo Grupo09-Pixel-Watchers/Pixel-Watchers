@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // Fazer o login do usuário tambem. //// juhrs vai fazer
         System.out.println("""
                   ____ ____  _ ____    ___  ____ _  _    _  _ _ _  _ ___  ____   /
