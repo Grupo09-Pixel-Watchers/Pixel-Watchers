@@ -1,5 +1,6 @@
 package DataAcessObject;
 import Conexao.Conexao;
+import Entidades.Alerta;
 import Entidades.Computador;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -10,17 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="706f09da-40ba-4ea7-a6d8-68349d742d97" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Conexao/Conexao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Conexao/Conexao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/AlertaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/AlertaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/UsuarioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Conexao/Conexao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Conexao/Conexao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/AlertaDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/AlertaDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/UsuarioDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/UsuarioDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/ComputadorDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/ComputadorDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
