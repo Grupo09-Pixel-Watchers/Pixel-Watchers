@@ -53,6 +53,8 @@ public class StatusPcDAO {
             ps.execute();
         } catch (SQLException e ){
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return sql;
     }
@@ -97,6 +99,8 @@ public class StatusPcDAO {
                     dataFormatada));
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

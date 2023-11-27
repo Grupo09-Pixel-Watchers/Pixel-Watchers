@@ -4,6 +4,7 @@ import Entidades.Usuario;
 import Slack.Slack;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +35,8 @@ public class UsuarioDAO {
             ps.execute();
         } catch (SQLException e ){
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return sql;
     }
@@ -58,6 +61,8 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (rs != null) rs.close();

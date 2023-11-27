@@ -2,6 +2,8 @@ package DataAcessObject;
 import Conexao.Conexao;
 import Entidades.Alerta;
 import Entidades.Computador;
+
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +28,8 @@ public class ComputadorDAO {
                 System.out.println("Computador cadastrado com sucesso");
             } catch (SQLException e ){
                 e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             return false;
         }
@@ -43,6 +47,8 @@ public class ComputadorDAO {
                 ps.execute();
             } catch (SQLException e ){
                 e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             return sql;
         }
@@ -70,6 +76,8 @@ public class ComputadorDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             // Certifique-se de fechar os recursos (PreparedStatement e ResultSet)
             try {

@@ -4,6 +4,7 @@ import Conexao.Conexao;
 import Entidades.Arena;
 import Entidades.Usuario;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,8 @@ public class ArenaDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (rs != null) rs.close();

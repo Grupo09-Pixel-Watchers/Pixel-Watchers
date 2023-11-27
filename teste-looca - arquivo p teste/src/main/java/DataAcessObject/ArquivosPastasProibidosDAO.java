@@ -3,6 +3,7 @@ package DataAcessObject;
 import Conexao.Conexao;
 import Entidades.ArquivosPastasProibidos;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,8 @@ public class ArquivosPastasProibidosDAO {
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return folderBlacklist;
@@ -57,6 +60,8 @@ public class ArquivosPastasProibidosDAO {
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return filesBlacklist;

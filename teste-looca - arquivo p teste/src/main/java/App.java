@@ -1,5 +1,6 @@
 import DataAcessObject.*;
 import Entidades.*;
+import Logger.Mensageiro;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.discos.Volume;
@@ -84,7 +85,9 @@ public class App {
             UsuarioDAO.pegarUsuario(usuario);
             if (!Objects.equals(emailLogin, usuario.getEmail()) || !Objects.equals(senhaLogin, usuario.getSenha())) {
                 System.out.println("usuario ou senha inválidos!");
+                Mensageiro.generateLog("ERRO - Usuário falhou ao se conectar com o sistema.");
             } else {
+                Mensageiro.generateLog("SUCESSO - Usuário titular do email: " + emailLogin + " logou no sistema");
                 System.out.println("Usuário encontrado!");
 
 
