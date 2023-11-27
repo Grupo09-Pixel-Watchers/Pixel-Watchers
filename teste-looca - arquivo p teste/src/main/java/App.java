@@ -24,6 +24,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import static DataAcessObject.StatusPcDAO.verificarEAlertar;
+import static DataAcessObject.StatusPcDAO.verificarEMemoriaEAlertar;
+
 public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
         // Fazer o login do usuário tambem. //// juhrs vai fazer
@@ -197,6 +200,27 @@ public class App {
                     System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
                 }
             }
+
+            Timer timer = new Timer();
+            TimerTask tarefaVerificacao = new TimerTask() {
+                @Override
+                public void run() {
+                    verificarEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
+                }
+            };
+            long intervalo = 1 * 60 * 1000; // 1 minuto em milissegundos
+            timer.scheduleAtFixedRate(tarefaVerificacao, intervalo, intervalo);
+
+            Timer timerMemoria = new Timer();
+            TimerTask tarefaVerificacaoMemoria = new TimerTask() {
+                @Override
+                public void run() {
+                    verificarEMemoriaEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
+                }
+            };
+            long intervaloMemoria = 1 * 60 * 1000; // 1 minuto em milissegundos
+            timerMemoria.scheduleAtFixedRate(tarefaVerificacaoMemoria, intervaloMemoria, intervaloMemoria);
+
 
         } while(!autenticado);
 

@@ -4,14 +4,18 @@ import Entidades.*;
 import Conexao.Conexao;
 import com.github.britooo.looca.api.util.Conversor;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import static DataAcessObject.AlertaDAO.cadastrarAlerta;
 
 public class StatusPcDAO {
     Integer idCaptura = 0;
@@ -93,6 +97,93 @@ public class StatusPcDAO {
                     dataFormatada));
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void verificarEAlertar(Computador computador, Double limiteAlerta) {
+        String sql = "SELECT AVG(processadorUso) AS mediaProcessador " +
+                "FROM status_pc " +
+                "WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 10 MINUTE";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = Conexao.getConexao().prepareStatement(sql);
+            ps.setString(1, computador.getId());
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Double mediaProcessador = rs.getDouble("mediaProcessador");
+
+                // Verifica se a média é maior que o limite
+                if (mediaProcessador != null && mediaProcessador > limiteAlerta) {
+                    Alerta alerta = new Alerta();
+                    alerta.setDescricao("Alerta de uso elevado do processador. Média de uso: " + mediaProcessador + "%");
+                    alerta.setDtHoraAlerta(LocalDateTime.now().toString());
+                    // Adicione outras informações ao alerta, se necessário
+                    cadastrarAlerta(alerta, computador, "Processador");
+                }
+            }
+
+        } catch (SQLException | IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            // Fechar recursos (ResultSet, PreparedStatement, etc.)
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void verificarEMemoriaEAlertar(Computador computador, Double limiteAlerta) {
+        String sql = "SELECT AVG(memoriaUso) AS mediaMemoria " +
+                "FROM status_pc " +
+                "WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 10 MINUTE";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = Conexao.getConexao().prepareStatement(sql);
+            ps.setString(1, computador.getId());
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String mediaMemoriaStr = rs.getString("mediaMemoria");
+                mediaMemoriaStr = mediaMemoriaStr.replace("%", "").trim(); // Remover o símbolo de percentagem e espaços extras
+                Double mediaMemoria = Double.parseDouble(mediaMemoriaStr);
+
+                // Usar um valor epsilon para lidar com a precisão dos números de ponto flutuante
+                double epsilon = 0.001;  // Ajuste conforme necessário
+                if (mediaMemoria > limiteAlerta + epsilon) {
+                    Alerta alertaMemoria = new Alerta();
+                    alertaMemoria.setDescricao("Alerta de uso elevado de memória RAM. Média de uso: " + mediaMemoria + "%");
+                    alertaMemoria.setDtHoraAlerta(LocalDateTime.now().toString());
+                    // Adicione outras informações ao alerta, se necessário
+                    cadastrarAlerta(alertaMemoria, computador, "Memória RAM");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Fechar recursos (ResultSet, PreparedStatement, etc.)
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
