@@ -15,7 +15,7 @@ public class Mensageiro {
         String dataHoraFormatada = dataFormatada.format(dataHoraAtual);
 
         // Caminho para o diretório onde serão armazenados os logs
-        Path path = Paths.get("C:\\Users\\Aluno\\Desktop\\Arquivos Temporários\\testeLogs");
+        Path path = Paths.get("C:\\Users\\kauaj\\Documents\\testeLogs");
 
         // Cria o diretório caso não exista
         if (!Files.exists(path)) {
@@ -23,7 +23,7 @@ public class Mensageiro {
         }
 
         // Caminho do arquivo que armazena os logs
-        String caminhoDoArquivo = "C:\\Users\\Aluno\\Desktop\\Arquivos Temporários\\testeLogs\\log.txt";
+        String caminhoDoArquivo = "C:\\Users\\kauaj\\Documents\\testeLogs\\log.txt";
 
         // Cria um objeto com o caminho do arquivo .txt que armazena os logs
         File logTeste = new File(caminhoDoArquivo);

@@ -10,21 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="706f09da-40ba-4ea7-a6d8-68349d742d97" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Conexao/Conexao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Conexao/Conexao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/ArenaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/ArenaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/ArquivosPastasProibidosDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/ArquivosPastasProibidosDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/ComputadorDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/ComputadorDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/StatusPcDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/StatusPcDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataAcessObject/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataAcessObject/UsuarioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/App$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Logger/Mensageiro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Logger/Mensageiro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Conexao/Conexao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Conexao/Conexao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/ArquivosPastasProibidosDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/ArquivosPastasProibidosDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/ComputadorDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/ComputadorDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/StatusPcDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/StatusPcDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DataAcessObject/UsuarioDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataAcessObject/UsuarioDAO.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,13 +32,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -59,32 +43,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Aluno/Documents/VERDADEIRO E UNICO/Pixel-Watchers/teste-looca - arquivo p teste",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.notifications",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aluno/Documents/VERDADEIRO E UNICO/Pixel-Watchers/teste-looca - arquivo p teste&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.notifications&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql",
-      "h2"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;h2&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="" />
@@ -94,16 +78,16 @@
       <recent name="C:\Users\Guilherme Scarabelli\Desktop\Faculdade\Pixel-Watchers\teste-looca - arquivo p teste\src\main\java\Entidades" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App (1)">
-    <configuration name="App (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="App" />
+  <component name="RunManager">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App.App" />
       <module name="teste-looca" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="App" />
+    <configuration name="App.App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App.App" />
       <module name="teste-looca" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -114,15 +98,15 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.App (1)" />
+      <item itemvalue="Application.App.App" />
       <item itemvalue="Application.App" />
       <item itemvalue="JAR Application.teste-looca.jar" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App (1)" />
-        <item itemvalue="JAR Application.teste-looca.jar" />
         <item itemvalue="Application.App" />
+        <item itemvalue="Application.App.App" />
+        <item itemvalue="JAR Application.teste-looca.jar" />
       </list>
     </recent_temporary>
   </component>
