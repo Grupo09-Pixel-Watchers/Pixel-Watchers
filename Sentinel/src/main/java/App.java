@@ -56,6 +56,7 @@ public class App {
         Memoria memoria = looca.getMemoria();
         Processador processador = looca.getProcessador();
         DiscoGrupo disco = looca.getGrupoDeDiscos();
+        Sistema sistema = looca.getSistema();
          
 
 
