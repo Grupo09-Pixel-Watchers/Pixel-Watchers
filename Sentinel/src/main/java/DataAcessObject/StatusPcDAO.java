@@ -2,6 +2,7 @@ package DataAcessObject;
 
 import Entidades.*;
 import Conexao.Conexao;
+import Extrator.ExtrairDouble;
 import com.github.britooo.looca.api.util.Conversor;
 
 import java.io.IOException;
@@ -66,9 +67,9 @@ public class StatusPcDAO {
         PreparedStatement ps = null;
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setString(1, Conversor.formatarBytes(statusMemoria.getMemoriaUso()));
+            ps.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
-            ps.setDouble(3, Disco.getDiscoDisponivel());
+            ps.setDouble(3, ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
             ps.setString(4, dtHora.getDtHoraCaptura());
             ps.setString(5, computador.getId());
             ps.execute();
