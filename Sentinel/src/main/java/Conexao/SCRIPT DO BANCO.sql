@@ -40,8 +40,8 @@ CREATE TABLE tbComputador(
     apelidoPc VARCHAR(100),
     sistemaOperacional VARCHAR(30),
     processador VARCHAR(100),
-    discoTotal LONG,
-    memoriaTotal LONG,
+    discoTotal VARCHAR(50),
+    memoriaTotal VARCHAR(50),
     qtdDiscos INT,
     fkArena INT,
     FOREIGN KEY (fkArena) REFERENCES tbArena (idArena)
@@ -49,15 +49,14 @@ CREATE TABLE tbComputador(
 
 CREATE TABLE status_pc(
 	idCaptura INT PRIMARY KEY AUTO_INCREMENT,
-    memoriaUso VARCHAR(20),
+    memoriaUso DOUBLE,
     processadorUso DOUBLE,
-    discoDisponivel LONG,
+    discoDisponivel DOUBLE,
+	tempProcessador DOUBLE,
     dtHoraCaptura DATETIME DEFAULT now(),
 	fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
 );
-
-SELECT * FROM status_pc;
 
 CREATE TABLE Alerta(
     idAlerta INT PRIMARY KEY AUTO_INCREMENT,
@@ -130,7 +129,7 @@ insert into status_pc (memoriaUso, processadorUso, discoDisponivel, tempProcessa
                              (05, 10, 37.3, 33.9, 5),
                              (05, 10, 37.3, 34.3, 5),
                              (02, 09, 37.3, 32.2, 5),
-                             (08, 12, 37.2, 27.6, 5);*/
+                             (08, 12, 37.2, 27.6, 5);
 
 
 
@@ -152,10 +151,11 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('KDMapper', 'Possível ferramenta de modificação de sistema'),
     ('Windows API', 'Possível ferramenta de modificação de sistema'),
     ('ArtMoney', 'Uso indevido de cheats'),
-    ('Cheat Engine', 'Uso indevido de cheats');
+    ('Cheat Engine', 'Uso indevido de cheats');*/
 
 
     /*  insert into tbEmpresa values (null, 'Empresa', 'RazaoSocial', '1231230912391', '(11)92372-0293', 60);
 		insert into tbUsuario values (null, 'Kaua', 'Juhrs', 'a@gmail.com', 'a', 'admin', 1);
         insert into tbArena values (null, 'asd', '02932-000', 'Rua 1', '11', 'jd Flores', 'São Paulo', 'SP', 1);
 	*/
+    

@@ -2,6 +2,8 @@ package DataAcessObject;
 import Conexao.Conexao;
 import Entidades.Alerta;
 import Entidades.Computador;
+import Extrator.ExtrairDouble;
+import com.github.britooo.looca.api.util.Conversor;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -20,8 +22,8 @@ public class ComputadorDAO {
                 ps.setString(2, nomePC);
                 ps.setString(3, computador.getSO());
                 ps.setString(4, computador.getProcessador());
-                ps.setLong(5, computador.getDiscoTotal());
-                ps.setLong(6, computador.getMemoriaTot());
+                ps.setString(5, Conversor.formatarBytes(computador.getDiscoTotal()));
+                ps.setString(6, Conversor.formatarBytes(computador.getMemoriaTot()));
                 ps.setInt(7, computador.getQtdDiscos());
                 ps.setString(8,arena);
                 ps.execute();
