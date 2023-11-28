@@ -14,7 +14,24 @@ function buscarArenasDaEmpresa(idEmpresa) {
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
+function buscarDadosAtuais(idArena) {
+
+    instrucaoSql = `select * from tbArena a where idArena = ${idArena}`;
+  
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function editarArena(novoNome, novoCep, novoLog, novoNumero, novoBairro, novaCidade, novaUf, idArena){
+    var instrucaoSql = `UPDATE tbArena SET nomeArena = '${novoNome}', cep = '${novoCep}', logradouro = '${novoLog}', numero = '${novoNumero}', bairro = '${novoBairro}', cidade = '${novaCidade}', uf = '${novaUf}' WHERE idArena = ${idArena}`
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 module.exports = {
     cadastrarArena,
-    buscarArenasDaEmpresa
+    buscarArenasDaEmpresa,
+    buscarDadosAtuais,
+    editarArena
 };

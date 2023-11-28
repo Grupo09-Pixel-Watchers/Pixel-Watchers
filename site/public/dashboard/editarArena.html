@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../style/styleEditarArena.css">
+</head>
+
+<body>
+    <header>
+        <h1 id="h1_empresa"></h1>
+    </header>
+    <div class="side-menu">
+        <div class="perfil">
+            <div class="foto-perfil">
+                <div class="a"></div>
+            </div>
+            <div class="nome-perfil">
+                <p id="nome"></p>
+            </div>
+        </div>
+        <div class="menu-lateral">
+            <div onclick="window.location = 'index.html'" class="botao">
+                <p>Home</p>
+            </div>
+            <div class="botao">
+                <p>Editar Arena</p>
+            </div>
+            <div class="botao">
+                <p>Excluir arena</p>
+            </div>
+            <div class="botao">
+                <p>Editar Perfil</p>
+            </div>
+        </div>
+        <div class="botoes-perfil">
+            <div id="add_user" onclick="window.location = 'novoUser.html'" class="botao">
+                <p>Adcionar Usuário</p>
+            </div>
+            <div onclick="sair()" class="botao">
+                <p>Sair</p>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <div class="logo">
+                <img src="../assets/LogoPixelWatchers.png" alt="" style="height: 100%;">
+            </div>
+            <div class="title" id="tituloArena">
+                
+            </div>
+            <div class="sub-title">
+                <p>Edite os dados da sua arena!</p>
+            </div>
+            <div class="form">
+                <div class="campo">
+                    <label for="ipt_nome">Nome da arena</label>
+                    <input type="text" id="ipt_nome">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_cep">CEP</label>
+                    <input type="text" id="ipt_cep">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_logradouro">Logradouro</label>
+                    <input type="text" id="ipt_logradouro">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_numero">Numero</label>
+                    <input type="text" id="ipt_numero">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_bairro">Bairro</label>
+                    <input type="text" id="ipt_bairro">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_cidade">Cidade</label>
+                    <input type="text" id="ipt_cidade">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_uf">UF</label>
+                    <input type="text" id="ipt_uf">
+                </div>
+            </div>
+            <div class="botoes">
+                <div class="button" onclick="cadastrarArena()" style="color: purple; background-color: white;">
+                    Cancelar
+                </div>
+                <div class="button" onclick="salvarAlteracoes(sessionStorage.ID_ARENA_EDITAR)">
+                    Salvar!
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</html>
+
+<script>
+
+    if (sessionStorage.TIPO_USUARIO == 'colab') {
+        document.getElementById('add_user').style.display = 'none'
+    }
+    document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
+    document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
+    document.getElementById('tituloArena').innerHTML = sessionStorage.NOME_ARENA_EDITAR;
+
+    $('#ipt_cep').mask('00000-000');
+
+    function salvarAlteracoes(idArena) {
+
+
+        if (
+            ipt_nome.value == "" ||
+            ipt_cep.value == "" ||
+            ipt_logradouro.value == "" ||
+            ipt_numero.value == "" ||
+            ipt_bairro.value == "" ||
+            ipt_cidade.value == "" ||
+            ipt_uf.value == ""
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Preencha todos os campos!',
+            })
+
+            return
+        }
+
+        if (ipt_cep.value.length < 9) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira um CEP válido!',
+            })
+            return
+
+        }
+
+        if (ipt_uf.value.length != 2) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira um UF válido!',
+            })
+            return
+
+        }
+        else {
+
+            fetch(`/arenas/editarArena/${idArena}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    novoNome: ipt_nome.value,
+                    novoCep: ipt_cep.value,
+                    novoLog: ipt_logradouro.value,
+                    novoNumero: ipt_numero.value,
+                    novoBairro: ipt_bairro.value,
+                    novaCidade: ipt_cidade.value,
+                    novaUf: ipt_uf.value,
+                })
+            }).then(function (resposta) {
+
+                if (resposta.ok) {
+                    Swal.fire({
+                            icon: 'success',
+                            title: 'Boa!',
+                            text: 'Arena atualizada com sucesso!',
+                            timer: 2000,
+                            showConfirmButton: false,
+                        })
+
+                        setTimeout(() => {
+                            window.location = "index.html";
+                        }, "2000")
+
+                        sessionStorage.removeItem("ID_ARENA_EDITAR")
+                        sessionStorage.removeItem("NOME_ARENA_EDITAR")
+
+                        return
+
+                } else if (resposta.status == 404) {
+                    window.alert("Deu 404!");
+                } else {
+                    throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+                }
+                Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo deu errado!',
+                        })
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        }
+    }
+
+    function buscarDadosAtuais(idArena) {
+        fetch(`/arenas/buscarDadosAtuais/${idArena}`, { cache: 'no-store' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Nenhum dado encontrado ou erro na API');
+                }
+                return response.json();
+            })
+            .then(resposta => {
+                console.log(`Valores recebidos: ${JSON.stringify(resposta)}`);
+                console.log('Dados recebidos pela API:', resposta);
+                exibirDados(resposta);
+            })
+            .catch(error => {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function exibirDados(arenas) {
+        console.log('Função exibirDados chamada');
+        if (arenas.length > 0) {
+            const arena = arenas[0];
+            document.getElementById('ipt_nome').value = arena.nomeArena;
+            document.getElementById('ipt_cep').value = arena.cep;
+            document.getElementById('ipt_logradouro').value = arena.logradouro;
+            document.getElementById('ipt_numero').value = arena.numero;
+            document.getElementById('ipt_bairro').value = arena.bairro;
+            document.getElementById('ipt_cidade').value = arena.cidade;
+            document.getElementById('ipt_uf').value = arena.uf;
+        } else {
+            console.error('Nenhum dado de arena encontrado na resposta da API');
+        }
+    }
+
+    buscarDadosAtuais(sessionStorage.ID_ARENA_EDITAR);
+</script>

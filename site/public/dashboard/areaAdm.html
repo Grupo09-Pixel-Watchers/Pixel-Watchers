@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/styleAreaAdm.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1 id="h1_empresa"></h1>
+    </header>
+    <div class="side-menu">
+        <div class="perfil">
+            <div class="foto-perfil">
+                <div class="a"></div>
+            </div>
+            <div class="nome-perfil">
+                <p id="nome"></p>
+            </div>
+        </div>
+        <div class="menu-lateral">
+            <div onclick="window.location = 'index.html'" class="botao">
+                <p>Home</p>
+            </div>
+            <div class="botao">
+                <p>Editar Arena</p>
+            </div>
+            <div class="botao">
+                <p>Excluir arena</p>
+            </div>
+            <div class="botao">
+                <p>Editar Perfil</p>
+            </div>
+        </div>
+        <div class="botoes-perfil">
+            <div id="add_user" onclick="window.location = 'novoUser.html'" class="botao">
+                <p>Adcionar Usuário</p>
+            </div>
+            <div onclick="sair()" class="botao">
+                <p>Sair</p>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="opcoes" id="opcoes">
+            <div class="opcao" onclick="cadastrarNovoUser()">Cadastrar novo usuário</div>
+            <div class="opcao" onclick="gerenciarUsers()">Genrenciar usuários</div>
+            <div class="opcao" onclick="cadastrarNovaArena()">Cadastrar nova arena</div>
+            <div class="opcao" onclick="genrenciarArenas()">Gerenciar arenas</div>
+        </div>
+        <div class="encontrados" id="encontrados">
+            <div class="title">
+                <h1 id="titulo"></h1>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+<script>
+    var idEmpresa = sessionStorage.FK_EMPRESA_USUARIO
+    function cadastrarNovoUser() {
+        window.location = "./novoUser.html"
+    }
+
+    function cadastrarNovaArena() {
+        window.location = './novaArena.html'
+    }
+
+    function genrenciarArenas
+        () {
+        document.getElementById('opcoes').style.display = 'none'
+        document.getElementById('encontrados').style.display = 'flex'
+
+        fetch(`/arenas/buscarArenasDaEmpresa/${idEmpresa}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Arenas recebidas: ${JSON.stringify(resposta)}`);
+                    console.log(resposta)
+                    criarDivs(resposta, "arena");
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function gerenciarUsers
+        () {
+        document.getElementById('opcoes').style.display = 'none'
+        document.getElementById('encontrados').style.display = 'flex'
+
+        fetch(`/usuarios/buscarUsuariosDaEmpresa/${idEmpresa}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Usuarios recebidos: ${JSON.stringify(resposta)}`);
+                    console.log(resposta)
+                    criarDivs(resposta, "usuarios");
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function criarDivs(resposta, tipo) {
+
+        for (var i = 0; i < resposta.length; i++) {
+            if (tipo == "arena") {
+                document.getElementById('titulo').innerHTML = 'Arenas encontradas'
+                document.getElementById('encontrados').innerHTML +=
+                    `<div class="elemento">
+                    <p>${resposta[i].nomeArena}</p>
+                    <div class="imagens">
+                        <div class"imagem" onclick="editar(${resposta[i].idArena}, '${resposta[i].nomeArena}', 'arena')"><img src="../assets/edit.png"></div>
+                        <div class"imagem" onclick="excluir(${resposta[i].idArena})"><img src="../assets/lixeira.png"></div>
+                    </div>
+                </div>`
+            }
+            else if (tipo == "usuarios") {
+                document.getElementById('titulo').innerHTML = 'Usuários encontrados'
+                document.getElementById('encontrados').innerHTML +=
+                    `<div class="elemento">
+                    <p>${resposta[i].nome} ${resposta[i].sobrenome} - (${resposta[i].email})</p>
+                    <div class="imagens">
+                        <div class"imagem" onclick="editar(${resposta[i].idUsuario}, '${resposta[i].nome}', 'usuario', '${resposta[i].sobrenome}')"><img src="../assets/edit.png"></div>
+                        <div class"imagem" onclick="excluir(${resposta[i].idUsuario})"><img src="../assets/lixeira.png"></div>
+                    </div>
+                </div>`
+            }
+        }
+
+    }
+
+    function editar(idElemento, nome, tipo, sobrenome) {
+        if (tipo == 'arena') {
+            sessionStorage.ID_ARENA_EDITAR = idElemento
+            sessionStorage.NOME_ARENA_EDITAR = nome
+            window.location = 'editarArena.html'
+        }
+        else if (tipo == 'usuario') {
+            sessionStorage.ID_USER_EDITAR = idElemento
+            sessionStorage.NOME_USER_EDITAR = nome
+            sessionStorage.SOBRENOME_USER_EDITAR = sobrenome
+            window.location = 'editarUser.html'
+        }
+
+    }
+
+
+</script>

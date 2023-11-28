@@ -21,11 +21,37 @@ function buscarPorEmail(emailUsuario) {
     var query = `select * from tbUsuario where email = '${emailUsuario}'`;
   
     return database.executar(query);
-  }
+}
+
+function buscarUsuariosDaEmpresa(idEmpresa) {
+
+    instrucaoSql = `select * from tbUsuario a where fkEmpresa = ${idEmpresa}`;
+  
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarDadosAtuais(idUsuario) {
+
+    instrucaoSql = `select * from tbUsuario a where idUsuario = ${idUsuario}`;
+  
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function editarUsuario(novoNome, novoSobrenome, novoEmail, novoTpUser, idUsuario){
+    var instrucaoSql = `UPDATE tbUsuario SET nome = '${novoNome}', sobrenome = '${novoSobrenome}', email = '${novoEmail}', tipoUsuario = '${novoTpUser}' WHERE idUsuario = ${idUsuario}`
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 module.exports = {
     autenticar,
     cadastrarAdmin,
     cadastrarNovoUser,
-    buscarPorEmail
+    buscarPorEmail,
+    buscarUsuariosDaEmpresa,
+    buscarDadosAtuais,
+    editarUsuario,
 };

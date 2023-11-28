@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../style/styleEditarUser.css">
+</head>
+
+<body>
+    <header>
+        <h1 id="h1_empresa"></h1>
+    </header>
+    <div class="side-menu">
+        <div class="perfil">
+            <div class="foto-perfil">
+                <div class="a"></div>
+            </div>
+            <div class="nome-perfil">
+                <p id="nome"></p>
+            </div>
+        </div>
+        <div class="menu-lateral">
+            <div onclick="window.location = 'index.html'" class="botao">
+                <p>Home</p>
+            </div>
+            <div class="botao">
+                <p>Editar Arena</p>
+            </div>
+            <div class="botao">
+                <p>Excluir arena</p>
+            </div>
+            <div class="botao">
+                <p>Editar Perfil</p>
+            </div>
+        </div>
+        <div class="botoes-perfil">
+            <div id="add_user" onclick="window.location = 'novoUser.html'" class="botao">
+                <p>Adcionar Usuário</p>
+            </div>
+            <div onclick="sair()" class="botao">
+                <p>Sair</p>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="container">
+            <div class="logo">
+                <img src="../assets/LogoPixelWatchers.png" alt="" style="height: 100%;">
+            </div>
+            <div class="title" id="nomeUserEditar">
+                
+            </div>
+            <div class="sub-title">
+                <p>Altere os dados do usuário!</p>
+            </div>
+            <div class="form">
+                <div class="campo">
+                    <label for="ipt_nome">Nome</label>
+                    <input type="text" id="ipt_nome">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_sobrenome">Sobrenome</label>
+                    <input type="text" id="ipt_sobrenome">
+                </div>
+
+                <div class="campo">
+                    <label for="ipt_email">Email</label>
+                    <input type="email" id="ipt_email">
+                </div>
+
+                <div class="campo">
+                    <label for="slct_tpUser">Tipo de usuário</label>
+                    <select name="" id="slct_tpUser">
+                        <option selected disabled>Selecione uma opção!</option>
+                        <option value="admin">Administrador</option>
+                        <option value="colab">Colaborador</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="botoes">
+                <div class="button" onclick="cadastrarArena()" style="color: purple; background-color: white;">
+                    Cancelar
+                </div>
+                <div class="button" onclick="salvarAlteracoes(sessionStorage.ID_USER_EDITAR)">
+                    Salvar!
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</html>
+
+<script>
+    if (sessionStorage.TIPO_USUARIO == 'colab') {
+        document.getElementById('add_user').style.display = 'none'
+    }
+
+    document.getElementById('h1_empresa').innerHTML = sessionStorage.EMPRESA_USUARIO;
+    document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
+    document.getElementById('nomeUserEditar').innerHTML = sessionStorage.NOME_USER_EDITAR + ' ' + sessionStorage.SOBRENOME_USER_EDITAR
+
+
+    function salvarAlteracoes(idUsuario) {
+
+
+        if (
+            ipt_nome.value == "" ||
+            ipt_sobrenome.value == "" ||
+            ipt_email.value == "" ||
+            slct_tpUser == ""
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Preencha todos os campos!',
+            })
+
+            return
+        }
+
+        if ((slct_tpUser.value != 'colab') && (slct_tpUser.value != 'admin')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Escolha o tipo de usuário',
+            })
+
+            return
+        }
+
+        if (ipt_email.value.indexOf('@') == -1) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira um Email válido!',
+            })
+            return
+
+        }
+        else {
+            fetch(`/usuarios/editarUsuario/${idUsuario}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    novoNome: ipt_nome.value,
+                    novoSobrenome: ipt_sobrenome.value,
+                    novoEmail: ipt_email.value,
+                    novoTpUser: slct_tpUser.value
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Boa!',
+                        text: 'Dados do usuário atualizados com sucesso!',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    })
+
+                    setTimeout(() => {
+                        window.location = "index.html";
+                    }, "2000")
+
+                    sessionStorage.removeItem("ID_USER_EDITAR")
+                    sessionStorage.removeItem("NOME_USER_EDITAR")
+                    sessionStorage.removeItem("SOBRENOME_USER_EDITAR")
+
+                    return
+
+                } else if (resposta.status == 404) {
+                    window.alert("Deu 404!");
+                } else {
+                    throw ("Houve um erro ao tentar realizar a postagem! Código da resposta: " + resposta.status);
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo deu errado!',
+                })
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+        }
+    }
+
+    function buscarDadosAtuais(idUsuario) {
+        fetch(`/usuarios/buscarDadosAtuais/${idUsuario}`, { cache: 'no-store' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Nenhum dado encontrado ou erro na API');
+                }
+                return response.json();
+            })
+            .then(resposta => {
+                console.log(`Valores recebidos: ${JSON.stringify(resposta)}`);
+                console.log('Dados recebidos pela API:', resposta);
+                exibirDados(resposta);
+            })
+            .catch(error => {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function exibirDados(usuarios) {
+        console.log('Função exibirDados chamada');
+        if (usuarios.length > 0) {
+            const usuario = usuarios[0];
+            document.getElementById('ipt_nome').value = usuario.nome;
+            document.getElementById('ipt_sobrenome').value = usuario.sobrenome;
+            document.getElementById('ipt_email').value = usuario.email;
+            document.getElementById('slct_tpUser').value = usuario.tipoUsuario;
+        } else {
+            console.error('Nenhum dado de arena encontrado na resposta da API');
+        }
+    }
+
+    buscarDadosAtuais(sessionStorage.ID_USER_EDITAR);
+
+</script>
