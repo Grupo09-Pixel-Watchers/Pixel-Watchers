@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -32,11 +33,27 @@ public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
         // Fazer o login do usuário tambem. //// juhrs vai fazer
         System.out.println("""
-                  ____ ____  _ ____    ___  ____ _  _    _  _ _ _  _ ___  ____   /
-                  [__  |___  | |__|    |__] |___ |\\/| __ |  | | |\\ | |  \\ |  |  /\s
-                  ___] |___ _| |  |    |__] |___ |  |     \\/  | | \\| |__/ |__| . \s
-                                                                                 \s
+                +===========================================================================================+ 
+                ||                   ___   ____ __  ___        _   __ ____ _  __ ___   ____   __           ||
+                ||                  / _ ) / __//  |/  / ____  | | / //  _// |/ // _ \\ / __ \\ / /           ||
+                ||                 / _  |/ _/ / /|_/ / /___/  | |/ /_/ / /    // // // /_/ //_/\s           ||
+                ||                /____//___//_/  /_/         |___//___//_/|_//____/ \\____/(_) \s           ||  
+                ||                                                                             \s           ||            
+                ||                                   ___   ____\s                                           ||    
+                ||                                  / _ | / __ \\                                           ||                                                    
+                ||                                 / __ |/ /_/ /                                           ||      
+                ||                                /_/ |_|\\____/\s                                           ||    
+                ||                                             \s                                           ||  
+                ||                                                                                         ||            
+                ||                   ____ ____ _  __ ______ ____ _  __ ____ __\s                            ||
+                ||                  / __// __// |/ //_  __//  _// |/ // __// /\s                            ||
+                ||                 _\\ \\ / _/ /    /  / /  _/ / /    // _/ / /__                            ||     
+                ||                /___//___//_/|_/  /_/  /___//_/|_//___//____/                            ||
+                ||                                                            \s                            ||  
+                ||                                                                                         ||
+                +==========================================================================================+
                 """);
+
 
         // objetos que foram criados na mão
         Looca looca = new Looca();
@@ -142,8 +159,9 @@ public class App {
                     @Override
                     public void run() {
                         try {
-                            LocalDateTime data = LocalDateTime.now();
-                            dtHoraCaptura.setDtHoraCaptura(String.valueOf(data));
+                            Date data = new Date();
+                            SimpleDateFormat formatador = new SimpleDateFormat("YYYY-MM-DD HH:MI:SS");
+                            String dataFormatada = formatador.format(data);
 
                             Long memoriaEmUso = memoria.getEmUso();
                             memoriaUso.setMemoriaUso(memoriaEmUso);

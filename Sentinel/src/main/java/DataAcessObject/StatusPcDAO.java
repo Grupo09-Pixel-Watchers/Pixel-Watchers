@@ -22,6 +22,12 @@ public class StatusPcDAO {
     Integer idCaptura = 0;
     StatusPc statusPc = new StatusPc();
 
+    static PreparedStatement ps = null;
+    static ResultSet rs = null;
+
+    static PreparedStatement psSQLServer = null;
+    static ResultSet rsSQLServer = null;
+
     public static void exibirInformacoesMaquina(String nomeProcessador, String sistemaOperacional,
                 Long memoriaTotal,Long discoTotal, Integer qtdDiscos){
 
@@ -46,16 +52,20 @@ public class StatusPcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null; // ResultSet é uma classe utilizada para poder realizar os selects
         try{
+            psSQLServer = Conexao.getConexao().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+            while(rsSQLServer.next()) { // o  next é para ele mover para a prox. linha
+                statusPc.setIdCaptura(rsSQLServer.getInt(1));
+            }
             ps = Conexao.getConexao().prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()) { // o  next é para ele mover para a prox. linha
                 statusPc.setIdCaptura(rs.getInt(1));
             }
             ps.execute();
+            psSQLServer.execute();
         } catch (SQLException e ){
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
         return sql;
     }
@@ -66,15 +76,25 @@ public class StatusPcDAO {
                 "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = null;
         try {
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setLong(1, statusMemoria.getMemoriaUso());
+            psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
+            psSQLServer.setDouble(3, Disco.getDiscoDisponivel());
+            psSQLServer.setString(4, dtHora.getDtHoraCaptura());
+            psSQLServer.setString(5, computador.getId());
+            psSQLServer.execute();
+
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
+            ps.setLong(1, statusMemoria.getMemoriaUso());
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
-            ps.setDouble(3, ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
+            ps.setDouble(3, Disco.getDiscoDisponivel());
             ps.setString(4, dtHora.getDtHoraCaptura());
             ps.setString(5, computador.getId());
             ps.execute();
 
-            String dataFormatadaa = dtHora.getDtHoraCaptura();
+
+
+            String dataFormatadaa = String.valueOf(dtHora.getDtHoraCaptura());
             Date dataAtual = new Date();
             // Definir o formato desejado
             SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -88,8 +108,8 @@ public class StatusPcDAO {
                                                                                                                   
                               cpu em uso: %.2f                
                             Memórria em uso: %s               
-                           Disco Disponivel: %s        
-                       data/hora da captura: %s            
+                           Disco Disponivel: %s
+                           data/hora da captura: %s            
                                                               
                 +================================================+      
                 
@@ -100,11 +120,8 @@ public class StatusPcDAO {
                     dataFormatada));
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
-
     public static void verificarEAlertar(Computador computador, Double limiteAlerta) {
         String sql = "SELECT AVG(processadorUso) AS mediaProcessador " +
                 "FROM status_pc " +
@@ -112,6 +129,9 @@ public class StatusPcDAO {
 
         PreparedStatement ps = null;
         ResultSet rs = null;
+
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
 
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
@@ -132,6 +152,24 @@ public class StatusPcDAO {
                 }
             }
 
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setString(1, computador.getId());
+
+            rsSQLServer = psSQLServer.executeQuery();
+
+            if (rsSQLServer.next()) {
+                Double mediaProcessador = rsSQLServer.getDouble("mediaProcessador");
+
+                // Verifica se a média é maior que o limite
+                if (mediaProcessador != null && mediaProcessador > limiteAlerta) {
+                    Alerta alerta = new Alerta();
+                    alerta.setDescricao("Alerta de uso elevado do processador. Média de uso: " + mediaProcessador + "%");
+                    alerta.setDtHoraAlerta(LocalDateTime.now().toString());
+                    // Adicione outras informações ao alerta, se necessário
+                    cadastrarAlerta(alerta, computador, "Processador");
+                }
+            }
+
         } catch (SQLException | IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -139,6 +177,9 @@ public class StatusPcDAO {
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
+
+                if (rsSQLServer != null) rsSQLServer.close();
+                if (psSQLServer != null) psSQLServer.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -153,6 +194,9 @@ public class StatusPcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
+
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setString(1, computador.getId());
@@ -161,6 +205,27 @@ public class StatusPcDAO {
 
             if (rs.next()) {
                 String mediaMemoriaStr = rs.getString("mediaMemoria");
+                mediaMemoriaStr = mediaMemoriaStr.replace("%", "").trim(); // Remover o símbolo de percentagem e espaços extras
+                Double mediaMemoria = Double.parseDouble(mediaMemoriaStr);
+
+                // Usar um valor epsilon para lidar com a precisão dos números de ponto flutuante
+                double epsilon = 0.001;  // Ajuste conforme necessário
+                if (mediaMemoria > limiteAlerta + epsilon) {
+                    Alerta alertaMemoria = new Alerta();
+                    alertaMemoria.setDescricao("Alerta de uso elevado de memória RAM. Média de uso: " + mediaMemoria + "%");
+                    alertaMemoria.setDtHoraAlerta(LocalDateTime.now().toString());
+                    // Adicione outras informações ao alerta, se necessário
+                    cadastrarAlerta(alertaMemoria, computador, "Memória RAM");
+                }
+            }
+
+            psSQLServer = Conexao.getConexao().prepareStatement(sql);
+            psSQLServer.setString(1, computador.getId());
+
+            rsSQLServer = psSQLServer.executeQuery();
+
+            if (rsSQLServer.next()) {
+                String mediaMemoriaStr = rsSQLServer.getString("mediaMemoria");
                 mediaMemoriaStr = mediaMemoriaStr.replace("%", "").trim(); // Remover o símbolo de percentagem e espaços extras
                 Double mediaMemoria = Double.parseDouble(mediaMemoriaStr);
 
@@ -186,6 +251,9 @@ public class StatusPcDAO {
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
+
+                if (rsSQLServer != null) rsSQLServer.close();
+                if (psSQLServer != null) psSQLServer.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

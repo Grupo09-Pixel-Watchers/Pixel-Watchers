@@ -20,6 +20,9 @@ public class ArquivosPastasProibidosDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
+
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
             rs = ps.executeQuery();
@@ -30,10 +33,20 @@ public class ArquivosPastasProibidosDAO {
                 folderBlacklist.add(nomePasta);
             }
 
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+
+            while (rsSQLServer.next()) {
+                String nomePasta = rsSQLServer.getString("nomePasta");
+                arquivoPasta.setNomePasta(nomePasta);
+                folderBlacklist.add(nomePasta);
+            }
+
             ps.execute();
+            psSQLServer.execute();
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -47,6 +60,11 @@ public class ArquivosPastasProibidosDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
+
+
+
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
             rs = ps.executeQuery();
@@ -57,13 +75,23 @@ public class ArquivosPastasProibidosDAO {
                 filesBlacklist.add(nomeArquivo);
             }
 
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+
+            while (rsSQLServer.next()) {
+                String nomeArquivo = rsSQLServer.getString("nomeArquivo");
+                arquivoPasta.setNomeArquivo(nomeArquivo);
+                filesBlacklist.add(nomeArquivo);
+            }
+
             ps.execute();
+            psSQLServer.execute();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return filesBlacklist;
     }
 

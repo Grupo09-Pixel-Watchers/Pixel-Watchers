@@ -15,6 +15,9 @@ public class UsuarioDAO {
         String sql = "SELECT idUsuario, nome, sobrenome, email, senha FROM tbusuario";
         PreparedStatement ps = null;
         ResultSet rs = null; // ResultSet é uma classe utilizada para poder realizar os selects
+
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
         try{
             ps = Conexao.getConexao().prepareStatement(sql);
             rs = ps.executeQuery();
@@ -25,17 +28,27 @@ public class UsuarioDAO {
                 usuario.setEmail(rs.getString(4));
                 usuario.setSenha(rs.getString(5));
             }
-//            System.out.println(String.format("""
-//                        Dados do usuário
-//                        id: %d
-//                        nome: %s
-//                        email: %s
-//                        senha: %s
-//                        """, usuario.getIdUsuario(), usuario.getNome(), usuario.getEmail(), usuario.getSenha()));
             ps.execute();
+
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+            while(rsSQLServer.next()) { // o  next é para ele mover para a prox. linha
+                usuario.setIdUsuario(rsSQLServer.getInt(1));
+                usuario.setNome(rsSQLServer.getString(2));
+                usuario.setSobrenome(rsSQLServer.getString(3));
+                usuario.setEmail(rsSQLServer.getString(4));
+                usuario.setSenha(rsSQLServer.getString(5));
+            }
+            System.out.println(String.format("""
+                        Dados do usuário
+                        id: %d
+                        nome: %s
+                        email: %s
+                        senha: %s
+                        """, usuario.getIdUsuario(), usuario.getNome(), usuario.getEmail(), usuario.getSenha()));
+            psSQLServer.execute();
         } catch (SQLException e ){
             e.printStackTrace();
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return sql;
@@ -46,6 +59,9 @@ public class UsuarioDAO {
         String sql = "SELECT idEmpresa FROM tbEmpresa JOIN tbUsuario as a ON fkEmpresa = idEmpresa WHERE a.email = ? and a.senha = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
+
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
         Integer idEmpresa = null;
 
         try {
@@ -59,14 +75,26 @@ public class UsuarioDAO {
                 usuario.setFkempresa(idEmpresa);
             }
 
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setString(1, usuario.getEmail());
+            psSQLServer.setString(2, usuario.getSenha());
+            rsSQLServer = psSQLServer.executeQuery();
+
+            if (rsSQLServer.next()) {
+                idEmpresa = rsSQLServer.getInt("idEmpresa");
+                usuario.setFkempresa(idEmpresa);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
+
+                if (rsSQLServer != null) rsSQLServer.close();
+                if (psSQLServer != null) psSQLServer.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

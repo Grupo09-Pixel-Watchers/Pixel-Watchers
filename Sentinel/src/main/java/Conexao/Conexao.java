@@ -1,23 +1,24 @@
 package Conexao;
-import Logger.Mensageiro;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
     //Atributos para conexão do banco de dados
-    private static final String url = "jdbc:mysql://localhost:3306/prj_sprint";
-    private static final String user = "UserDB";
-    private static final String password = "1234";
+    private static final String url = "jdbc:mysql://172.17.0.2/prj_sprint";
+    private static final String user = "root";
+    private static final String password = "123";
+
+    private static final String urlSQLServer = "jdbc:sqlserver://ec2-54-159-156-118.compute-1.amazonaws.com:1433;database=prj_sprint" +
+            ";encrypt=false;trustServerCertificate=true;";
+    private static final String userSQLServer = "sa";
+    private static final String passwordSQLServer = "f";
     private static Connection conn; // objeto p/ conexão utilizando a classe Connection
+    private static Connection connSQLServer;
 
 
     // Método para verificar se a conexao foi bem sucedida
-    public static Connection getConexao() throws IOException {
+    public static Connection getConexao(){
         try {
             if (conn == null){
                 conn = DriverManager.getConnection(url, user, password);
@@ -26,13 +27,25 @@ public class Conexao {
                 return conn;
             }
         } catch (SQLException e){
-            StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
-            e.printStackTrace(printWriter);
-            Mensageiro.generateLog("ERRO - " + stringWriter);
+            e.printStackTrace();
             return null;
         }
     }
-    // Se a conexão for nula, ele cria a conexão passando a URL, usuario e senha, caso contrário ele
-    // retorna a conexão
+
+    public static Connection getConexaoSQLServer(){
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            if (connSQLServer == null){
+                connSQLServer = DriverManager.getConnection(urlSQLServer, userSQLServer, passwordSQLServer);
+                return connSQLServer;
+            }else {
+                return connSQLServer;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

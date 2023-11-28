@@ -18,6 +18,9 @@ public class ArenaDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        PreparedStatement psSQLServer = null;
+        ResultSet rsSQLServer = null;
+
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setInt(1, usuario.getFkempresa()); // Configurar parâmetro após a criação do PreparedStatement
@@ -28,14 +31,24 @@ public class ArenaDAO {
                 arenasEmpresa.add(nomeArena);
             }
 
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setInt(1, usuario.getFkempresa()); // Configurar parâmetro após a criação do PreparedStatement
+            rsSQLServer = psSQLServer.executeQuery();
+
+            while (rsSQLServer.next()) {
+                String nomeArena = rsSQLServer.getString("nomeArena");
+                arenasEmpresa.add(nomeArena);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } finally {
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
+
+                if (rsSQLServer != null) rsSQLServer.close();
+                if (psSQLServer != null) psSQLServer.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
