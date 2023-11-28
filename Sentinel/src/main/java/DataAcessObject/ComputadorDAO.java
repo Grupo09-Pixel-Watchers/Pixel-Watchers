@@ -14,7 +14,7 @@ public class ComputadorDAO {
         Integer idComputador = 0;
         Computador computador = new Computador();
         public static boolean cadastrarComputador (Computador computador, String idUnico, String arena, String nomePC){
-            String sql = "INSERT INTO tbcomputador VALUES (?, ?, ?, ?, ?, ?, ?, (select idArena from tbArena where nomeArena = ?))";
+            String sql = "INSERT INTO tbComputador VALUES (?, ?, ?, ?, ?, ?, ?, (select idArena from tbArena where nomeArena = ?))";
             PreparedStatement ps = null;
 
             PreparedStatement psSQLServer = null;
@@ -48,7 +48,7 @@ public class ComputadorDAO {
         }
 
         public static String pegarIdComputador (Computador computador){
-            String sql = "SELECT idComputador FROM tbcomputador";
+            String sql = "SELECT idComputador FROM tbComputador";
             PreparedStatement ps = null;
             ResultSet rs = null;
 
