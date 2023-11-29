@@ -80,18 +80,18 @@ CREATE TABLE PastasProibidas (
 );
 
 -- Função para buscar o ID da empresa de acordo com o CNPJ
-DELIMITER $$
-CREATE FUNCTION fn_empresa(fnCnpj char(18))
-    RETURNS int
-    deterministic
-BEGIN
-    DECLARE vId int;
-    set vId = (select idEmpresa from tbEmpresa where CNPJ = fnCnpj);
-return(vId);
-END$$;
-DELIMITER ;
-
- INSERT INTO tbusuario (nome, sobrenome, email, senha)VALUES ('MC', 'Lovin','gui@gmail.com', '123');
+-- DELIMITER $$
+-- CREATE FUNCTION fn_empresa(fnCnpj char(18))
+--     RETURNS int
+--     deterministic
+-- BEGIN
+--     DECLARE vId int;
+--     set vId = (select idEmpresa from tbEmpresa where CNPJ = fnCnpj);
+-- return(vId);
+-- END$$;
+-- DELIMITER ;
+--
+--  INSERT INTO tbusuario (nome, sobrenome, email, senha)VALUES ('MC', 'Lovin','gui@gmail.com', '123');
 
 /*insert into tbComputador values (null, 'Windows 11','Intel Core i7 7700k','1000','16', 1, 1),
 								(null, 'Windows 11','Intel Core i7 7700k','1000','16', 2, 1),
@@ -153,8 +153,8 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
     ('ArtMoney', 'Uso indevido de cheats'),
     ('Cheat Engine', 'Uso indevido de cheats');*/
 
-
-  insert into tbEmpresa values (null, 'Empresa', 'RazaoSocial', '1231230912391', '(11)92372-0293', 60);
-   insert into tbUsuario values (null, 'Kaua', 'Juhrs', 'a@gmail.com', 'a', 'admin', 1);
-   insert into tbArena values (null, 'asd', '02932-000', 'Rua 1', '11', 'jd Flores', 'São Paulo', 'SP', 1);
+--
+--   insert into tbEmpresa values (null, 'Empresa', 'RazaoSocial', '1231230912391', '(11)92372-0293', 60);
+--    insert into tbUsuario values (null, 'Kaua', 'Juhrs', 'a@gmail.com', 'a', 'admin', 1);
+--    insert into tbArena values (null, 'asd', '02932-000', 'Rua 1', '11', 'jd Flores', 'São Paulo', 'SP', 1);
 
