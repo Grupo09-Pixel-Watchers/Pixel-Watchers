@@ -160,10 +160,6 @@ public class App {
                     @Override
                     public void run() {
                         try {
-                            Date data = new Date();
-                            SimpleDateFormat formatador = new SimpleDateFormat("YYYY-MM-DD HH:MI:SS");
-                            String dataFormatada = formatador.format(data);
-
                             Long memoriaEmUso = memoria.getEmUso();
                             memoriaUso.setMemoriaUso(memoriaEmUso);
 

@@ -4,6 +4,7 @@ import Entidades.*;
 import Conexao.Conexao;
 import Extrator.ExtrairDouble;
 import com.github.britooo.looca.api.util.Conversor;
+import com.mysql.cj.protocol.a.LocalDateTimeValueEncoder;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -21,13 +22,10 @@ import static DataAcessObject.AlertaDAO.cadastrarAlerta;
 public class StatusPcDAO {
     Integer idCaptura = 0;
     StatusPc statusPc = new StatusPc();
-
     static PreparedStatement ps = null;
     static ResultSet rs = null;
-
     static PreparedStatement psSQLServer = null;
     static ResultSet rsSQLServer = null;
-
     public static void exibirInformacoesMaquina(String nomeProcessador, String sistemaOperacional,
                 Long memoriaTotal,Long discoTotal, Integer qtdDiscos){
 
@@ -75,12 +73,13 @@ public class StatusPcDAO {
                 "(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, fkComputador) " +
                 "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = null;
+        LocalDateTime dtHoraAtual = LocalDateTime.now();
         try {
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
             psSQLServer.setLong(1, statusMemoria.getMemoriaUso());
             psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
             psSQLServer.setDouble(3, Disco.getDiscoDisponivel());
-            psSQLServer.setString(4, dtHora.getDtHoraCaptura());
+            psSQLServer.setObject(4, dtHoraAtual);
             psSQLServer.setString(5, computador.getId());
             psSQLServer.execute();
 
@@ -88,7 +87,7 @@ public class StatusPcDAO {
             ps.setLong(1, statusMemoria.getMemoriaUso());
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
             ps.setDouble(3, Disco.getDiscoDisponivel());
-            ps.setString(4, dtHora.getDtHoraCaptura());
+            ps.setString(4, String.valueOf(dtHoraAtual));
             ps.setString(5, computador.getId());
             ps.execute();
 
