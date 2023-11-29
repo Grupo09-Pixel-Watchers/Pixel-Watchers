@@ -105,11 +105,10 @@ public class App {
             UsuarioDAO.pegarUsuario(usuario);
             if (!Objects.equals(emailLogin, usuario.getEmail()) || !Objects.equals(senhaLogin, usuario.getSenha())) {
                 System.out.println("usuario ou senha inválidos!");
-                Mensageiro.generateLog("ERRO - Usuário falhou ao se conectar com o sistema.");
+                //Mensageiro.generateLog("ERRO - Usuário falhou ao se conectar com o sistema.");
             } else {
-                Mensageiro.generateLog("SUCESSO - Usuário titular do email: " + emailLogin + " logou no sistema");
+                //Mensageiro.generateLog("SUCESSO - Usuário titular do email: " + emailLogin + " logou no sistema");
                 System.out.println("Usuário encontrado!");
-
 
                 UsuarioDAO.pegarEmpresaUsuario(usuario);
                 ArenaDAO.pegarArenasDaEmpresa(usuario);
