@@ -52,7 +52,6 @@ CREATE TABLE status_pc(
                           memoriaUso DOUBLE,
                           processadorUso DOUBLE,
                           discoDisponivel DOUBLE,
-                          tempProcessador DOUBLE,
                           dtHoraCaptura DATETIME DEFAULT now(),
                           fkComputador VARCHAR(100),
                           FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
