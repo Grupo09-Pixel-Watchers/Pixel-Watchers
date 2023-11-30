@@ -14,6 +14,7 @@
 
 body{
     background-color: black;
+    overflow: hidden;
 }
 
 header{
@@ -84,7 +85,9 @@ main{
 }
 
 .menu-lateral{
-    height: 40%;
+    position: absolute;
+    top: 39%;
+    height: fit-content;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -93,21 +96,9 @@ main{
 
 }
 
-.botoes-perfil{
-    width: 100%;
-    height: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.botoes-perfil .botao{
-    height: 45%;
-}
 
 .botao{
-    height: 20%;
+    height: 10vh;
     width: 70%;
     border-radius: 1px;
     background-color: white ;
@@ -116,6 +107,7 @@ main{
     justify-content: center;
     cursor: pointer;
     border: none;
+    margin-bottom: 2vh;
 }
 
 .botao p{

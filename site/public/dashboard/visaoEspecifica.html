@@ -23,21 +23,17 @@
         </div>
         <div class="menu-lateral">
             <div onclick="window.location = 'index.html'" class="botao">
-                <p >Home</p>
+                <p>Home</p>
             </div>
             <div onclick="window.location = 'visaoGeral.html'" class="botao">
-                <p >Visão Geral</p>
+                <p>Visão Geral</p>
             </div>
-            <div onclick="window.location = 'todosPCs.html'" class="botao">
-                <p >Visão Específica</p>
+            <div onclick="window.location = 'todosPCs.html'" class="botao"
+                style="background-color: #871bc69f; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+                <p>Visão Específica</p>
             </div>
-            <div class="botao">
-                <p>Editar Perfil</p>
-            </div>
-        </div>
-        <div class="botoes-perfil">
-            <div id="add_user" class="botao" onclick="window.location = 'novoUser.html'">
-                <p>Adcionar Usuário</p>
+            <div id="add_user" class="botao" onclick="window.location = 'areaAdm.html'">
+                <p>Painel de Administrador</p>
             </div>
             <div onclick="sair()" class="botao">
                 <p>Sair</p>
@@ -79,10 +75,6 @@
                         <div class="title">Uso de disco em tempo real</div>
                         <canvas id="myChart3"></canvas>
                     </div>
-                    <div class="grafico">
-                        <div class="title">Temperatura em tempo real (ºC)</div>
-                        <canvas id="myChart4"></canvas>
-                    </div>
                 </div>
             </div>
         </div>
@@ -96,14 +88,17 @@
 
 
 <script>
-    if(sessionStorage.TIPO_USUARIO == 'colab'){
+    if (sessionStorage.TIPO_USUARIO == 'colab') {
         document.getElementById('add_user').style.display = 'none'
     }
 
     document.getElementById('h1_pc').innerHTML = sessionStorage.NOME_PC;
     document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
 
-    window.onload = obterDadosPc(sessionStorage.ID_PC)
+    idComputador = sessionStorage.ID_PC;
+
+    window.onload = obterDadosPc(idComputador)
+    
 
     function obterDadosPc(idComputador) {
 
@@ -119,7 +114,6 @@
                     plotarGrafico('memoria', '% Uso de RAM', resposta, 1);
                     plotarGrafico('processador', '% Uso de CPU', resposta, 2);
                     plotarGrafico('disco', '% Uso de Disco', resposta, 3);
-                    plotarGrafico('temp', 'Temperatura do processador', resposta, 4);
 
                 });
             } else {
@@ -175,12 +169,6 @@
                 labels.push(registro.dtHoraCaptura);
                 dados.datasets[0].data.push(registro.disco);
             }
-        } else if (dado == 'temp') {
-            for (i = 0; i < resposta.length; i++) {
-                var registro = resposta[i];
-                labels.push(registro.dtHoraCaptura);
-                dados.datasets[0].data.push(registro.temp);
-            }
         }
 
         console.log('----------------------------------------------')
@@ -210,8 +198,73 @@
             config
         );
 
-        // setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+        setTimeout(() => atualizarGrafico(idComputador, myChart, dado, dados), 2000);
     }
+
+
+
+    function atualizarGrafico(idComputador, myChart, dado, dados) {
+
+
+
+        fetch(`/status/tempo-real/${idComputador}`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (novoRegistro) {
+
+                    // obterdados(idComputador);
+                    // alertar(novoRegistro, idAquario);
+                    console.log(`Dados recebidos (tempo real): ${JSON.stringify(novoRegistro)}`);
+                    console.log(`Dados atuais do gráfico:`);
+                    console.log(dados);
+
+                    // let avisoCaptura = document.getElementById(`avisoCaptura${idAquario}`)
+                    // avisoCaptura.innerHTML = ""
+
+
+                    if (novoRegistro[0].dtHoraCaptura == dados.labels[dados.labels.length - 1]) {
+                        console.log("---------------------------------------------------------------")
+                        console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+                        // avisoCaptura.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Foi trazido o dado mais atual capturado pelo sensor. <br> Como não há dados novos a exibir, o gráfico não atualizará."
+                        console.log("Horário do novo dado capturado:")
+                        console.log(novoRegistro[0].dtHoraCaptura)
+                        console.log("Horário do último dado capturado:")
+                        console.log(dados.labels[dados.labels.length - 1])
+                        console.log("---------------------------------------------------------------")
+                    } else {
+                        // tirando e colocando valores no gráfico
+                        dados.labels.shift(); // apagar o primeiro
+                        dados.labels.push(novoRegistro[0].dtHoraCaptura); // incluir um novo momento
+
+                        dados.datasets[0].data.shift();  // apagar o primeiro de umidade
+                        
+                        if (dado == 'memoria'){
+                            dados.datasets[0].data.push(novoRegistro[0].memoria);
+                        }
+                        else if (dado == 'processador'){
+                            dados.datasets[0].data.push(novoRegistro[0].processador);
+                        }
+                        else if (dado == 'disco'){
+                            dados.datasets[0].data.push(novoRegistro[0].disco);
+                        }
+
+                        myChart.update();
+                    }
+
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(idComputador, myChart, dado, dados), 2000);
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+                // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                proximaAtualizacao = setTimeout(() => atualizarGrafico(idComputador, dados, myChart, dado), 2000);
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+
+    }
+
 
     function sair() {
         Swal.fire({

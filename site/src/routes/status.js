@@ -11,6 +11,9 @@ router.get("/especifico/:idComputador", function (req, res) {
     statusController.buscarVisaoEspecifica(req, res);
 });
 
+router.get("/tempo-real/:idComputador", function (req, res) {
+    statusController.buscarTempoReal(req, res);
+});
 
 
 module.exports = router;
