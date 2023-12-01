@@ -25,7 +25,8 @@
       <div onclick="window.location = 'index.html'" class="botao">
         <p>Home</p>
       </div>
-      <div onclick="window.location = 'visaoGeral.html'" class="botao" style="background-color: #871bc69f; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+      <div onclick="window.location = 'visaoGeral.html'" class="botao"
+        style="background-color: #871bc69f; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
         <p>Visão Geral</p>
       </div>
       <div onclick="window.location = 'todosPCs.html'" class="botao">
@@ -58,31 +59,12 @@
           <p>Ultimo alerta crítico registrado: Alto uso de processador (PC-2)</p>
         </div>
       </div>
-      <div class="dashboard">
-        <div class="graficos">
-          <div class="grafico">
-            <div class="title">PC-1</div>
-            <canvas id="myChart1"></canvas>
-          </div>
-          <div class="grafico">
-            <div class="title">PC-2</div>
-            <canvas id="myChart2"></canvas>
-          </div>
-          <div class="grafico">
-            <div class="title">PC-3</div>
-            <canvas id="myChart3"></canvas>
-          </div>
+      <div class="dashboard" id="dashboard">
+        <div class="grafico">
+          <div class="title">PC-1</div>
+          <canvas id="myChart1"></canvas>
         </div>
-        <div class="graficos">
-          <div class="grafico">
-            <div class="title">PC-4</div>
-            <canvas id="myChart4"></canvas>
-          </div>
-          <div class="grafico">
-            <div class="title">PC-5</div>
-            <canvas id="myChart5"></canvas>
-          </div>
-        </div>
+
       </div>
     </div>
   </main>
@@ -100,28 +82,26 @@
   document.getElementById('h1_arena').innerHTML = sessionStorage.NOME_ARENA;
   document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
 
-  window.onload = obterDadosGraficos()
+  window.onload = function () {
+    obterDadosGraficos(); // Chama a função uma vez no carregamento da página
+    setInterval(obterDadosGraficos, 2000); // Atualiza a cada 2000 milissegundos (2 segundos)
+  };
 
   function obterDadosGraficos() {
-    obterDadosGrafico(1, sessionStorage.ID_ARENA)
-    obterDadosGrafico(2, sessionStorage.ID_ARENA)
-    obterDadosGrafico(3, sessionStorage.ID_ARENA)
-    obterDadosGrafico(4, sessionStorage.ID_ARENA)
-    obterDadosGrafico(5, sessionStorage.ID_ARENA)
+    obterDadosGrafico(sessionStorage.ID_ARENA);
   }
 
-  function obterDadosGrafico(idComputador, idArena) {
+  function obterDadosGrafico(idArena) {
 
     // if (proximaAtualizacao != undefined) {
     //   clearTimeout(proximaAtualizacao);
     // }
 
-    fetch(`/status/geral/${idComputador},${idArena}`, { cache: 'no-store' }).then(function (response) {
+    fetch(`/status/geral/${idArena}`, { cache: 'no-store' }).then(function (response) {
       if (response.ok) {
         response.json().then(function (resposta) {
           console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-          resposta.reverse();
-          plotarGrafico(resposta, idComputador);
+          criarDivs(resposta);
 
         });
       } else {
@@ -133,8 +113,32 @@
       });
   }
 
+  function criarDivs(pcs) {
+    console.log("criando divs com os valores:")
+    console.log(pcs)
+    document.getElementById('dashboard').innerHTML = ''
+    var graficoIds = [];
 
-  function plotarGrafico(resposta, idComputador) {
+    for (var i = 0; i < pcs.length; i++) {
+      var idGrafico = `myChart${i + 1}`;
+      graficoIds.push(idGrafico);
+
+      document.getElementById('dashboard').innerHTML +=
+        ` <div class="grafico">
+          <div class="title">${pcs[i].apelidoPC}</div>
+          <canvas id="${idGrafico}"></canvas>
+        </div>`;
+    }
+
+    // Chama a função plotarGrafico após criar todas as divs
+    for (var i = 0; i < pcs.length; i++) {
+      plotarGrafico(pcs[i], graficoIds[i]);
+    }
+  }
+
+
+
+  function plotarGrafico(resposta, idGrafico) {
 
     console.log('iniciando plotagem do gráfico...');
 
@@ -155,17 +159,15 @@
     console.log('----------------------------------------------')
     console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
     console.log(resposta)
+    console.log(resposta.apelidoPC);
 
     // Inserindo valores recebidos em estrutura para plotar o gráfico
-    for (i = 0; i < resposta.length; i++) {
-      var registro = resposta[i];
-      labels.push('RAM');
-      labels.push('CPU');
-      labels.push('Disco');
-      dados.datasets[0].data.push(registro.memoria);
-      dados.datasets[0].data.push(registro.processador);
-      dados.datasets[0].data.push(registro.disco);
-    }
+    labels.push('RAM');
+    labels.push('CPU');
+    labels.push('Disco');
+    dados.datasets[0].data.push(resposta.memoria);
+    dados.datasets[0].data.push(resposta.processador);
+    dados.datasets[0].data.push(resposta.disco);
 
     console.log('----------------------------------------------')
     console.log('O gráfico será plotado com os respectivos valores:')
@@ -183,11 +185,11 @@
 
     // Adicionando gráfico criado em div na tela
     let myChart = new Chart(
-      document.getElementById(`myChart${idComputador}`),
+      document.getElementById(idGrafico),
       config
     );
 
-    // setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+    // setTimeout(() => obterDadosGrafico(1, sessionStorage.ID_ARENA), 2000);
   }
 
   function sair() {

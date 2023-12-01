@@ -1,6 +1,6 @@
 var database = require("../database/config");
 
-function buscarVisaoGeral(idComputador, limite_linhas, idArena) {
+function buscarVisaoGeral(idArena) {
 
     instrucaoSql = ''
 
@@ -15,10 +15,11 @@ function buscarVisaoGeral(idComputador, limite_linhas, idArena) {
                     order by id desc`;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `SELECT
+        c.idComputador,
         c.apelidoPC,
-        s.memoriaUso,
-        s.processadorUso,
-        s.discoDisponivel,
+        s.memoriaUso as memoria,
+        s.processadorUso as processador,
+        s.discoDisponivel as disco,
         s.dtHoraCaptura
     FROM
         tbcomputador c
@@ -78,39 +79,8 @@ function buscarVisaoEspecifica(idComputador, limite_linhas) {
     return database.executar(instrucaoSql);
 }
 
-function buscarTempoReal(idComputador) {
-
-    instrucaoSql = ''
-
-    if (process.env.AMBIENTE_PROCESSO == "producao") {
-        instrucaoSql = `select top 1
-        dht11_temperatura as temperatura, 
-        dht11_umidade as umidade,  
-                        CONVERT(varchar, momento, 108) as momento_grafico, 
-                        fk_aquario 
-                        from medida where fk_aquario = ${idAquario} 
-                    order by id desc`;
-
-    } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `select 
-        memoriaUso as memoria, 
-        processadorUso as processador,
-        discoDisponivel as disco,
-        fkComputador as computador,
-                        DATE_FORMAT(dtHoraCaptura,'%H:%i:%s') as dtHoraCaptura
-                        from status_pc where fkComputador = '${idComputador}' 
-                    order by idCaptura desc limit 1`;
-    } else {
-        console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
-        return
-    }
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
-}
 
 module.exports = {
     buscarVisaoGeral,
     buscarVisaoEspecifica,
-    buscarTempoReal
 }

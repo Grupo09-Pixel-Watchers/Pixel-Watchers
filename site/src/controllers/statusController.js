@@ -2,14 +2,11 @@ var statusModel = require("../models/statusModel");
 
 function buscarVisaoGeral(req, res) {
 
-    const limite_linhas = 1;
-
-    var idComputador = req.params.idComputador;
     var idArena = req.params.idArena
 
-    console.log(`Recuperando as ultimas ${limite_linhas} medidas`);
+    console.log(`Recuperando as ultimas medidas`);
 
-    statusModel.buscarVisaoGeral(idComputador, limite_linhas, idArena).then(function (resultado) {
+    statusModel.buscarVisaoGeral(idArena).then(function (resultado) {
         if (resultado.length > 0) {
             res.status(200).json(resultado);
         } else {
@@ -44,27 +41,8 @@ function buscarVisaoEspecifica(req, res) {
     });
 }
 
-function buscarTempoReal(req, res) {
-
-    var idComputador = req.params.idComputador;
-
-    console.log(`Recuperando medidas em tempo real`);
-
-    statusModel.buscarTempoReal(idComputador).then(function (resultado) {
-        if (resultado.length > 0) {
-            res.status(200).json(resultado);
-        } else {
-            res.status(204).send("Nenhum resultado encontrado!")
-        }
-    }).catch(function (erro) {
-        console.log(erro);
-        console.log("Houve um erro ao buscar as ultimas medidas.", erro.sqlMessage);
-        res.status(500).json(erro.sqlMessage);
-    });
-}
 
 module.exports = {
     buscarVisaoGeral,
     buscarVisaoEspecifica,
-    buscarTempoReal
 }

@@ -207,7 +207,7 @@
 
 
 
-        fetch(`/status/tempo-real/${idComputador}`, { cache: 'no-store' }).then(function (response) {
+        fetch(`/status/especifico/${idComputador}`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (novoRegistro) {
 
