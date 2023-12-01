@@ -1,21 +1,11 @@
 #!/bin/bash
 
 #Atualiza a lista de pacotes e atualiza o sistema
-sudo apt update && sudo apt upgrade -y
+# sudo apt update && sudo apt upgrade -y
 
 #Verifica a versão do Java
-java -version
 
-curl -O -L "https://github.com/Grupo09-Pixel-Watchers/Pixel-Watchers/blob/main/Sentinel/out/artifacts/Sentinel_jar/Sentinel.jar"
-
-sudo apt install docker.io -y
-sudo systemctl start docker
-sudo systemctl enable docker
-
-cd Sentinel/iac/mysql
-docker build -t guiscarabelli/bancodedados:latest .
-cd ../../
-docker build -t guiscarabelli/jarexec:latest .
+curl -O -L "https://github.com/Grupo09-Pixel-Watchers/Pixel-Watchers/raw/main/Sentinel/target/Sentinel-1.0-jar-with-dependencies.jar"
 
 Verifica se o Java não está instalado e, se não estiver, solicita a instalação
 if [$? = 0]; 
@@ -29,14 +19,24 @@ if [$? = 0];
         fi
 fi 
 
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+
+cd /Pixel-Watchers/Sentinel/IaC/mysql/
+docker build -t guiscarabelli/bancodedados:latest .
+
+cd ../../
+docker build -t guiscarabelli/jarexec:latest .
+
+
 docker run -d -p 3306:3306 guiscarabelli/bancodedados:latest
 sleep 5 
 docker run -it guiscarabelli/jarexec:latest
 
-Baixa o arquivo .jar do meu grupo de PI
+#Baixa o arquivo .jar do meu grupo de PI
 
-Executa o arquivo .jar do meu grupo de PI
-java -jar teste-looca.jar
-
+#executa o arquivo .jar do meu grupo de PI
+java -jar Sentinel-1.0-jar-with-dependencies.jar
 
 chmod +x scriptProjeto.sh
