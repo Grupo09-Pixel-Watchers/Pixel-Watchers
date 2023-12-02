@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <div class="alertas" id="alertas">
+
+    </div>
     <header>
         <h1 id="h1_pc"></h1>
     </header>
@@ -62,17 +65,17 @@
             <div class="dashboard">
                 <div class="graficos">
                     <div class="grafico">
-                        <div class="title">Uso de ram em tempo real</div>
+                        <div class="title">Uso de ram em tempo real (GB)</div>
                         <canvas id="myChart1"></canvas>
                     </div>
                     <div class="grafico">
-                        <div class="title">Uso de processador em tempo real</div>
+                        <div class="title">Uso de processador em tempo real (%)</div>
                         <canvas id="myChart2"></canvas>
                     </div>
                 </div>
                 <div class="graficos">
                     <div class="grafico">
-                        <div class="title">Uso de disco em tempo real</div>
+                        <div class="title">Disco disponível em tempo real (GB)</div>
                         <canvas id="myChart3"></canvas>
                     </div>
                 </div>
@@ -98,7 +101,7 @@
     idComputador = sessionStorage.ID_PC;
 
     window.onload = obterDadosPc(idComputador)
-    
+
 
     function obterDadosPc(idComputador) {
 
@@ -111,9 +114,9 @@
                 response.json().then(function (resposta) {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
                     resposta.reverse();
-                    plotarGrafico('memoria', '% Uso de RAM', resposta, 1);
+                    plotarGrafico('memoria', 'Uso de RAM em GigaBytes', resposta, 1);
                     plotarGrafico('processador', '% Uso de CPU', resposta, 2);
-                    plotarGrafico('disco', '% Uso de Disco', resposta, 3);
+                    plotarGrafico('disco', 'Uso de Disco em GigaBytes', resposta, 3);
 
                 });
             } else {
@@ -216,6 +219,7 @@
                     console.log(`Dados recebidos (tempo real): ${JSON.stringify(novoRegistro)}`);
                     console.log(`Dados atuais do gráfico:`);
                     console.log(dados);
+                    console.log(novoRegistro[0], dado);
 
                     // let avisoCaptura = document.getElementById(`avisoCaptura${idAquario}`)
                     // avisoCaptura.innerHTML = ""
@@ -231,19 +235,20 @@
                         console.log(dados.labels[dados.labels.length - 1])
                         console.log("---------------------------------------------------------------")
                     } else {
+                        checkarDados(novoRegistro[0], dado)
                         // tirando e colocando valores no gráfico
                         dados.labels.shift(); // apagar o primeiro
                         dados.labels.push(novoRegistro[0].dtHoraCaptura); // incluir um novo momento
 
                         dados.datasets[0].data.shift();  // apagar o primeiro de umidade
-                        
-                        if (dado == 'memoria'){
+
+                        if (dado == 'memoria') {
                             dados.datasets[0].data.push(novoRegistro[0].memoria);
                         }
-                        else if (dado == 'processador'){
+                        else if (dado == 'processador') {
                             dados.datasets[0].data.push(novoRegistro[0].processador);
                         }
-                        else if (dado == 'disco'){
+                        else if (dado == 'disco') {
                             dados.datasets[0].data.push(novoRegistro[0].disco);
                         }
 
@@ -263,6 +268,48 @@
                 console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
             });
 
+    }
+
+    function checkarDados(dadoAtual, dado) {
+        const alertasContainer = document.getElementById('alertas');
+
+        let alertaHTML = '';
+
+        if (dado == 'memoria' && dadoAtual.PMemoria > 40.0) {
+            alertaHTML =
+                `<div class="alerta">
+            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+            <div class="textoAlerta"><p>Sua memória atingiu ${dadoAtual.PMemoria}% de uso</p></div>
+        </div>`;
+        } else if (dado == 'disco' && dadoAtual.PDisco > 40.0) {
+            alertaHTML =
+                `<div class="alerta">
+            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+            <div class="textoAlerta"><p>Seu disco está com ${dadoAtual.PDisco}% da capacidade ocupada</p></div>
+        </div>`;
+        } else if (dado == 'processador' && dadoAtual.processador > 10.0) {
+            alertaHTML =
+                `<div class="alerta">
+            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+            <div class="textoAlerta"><p>Seu processador atingiu ${dadoAtual.processador}% de uso</p></div>
+        </div>`;
+        }
+
+        if (alertaHTML) {
+            const alertaElement = document.createElement('div');
+            alertaElement.innerHTML = alertaHTML;
+            alertasContainer.appendChild(alertaElement);
+
+            // Configurar um temporizador para remover a classe 'visible' após 2000 milissegundos (2 segundos)
+            const tempoExibicao = 4000;
+            setTimeout(() => {
+                alertaElement.classList.add('hidden');
+                // Remover o elemento do DOM após o tempo de exibição para evitar acumulação
+                setTimeout(() => {
+                    alertasContainer.removeChild(alertaElement);
+                }, 500); // 500 milissegundos para permitir a animação de fade-out
+            }, tempoExibicao);
+        }
     }
 
 

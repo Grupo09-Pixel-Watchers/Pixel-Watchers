@@ -22,7 +22,7 @@ function buscarVisaoGeral(req, res) {
 
 function buscarVisaoEspecifica(req, res) {
 
-    const limite_linhas = 5;
+    const limite_linhas = 7;
 
     var idComputador = req.params.idComputador;
 

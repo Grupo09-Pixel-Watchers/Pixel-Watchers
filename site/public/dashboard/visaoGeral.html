@@ -165,9 +165,9 @@
     labels.push('RAM');
     labels.push('CPU');
     labels.push('Disco');
-    dados.datasets[0].data.push(resposta.memoria);
-    dados.datasets[0].data.push(resposta.processador);
-    dados.datasets[0].data.push(resposta.disco);
+    dados.datasets[0].data.push(resposta.usoMemoria);
+    dados.datasets[0].data.push(resposta.usoProcessador);
+    dados.datasets[0].data.push(resposta.usoDisco);
 
     console.log('----------------------------------------------')
     console.log('O gráfico será plotado com os respectivos valores:')

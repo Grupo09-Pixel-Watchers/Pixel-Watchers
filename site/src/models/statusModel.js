@@ -14,30 +14,32 @@ function buscarVisaoGeral(idArena) {
                     where fk_aquario = ${idComputador}
                     order by id desc`;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
-        instrucaoSql = `SELECT
-        c.idComputador,
-        c.apelidoPC,
-        s.memoriaUso as memoria,
-        s.processadorUso as processador,
-        s.discoDisponivel as disco,
-        s.dtHoraCaptura
-    FROM
-        tbcomputador c
-    JOIN
-        tbArena a ON c.fkArena = a.idArena
-    JOIN
-        status_pc s ON c.idComputador = s.fkComputador
-    JOIN (
-        SELECT
-            fkComputador,
-            MAX(dtHoraCaptura) AS max_dtHoraCaptura
-        FROM
-            status_pc
-        GROUP BY
-            fkComputador
-    ) latest ON s.fkComputador = latest.fkComputador AND s.dtHoraCaptura = latest.max_dtHoraCaptura
-    WHERE
-        a.idArena = ${idArena};`;
+        instrucaoSql = `
+            SELECT
+                c.idComputador,
+                c.apelidoPC,
+                ROUND(s.memoriaUso / c.memoriaTotal * 100, 1) as usoMemoria,
+                ROUND((c.discoTotal - s.discoDisponivel) / c.discoTotal * 100, 1) as usoDisco,
+                ROUND(s.processadorUso, 1) as usoProcessador,
+                s.dtHoraCaptura
+            FROM
+                tbcomputador c
+            JOIN
+                tbArena a ON c.fkArena = a.idArena
+            JOIN
+                status_pc s ON c.idComputador = s.fkComputador
+            JOIN (
+                SELECT
+                    fkComputador,
+                    MAX(dtHoraCaptura) AS max_dtHoraCaptura
+                FROM
+                    status_pc
+                GROUP BY
+                    fkComputador
+            ) latest ON s.fkComputador = latest.fkComputador AND s.dtHoraCaptura = latest.max_dtHoraCaptura
+            WHERE
+                a.idArena = ${idArena};`;
+
     } else {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM app.js\n");
         return
@@ -62,12 +64,15 @@ function buscarVisaoEspecifica(idComputador, limite_linhas) {
                     order by id desc`;
     } else if (process.env.AMBIENTE_PROCESSO == "desenvolvimento") {
         instrucaoSql = `select 
-        memoriaUso as memoria, 
-        processadorUso as processador,
-        discoDisponivel as disco,
+        ROUND(s.memoriaUso, 1) as memoria, 
+        ROUND(s.processadorUso, 1) as processador,
+        ROUND(s.discoDisponivel, 1) as disco,
+        ROUND(s.memoriaUso / c.memoriaTotal * 100, 1) as PMemoria,
+        ROUND((c.discoTotal - s.discoDisponivel) / c.discoTotal * 100, 1) as PDisco,
         fkComputador as computador,
                         DATE_FORMAT(dtHoraCaptura,'%H:%i:%s') as dtHoraCaptura
-                    from status_pc
+                    from status_pc as s
+                    join tbComputador as c on fkComputador = idComputador
                     where fkComputador = '${idComputador}'
                     order by idCaptura desc limit ${limite_linhas}`;
     } else {

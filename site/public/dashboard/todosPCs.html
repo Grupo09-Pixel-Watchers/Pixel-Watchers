@@ -84,15 +84,15 @@
         document.getElementById('container_pcs').innerHTML = ''
         for (var i = 0; i < pcs.length; i++) {
             document.getElementById('container_pcs').innerHTML +=
-                `<div class="pc" onclick="verPc('${pcs[i].idComputador}')">
+                `<div class="pc" onclick="verPc('${pcs[i].idComputador}','${pcs[i].apelidoPc}')">
                 <p>${pcs[i].apelidoPc}</p>
             </div>`
         }
     }
 
-    function verPc(idComputador) {
+    function verPc(idComputador, apelidoPc) {
         sessionStorage.ID_PC = idComputador
-        sessionStorage.NOME_PC = `PC-${idComputador}`
+        sessionStorage.NOME_PC = apelidoPc
         window.location = 'visaoEspecifica.html'
     }
 
