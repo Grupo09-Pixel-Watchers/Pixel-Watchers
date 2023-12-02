@@ -75,7 +75,7 @@ public class App {
         Processador processador = looca.getProcessador();
         DiscoGrupo disco = looca.getGrupoDeDiscos();
         Sistema sistema = looca.getSistema();
-         
+
 
 
         // Variáveis que guardam as informações para o cadastro
@@ -118,6 +118,7 @@ public class App {
                 }
                 else {
                     String idPC = IdentificadorUnico.GerarId();
+                    computador.setId(idPC);
                     if (!ComputadorDAO.JaExiste(idPC)){
                         System.out.println();
                         System.out.println("Parece que essa é a primeira vez que você utiliza o Sentinel nesse PC");
@@ -143,7 +144,7 @@ public class App {
                         System.out.println("Certo, agora dê um apelido para esse computador");
                         entrada.nextLine();
                         String nomePC = entrada.nextLine();
-                        ComputadorDAO.cadastrarComputador(computador, idPC, nomeArena, nomePC);
+                        ComputadorDAO.cadastrarComputador(computador, nomeArena, nomePC);
                     }
                 }
 
