@@ -146,7 +146,7 @@ public class App {
                         System.out.println("Certo, agora dê um apelido para esse computador");
                         entrada.nextLine();
                         String nomePC = entrada.nextLine();
-                        ComputadorDAO.cadastrarComputador(computador, nomeArena, nomePC);
+                        ComputadorDAO.cadastrarComputador(computador, nomePC, nomeArena);
                     }
                 }
 

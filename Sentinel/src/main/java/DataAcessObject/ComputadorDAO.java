@@ -38,7 +38,7 @@ public class ComputadorDAO {
             psSQLServer.setLong(5, computador.getDiscoTotal());
             psSQLServer.setLong(6, computador.getMemoriaTot());
             psSQLServer.setInt(7, computador.getQtdDiscos());
-            psSQLServer.setString(8,arena);
+            psSQLServer.setString(8, arena);
             psSQLServer.execute();
         } catch (SQLException e ){
             e.printStackTrace();
