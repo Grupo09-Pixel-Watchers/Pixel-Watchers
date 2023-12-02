@@ -1,7 +1,7 @@
 import java.util.UUID;
 
 public class IdentificadorUnico {
-    public static String GerarId(){
+    public static String gerarId(){
         // Gera um UUID aleatório (versão 4)
         UUID uuid = UUID.randomUUID();
 

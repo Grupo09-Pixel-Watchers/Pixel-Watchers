@@ -76,7 +76,6 @@ public class App {
         Sistema sistema = looca.getSistema();
 
 
-
         // Variáveis que guardam as informações para o cadastro
         String nomeProcessador = processador.getNome();
         computador.setProcessador(nomeProcessador);
@@ -111,150 +110,138 @@ public class App {
 
                 UsuarioDAO.pegarEmpresaUsuario(usuario);
                 ArenaDAO.pegarArenasDaEmpresa(usuario);
-                if (ArenaDAO.pegarArenasDaEmpresa(usuario).isEmpty()){
+                if (ArenaDAO.pegarArenasDaEmpresa(usuario).isEmpty()) {
                     System.out.println("Você ainda não tem uma arena cadastrada, acesse nosso site para fazer isso");
                     return;
-                }
-                else {
-                    System.out.println(computador.getId());
+                } else {
                     System.out.println("Digite o apelido do computador:");
                     String apelido = entrada.next();
-                    if (!ComputadorDAO.JaExiste(apelido)){
+                    if (!ComputadorDAO.JaExiste(apelido)) {
                         System.out.println();
                         System.out.println("Parece que essa é a primeira vez que você utiliza o Sentinel nesse PC");
                         System.out.println("Em qual arena você deseja cadastrar esse computador?");
                         System.out.println();
+                        for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
+                            if (i == ArenaDAO.pegarArenasDaEmpresa(usuario).size() - 1) {
+                                System.out.println("""
+                                        +----------------------------------------------------
+                                        | %d - %s
+                                        +----------------------------------------------------"""
+                                        .formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                            } else {
+                                System.out.println("""
+                                        +----------------------------------------------------
+                                        | %d - %s""".formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                            }
+                        }
+                        Integer numArena = entrada.nextInt();
+                        String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
 
                         IdentificadorUnico identificadorUnico = new IdentificadorUnico();
 
-                        String idPC = identificadorUnico.GerarId();
+                        String idPC = identificadorUnico.gerarId();
                         computador.setId(idPC);
 
-                        Integer numArena = null;
+                        ComputadorDAO.cadastrarComputador(computador, apelido, nomeArena);
+                    }
 
-                        for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
-                            if (i == ArenaDAO.pegarArenasDaEmpresa(usuario).size()-1){
-                                System.out.println("""
-                                +----------------------------------------------------
-                                | %d - %s
-                                +----------------------------------------------------"""
-                                        .formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
-                                numArena = entrada.nextInt();
-                            }
-                            else {
-                                System.out.println("""
-                                +----------------------------------------------------
-                                | %d - %s""".formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
-                                numArena = entrada.nextInt();
+
+                    computador.gerarTextoInicio();
+                    StatusPcDAO.pegarIdCaptura(idCaptura);
+                    StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
+
+                    Integer pontosMontagem = disco.getVolumes().size();
+                    long TEMPO = (2000);
+                    Timer timer = new Timer();
+                    TimerTask tarefa = new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                Long memoriaEmUso = memoria.getEmUso();
+                                memoriaUso.setMemoriaUso(memoriaEmUso);
+
+                                Double processadorEmUso = processador.getUso();
+                                processadorUso.setProcessadorEmUso(processadorEmUso);
+
+                                Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
+                                discoDisponivel.setDiscoDisponivel(discoEmUso);
+
+                                StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
+
+                                if (disco.getVolumes().size() > pontosMontagem) {
+                                    System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
+                                } else {
+                                    System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
+
+                                }
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
+                    };
+                    timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
+                    autenticado = true;
 
-                        numArena = entrada.nextInt();
-                        String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
+                    ProgramScanner programScanner = new ProgramScanner();
 
-                        System.out.println("Certo, agora dê um apelido para esse computador");
-                        entrada.nextLine();
-                        String nomePC = entrada.nextLine();
-                        ComputadorDAO.cadastrarComputador(computador, nomePC, nomeArena);
+                    System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
+
+                    try {
+                        programScanner.scanForBlacklistedApps();
+                        // Se chegou aqui, nenhum programa proibido foi encontrado
+                        System.out.println("A máquina está segura para uso.");
+                    } catch (ProgramScanner.ProgramProibidoEncontradoException e) {
+                        System.out.println(e.getMessage());
+
+                        LocalDateTime data = LocalDateTime.now();
+                        alerta.setDtHoraAlerta(String.valueOf(data));
+                        alerta.setCaminhoArquivo(programScanner.getAbsoluteFilePath());
+
+                        String tipoAlerta;
+                        if (e.getMessage().startsWith("Pasta proibida")) {
+                            tipoAlerta = "Pasta Proibida";
+                            alerta.setDescricao("Pasta proibida encontrada");
+                        } else if (e.getMessage().startsWith("Arquivo proibido")) {
+                            tipoAlerta = "Arquivo Proibido";
+                            alerta.setDescricao("Arquivo proibido encontrado");
+                        } else {
+                            tipoAlerta = "Desconhecido";
+                            alerta.setDescricao("Alerta desconhecido encontrado");
+                        }
+
+                        // Aqui deve ser o id do computador
+                        AlertaDAO.cadastrarAlerta(alerta, computador, tipoAlerta);
+
+                        System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
                     }
                 }
 
-                computador.gerarTextoInicio();
-                StatusPcDAO.pegarIdCaptura(idCaptura);
-                StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
-
-                Integer pontosMontagem = disco.getVolumes().size();
-                long TEMPO = (2000);
                 Timer timer = new Timer();
-                TimerTask tarefa = new TimerTask() {
+                TimerTask tarefaVerificacao = new TimerTask() {
                     @Override
                     public void run() {
-                        try {
-                            Long memoriaEmUso = memoria.getEmUso();
-                            memoriaUso.setMemoriaUso(memoriaEmUso);
-
-                            Double processadorEmUso = processador.getUso();
-                            processadorUso.setProcessadorEmUso(processadorEmUso);
-
-                            Long discoEmUso = disco.getVolumes().get(0).getDisponivel();
-                            discoDisponivel.setDiscoDisponivel(discoEmUso);
-
-                            StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
-
-                            if (disco.getVolumes().size() > pontosMontagem){
-                                System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
-                            } else {
-                                System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
-
-                            }
-
-
-                        } catch (Exception e ){
-                            e.printStackTrace();
-                        }
+                        verificarEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
                     }
                 };
-                timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);
-                autenticado = true;
+                long intervalo = 1 * 60 * 1000; // 1 minuto em milissegundos
+                timer.scheduleAtFixedRate(tarefaVerificacao, intervalo, intervalo);
 
-                ProgramScanner programScanner = new ProgramScanner();
-
-                System.out.println("COMEÇOU O PROCESSO DE VERIFICAÇÃO DE ARQUIVOS E PASTAS PROIBIDOS");
-
-                try {
-                    programScanner.scanForBlacklistedApps();
-                    // Se chegou aqui, nenhum programa proibido foi encontrado
-                    System.out.println("A máquina está segura para uso.");
-                } catch (ProgramScanner.ProgramProibidoEncontradoException e) {
-                    System.out.println(e.getMessage());
-
-                    LocalDateTime data = LocalDateTime.now();
-                    alerta.setDtHoraAlerta(String.valueOf(data));
-                    alerta.setCaminhoArquivo(programScanner.getAbsoluteFilePath());
-
-                    String tipoAlerta;
-                    if (e.getMessage().startsWith("Pasta proibida")) {
-                        tipoAlerta = "Pasta Proibida";
-                        alerta.setDescricao("Pasta proibida encontrada");
-                    } else if (e.getMessage().startsWith("Arquivo proibido")) {
-                        tipoAlerta = "Arquivo Proibido";
-                        alerta.setDescricao("Arquivo proibido encontrado");
-                    } else {
-                        tipoAlerta = "Desconhecido";
-                        alerta.setDescricao("Alerta desconhecido encontrado");
+                Timer timerMemoria = new Timer();
+                TimerTask tarefaVerificacaoMemoria = new TimerTask() {
+                    @Override
+                    public void run() {
+                        verificarEMemoriaEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
                     }
+                };
+                long intervaloMemoria = 1 * 60 * 1000; // 1 minuto em milissegundos
+                timerMemoria.scheduleAtFixedRate(tarefaVerificacaoMemoria, intervaloMemoria, intervaloMemoria);
 
-                    // Aqui deve ser o id do computador
-                    AlertaDAO.cadastrarAlerta(alerta, computador, tipoAlerta);
 
-                    System.out.println("CADASTROU O ALERTA DE ARQUIVO OU PASTA PROIBIDA");
-                }
             }
 
-            Timer timer = new Timer();
-            TimerTask tarefaVerificacao = new TimerTask() {
-                @Override
-                public void run() {
-                    verificarEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
-                }
-            };
-            long intervalo = 1 * 60 * 1000; // 1 minuto em milissegundos
-            timer.scheduleAtFixedRate(tarefaVerificacao, intervalo, intervalo);
-
-            Timer timerMemoria = new Timer();
-            TimerTask tarefaVerificacaoMemoria = new TimerTask() {
-                @Override
-                public void run() {
-                    verificarEMemoriaEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
-                }
-            };
-            long intervaloMemoria = 1 * 60 * 1000; // 1 minuto em milissegundos
-            timerMemoria.scheduleAtFixedRate(tarefaVerificacaoMemoria, intervaloMemoria, intervaloMemoria);
-
-
-        } while(!autenticado);
-
-        // Caminho da raiz do disco (pode variar dependendo do sistema operacional)
-
+        }
+        while (!autenticado);
     }
 }
