@@ -9,7 +9,7 @@ rm -rf Sentinel-1.0-jar-with-dependencies.jar
 
 curl -O -L "https://github.com/Grupo09-Pixel-Watchers/Pixel-Watchers/raw/main/Sentinel/target/Sentinel-1.0-jar-with-dependencies.jar"
 
-Verifica se o Java não está instalado e, se não estiver, solicita a instalação
+#Verifica se o Java não está instalado e, se não estiver, solicita a instalação
 if [$? = 0];
     then
         echo "Java instalado"
