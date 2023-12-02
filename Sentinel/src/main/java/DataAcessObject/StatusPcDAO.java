@@ -27,9 +27,9 @@ public class StatusPcDAO {
     static PreparedStatement psSQLServer = null;
     static ResultSet rsSQLServer = null;
     public static void exibirInformacoesMaquina(String nomeProcessador, String sistemaOperacional,
-                Long memoriaTotal,Long discoTotal, Integer qtdDiscos){
+                                                Long memoriaTotal,Long discoTotal, Integer qtdDiscos){
 
-            System.out.println(String.format("""
+        System.out.println(String.format("""
              +==============================================================================+
              ||                         Informações da máquina                             ||
              +==============================================================================+
@@ -42,7 +42,7 @@ public class StatusPcDAO {
                                                                                          
              +==============================================================================+
                 """, nomeProcessador, sistemaOperacional,
-                    Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal), qtdDiscos));
+                Conversor.formatarBytes(memoriaTotal), Conversor.formatarBytes(discoTotal), qtdDiscos));
 
     }
     public static String pegarIdCaptura (StatusPc statusPc){
@@ -68,13 +68,22 @@ public class StatusPcDAO {
         return sql;
     }
     public static void cadastrarCapturas( StatusPc statusMemoria, StatusPc statusProcessador, StatusPc Disco,
-                                         StatusPc dtHora, Computador computador) {
+                                          StatusPc dtHora, Computador computador) {
         String sql = "INSERT INTO status_pc " +
                 "(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, fkComputador) " +
                 "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = null;
         LocalDateTime dtHoraAtual = LocalDateTime.now();
+
         try {
+//            ps = Conexao.getConexao().prepareStatement(sql);
+//            ps.setLong(1, statusMemoria.getMemoriaUso());
+//            ps.setDouble(2, statusProcessador.getProcessadorEmUso());
+//            ps.setDouble(3, Disco.getDiscoDisponivel());
+//            ps.setString(4, String.valueOf(dtHoraAtual));
+//            ps.setString(5, computador.getId());
+//            ps.execute();
+
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
             psSQLServer.setLong(1, statusMemoria.getMemoriaUso());
             psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
@@ -82,16 +91,6 @@ public class StatusPcDAO {
             psSQLServer.setObject(4, dtHoraAtual);
             psSQLServer.setString(5, computador.getId());
             psSQLServer.execute();
-
-            ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setLong(1, statusMemoria.getMemoriaUso());
-            ps.setDouble(2, statusProcessador.getProcessadorEmUso());
-            ps.setDouble(3, Disco.getDiscoDisponivel());
-            ps.setString(4, String.valueOf(dtHoraAtual));
-            ps.setString(5, computador.getId());
-            ps.execute();
-
-
 
             String dataFormatadaa = String.valueOf(dtHora.getDtHoraCaptura());
             Date dataAtual = new Date();
