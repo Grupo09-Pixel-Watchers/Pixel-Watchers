@@ -130,6 +130,8 @@ public class App {
                         String idPC = identificadorUnico.GerarId();
                         computador.setId(idPC);
 
+                        Integer numArena = null;
+
                         for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
                             if (i == ArenaDAO.pegarArenasDaEmpresa(usuario).size()-1){
                                 System.out.println("""
@@ -137,14 +139,17 @@ public class App {
                                 | %d - %s
                                 +----------------------------------------------------"""
                                         .formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                                numArena = entrada.nextInt();
                             }
                             else {
                                 System.out.println("""
                                 +----------------------------------------------------
                                 | %d - %s""".formatted(i + 1, ArenaDAO.pegarArenasDaEmpresa(usuario).get(i)));
+                                numArena = entrada.nextInt();
                             }
                         }
-                        Integer numArena = entrada.nextInt();
+
+                        numArena = entrada.nextInt();
                         String nomeArena = ArenaDAO.pegarArenasDaEmpresa(usuario).get(numArena - 1);
 
                         System.out.println("Certo, agora dê um apelido para esse computador");
