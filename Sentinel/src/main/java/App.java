@@ -174,8 +174,6 @@ public class App {
                                     System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
 
                                 }
-
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -237,7 +235,6 @@ public class App {
                 };
                 long intervaloMemoria = 1 * 60 * 1000; // 1 minuto em milissegundos
                 timerMemoria.scheduleAtFixedRate(tarefaVerificacaoMemoria, intervaloMemoria, intervaloMemoria);
-
 
             }
 

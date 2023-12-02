@@ -5,6 +5,7 @@ import Conexao.Conexao;
 import Extrator.ExtrairDouble;
 import com.github.britooo.looca.api.util.Conversor;
 import com.mysql.cj.protocol.a.LocalDateTimeValueEncoder;
+import org.checkerframework.checker.units.qual.C;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -77,17 +78,17 @@ public class StatusPcDAO {
 
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setLong(1, statusMemoria.getMemoriaUso());
+            ps.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
-            ps.setDouble(3, Disco.getDiscoDisponivel());
+            ps.setDouble(3, ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
             ps.setString(4, String.valueOf(dtHoraAtual));
             ps.setString(5, computador.getId());
             ps.execute();
 
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-            psSQLServer.setLong(1, statusMemoria.getMemoriaUso());
+            psSQLServer.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
             psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
-            psSQLServer.setDouble(3, Disco.getDiscoDisponivel());
+            psSQLServer.setDouble(3,  ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
             psSQLServer.setObject(4, dtHoraAtual);
             psSQLServer.setString(5, computador.getId());
             psSQLServer.execute();
