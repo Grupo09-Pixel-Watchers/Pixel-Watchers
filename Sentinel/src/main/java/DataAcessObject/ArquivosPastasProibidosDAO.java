@@ -16,7 +16,7 @@ public class ArquivosPastasProibidosDAO {
 
         ArquivosPastasProibidos arquivoPasta = new ArquivosPastasProibidos();
         List<String> folderBlacklist = new ArrayList<>();
-        String sql = "SELECT nomePasta FROM pastasProibidas";
+        String sql = "SELECT nomePasta FROM PastasProibidas";
         PreparedStatement ps = null;
         ResultSet rs = null;
 
