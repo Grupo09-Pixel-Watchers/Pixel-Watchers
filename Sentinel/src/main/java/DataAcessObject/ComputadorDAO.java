@@ -47,35 +47,8 @@ public class ComputadorDAO {
         return false;
     }
 
-    public static String pegarIdComputador (Computador computador){
-        String sql = "SELECT idComputador FROM tbComputador";
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        PreparedStatement psSQLServer = null;
-        ResultSet rsSQLServer = null; // ResultSet é uma classe utilizada para poder realizar os selects
-        try{
-            ps = Conexao.getConexao().prepareStatement(sql);
-            rs = ps.executeQuery();
-            while(rs.next()) { // o  next é para ele mover para a prox. linha
-                computador.setId(rs.getString(1));
-            }
-            ps.execute();
-
-            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-            rsSQLServer = psSQLServer.executeQuery();
-            while(rsSQLServer.next()) { // o  next é para ele mover para a prox. linha
-                computador.setId(rsSQLServer.getString(1));
-            }
-            psSQLServer.execute();
-        } catch (SQLException e ){
-            e.printStackTrace();
-        }
-        return sql;
-    }
-
-    public static Boolean JaExiste(String idUnico) {
-        String sql = "SELECT COUNT(*) FROM tbComputador WHERE idComputador = ?";
+    public static Boolean JaExiste(String apelido) {
+        String sql = "SELECT COUNT(*) FROM tbComputador WHERE apelidoPc = ?";
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -84,7 +57,7 @@ public class ComputadorDAO {
 
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setString(1, idUnico);
+            ps.setString(1, apelido);
 
             rs = ps.executeQuery();
 
@@ -100,7 +73,7 @@ public class ComputadorDAO {
             }
 
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-            psSQLServer.setString(1, idUnico);
+            psSQLServer.setString(1, apelido);
 
             rsSQLServer = psSQLServer.executeQuery();
 
@@ -131,4 +104,3 @@ public class ComputadorDAO {
         return false;
     }
 }
-

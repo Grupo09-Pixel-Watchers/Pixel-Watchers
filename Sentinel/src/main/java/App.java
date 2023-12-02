@@ -32,7 +32,6 @@ import static DataAcessObject.StatusPcDAO.verificarEMemoriaEAlertar;
 
 public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
-        // Fazer o login do usuário tambem. //// juhrs vai fazer
         System.out.println("""
                 +===========================================================================================+ 
                 ||                   ___   ____ __  ___        _   __ ____ _  __ ___   ____   __           ||
@@ -117,15 +116,20 @@ public class App {
                     return;
                 }
                 else {
-                    IdentificadorUnico identificadorUnico = new IdentificadorUnico();
-
-                    String idPC = IdentificadorUnico.GerarId();
-                    computador.setId(idPC);
-                    if (!ComputadorDAO.JaExiste(idPC)){
+                    System.out.println(computador.getId());
+                    System.out.println("Digite o apelido do computador:");
+                    String apelido = entrada.next();
+                    if (!ComputadorDAO.JaExiste(apelido)){
                         System.out.println();
                         System.out.println("Parece que essa é a primeira vez que você utiliza o Sentinel nesse PC");
                         System.out.println("Em qual arena você deseja cadastrar esse computador?");
                         System.out.println();
+
+                        IdentificadorUnico identificadorUnico = new IdentificadorUnico();
+
+                        String idPC = identificadorUnico.GerarId();
+                        computador.setId(idPC);
+
                         for (int i = 0; i < ArenaDAO.pegarArenasDaEmpresa(usuario).size(); i++) {
                             if (i == ArenaDAO.pegarArenasDaEmpresa(usuario).size()-1){
                                 System.out.println("""
@@ -151,7 +155,6 @@ public class App {
                 }
 
                 computador.gerarTextoInicio();
-                ComputadorDAO.pegarIdComputador(computador);
                 StatusPcDAO.pegarIdCaptura(idCaptura);
                 StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
 
