@@ -11,6 +11,5 @@ public class IdentificadorUnico {
         // Combina as informações para criar um identificador único
         String uniqueIdentifier = uuidString;
         return uniqueIdentifier;
-        // Imprime o identificador único
     }
 }

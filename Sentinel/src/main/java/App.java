@@ -117,6 +117,8 @@ public class App {
                     return;
                 }
                 else {
+                    IdentificadorUnico identificadorUnico = new IdentificadorUnico();
+
                     String idPC = IdentificadorUnico.GerarId();
                     computador.setId(idPC);
                     if (!ComputadorDAO.JaExiste(idPC)){
