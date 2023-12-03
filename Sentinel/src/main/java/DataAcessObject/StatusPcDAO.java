@@ -78,7 +78,11 @@ public class StatusPcDAO {
 
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
-            ps.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
+            Double memoriaUso = ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso()));
+            if (memoriaUso > 64.0){
+                memoriaUso /= 1024;
+            }
+            ps.setDouble(1, memoriaUso);
             ps.setDouble(2, statusProcessador.getProcessadorEmUso());
             ps.setDouble(3, ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
             ps.setString(4, String.valueOf(dtHoraAtual));
@@ -86,7 +90,7 @@ public class StatusPcDAO {
             ps.execute();
 
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-            psSQLServer.setDouble(1, ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso())));
+            psSQLServer.setDouble(1, memoriaUso);
             psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
             psSQLServer.setDouble(3,  ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
             psSQLServer.setObject(4, dtHoraAtual);
