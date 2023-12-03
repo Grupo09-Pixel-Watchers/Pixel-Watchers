@@ -17,22 +17,64 @@ function buscarAlertasPC(idComputador) {
             ORDER BY dtHoraAlerta DESC
             LIMIT 1;
     `;
-  
+
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function buscarAlertasArena(idArena) {
+function buscarAlertaMaisRecente(idArena) {
 
-    instrucaoSql1 = `
-        SELECT * from Alerta join tbComputador on idComputador = fkComputador where fkArena = ${idArena}
+    instrucaoSql = `
+    SELECT a.idAlerta, a.descricao, a.fkComputador, c.apelidoPc, a.dtHoraAlerta, a.tipoAlerta
+    FROM Alerta a
+    JOIN tbComputador c ON a.fkComputador = c.idComputador
+    WHERE fkArena = ${idArena}
+    ORDER BY a.dtHoraAlerta DESC
+    LIMIT 1;
     `;
-  
-    console.log("Executando a instrução SQL: \n" + instrucaoSql + );
-    return database.executar(instrucaoSql) + database.executar();
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
+
+function buscarPcMaisAlertas(idArena) {
+
+    instrucaoSql = `
+    SELECT c.idComputador, c.apelidoPc, COUNT(*) as total_alertas
+    FROM Alerta a
+    JOIN tbComputador c ON a.fkComputador = c.idComputador
+    WHERE c.fkArena = ${idArena}
+    AND a.dtHoraAlerta >= NOW() - INTERVAL 24 HOUR
+    GROUP BY c.idComputador
+    ORDER BY total_alertas DESC
+    LIMIT 1;`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function buscarTipoAlerta(idComputador) {
+
+    instrucaoSql = `
+    SELECT tipoAlerta, COUNT(*) AS qtdRepeticoes
+    FROM Alerta
+    WHERE fkComputador = '${idComputador}'
+    GROUP BY tipoAlerta
+    ORDER BY qtdRepeticoes DESC
+    LIMIT 1;`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
+
+
+
 
 module.exports = {
     buscarAlertasPC,
-    buscarAlertasArena,
+    buscarAlertaMaisRecente,
+    buscarPcMaisAlertas,
+    buscarTipoAlerta
 };

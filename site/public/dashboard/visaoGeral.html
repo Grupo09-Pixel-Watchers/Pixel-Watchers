@@ -9,6 +9,14 @@
 </head>
 
 <body>
+  <!-- <div class="alertaProcessador">
+    <img src="../assets/alerta-6.png" style="width: 4vw;">
+    <span>Alerta! processador atingiu 90% de uso</span>
+  </div>
+  <div class="alertaMemoria">
+    <img src="../assets/alerta-6.png" style="width: 4vw;">
+    <span>Alerta! memória atingiu 90% de uso</span>
+  </div> -->
   <header>
     <h1 id="h1_arena"></h1>
   </header>
@@ -47,16 +55,12 @@
       </div>
       <div class="indicadores">
         <div class="indicador">
-          <p>PCs ativos: 5/5</p>
+          <p>PC com maior numero de alertas registrados nas últimas 24 horas: <span id="pcMaisAlertas"></span> <span
+              id="qtdAlertas"></span></p>
         </div>
         <div class="indicador">
-          <p>PCs dentro das métricas: 4/5</p>
-        </div>
-        <div class="indicador">
-          <p>PC com maior numero de alertas registrados nas últimas 24 horas: PC-5 (12)</p>
-        </div>
-        <div class="indicador">
-          <p>Ultimo alerta crítico registrado: Alto uso de processador (PC-2)</p>
+          <p>Ultimo alerta crítico registrado: <span id="descAlertaMaisRecente"></span> <span id="pcMaisRecente"></span>
+          </p>
         </div>
       </div>
       <div class="dashboard" id="dashboard">
@@ -84,6 +88,8 @@
   document.getElementById('nome').innerHTML = sessionStorage.NOME_USUARIO + ' ' + sessionStorage.SOBRENOME_USUARIO
 
   window.onload = function () {
+    buscarPcMaisAlertas(idArena)
+    buscarAlertaMaisRecente(idArena)
     obterDadosGraficos(); // Chama a função uma vez no carregamento da página
     setInterval(obterDadosGraficos, 2000); // Atualiza a cada 2000 milissegundos (2 segundos)
   };
@@ -178,33 +184,27 @@
     // setTimeout(() => obterDadosGrafico(1, sessionStorage.ID_ARENA), 2000);
   }
 
-  const intervaloAtualizacao = 2000; // 2 segundos
-  setInterval(() => buscarAlertas(idArena), intervaloAtualizacao);
+  let ultimoDado = null; // Armazena o último dado recebido
 
-  // ...
-
-  let alertasExistem = [];
-
-  // ...
-
-  function buscarAlertas(idArena) {
-    fetch(`/alertas/buscarAlertasArena/${idArena}`, { cache: 'no-store' })
+  function buscarAlertaMaisRecente(idArena) {
+    fetch(`/alertas/buscarAlertaMaisRecente/${idArena}`, { cache: 'no-store' })
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (resposta) {
+            console.log("dados recebidos kpi1");
             console.log(resposta);
 
-            // Verifique se há novos alertas
-            const novosAlertas = resposta.filter(alerta => !alertasExistem.includes(alerta.idAlerta));
-
-            // Atualize a lista de alertas existentes
-            alertasExistem = resposta.map(alerta => alerta.idAlerta);
-
-            // Se houver novos alertas, faça algo
-            if (novosAlertas.length > 0) {
-              console.log('Novo alerta cadastrado:', novosAlertas);
-              // Adicione sua lógica para lidar com novos alertas aqui
+            // Verifica se o dado recebido é diferente do último
+            if (JSON.stringify(resposta) !== JSON.stringify(ultimoDado)) {
+              // Se for diferente, gera um alerta
+              console.log("novo Valor:")
+              console.log(resposta)
+              criarAlerta(resposta)
+              buscarPcMaisAlertas(idArena, resposta)
             }
+
+            // Atualiza o último dado recebido
+            ultimoDado = resposta;
           });
         } else {
           console.error('Nenhum dado encontrado ou erro na API');
@@ -214,6 +214,50 @@
         console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
       });
   }
+
+  // Chama a função a cada dois segundos
+  setInterval(function () {
+    buscarAlertaMaisRecente(idArena);
+  }, 2000); // 2000 milissegundos = 2 segundos
+
+
+  function buscarPcMaisAlertas(idArena, respostaKpi1) {
+    fetch(`/alertas/buscarPcMaisAlertas/${idArena}`, { cache: 'no-store' })
+      .then(function (response) {
+        if (response.ok) {
+          response.json().then(function (resposta) {
+            console.log("dados recebidos kpi2");
+            console.log(resposta);
+            alterarKpis(resposta, respostaKpi1)
+          });
+        } else {
+          console.error('Nenhum dado encontrado ou erro na API');
+        }
+      })
+      .catch(function (error) {
+        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+      });
+  }
+
+  function alterarKpis(respostaKpi2, respostaKpi1) {
+    document.getElementById('descAlertaMaisRecente').innerHTML = respostaKpi1[0].descricao
+    document.getElementById('pcMaisRecente').innerHTML = `(PC: ${respostaKpi1[0].apelidoPc})`
+
+    document.getElementById('pcMaisAlertas').innerHTML = respostaKpi2[0].apelidoPc
+    document.getElementById('qtdAlertas').innerHTML = `(${respostaKpi2[0].total_alertas})`
+  }
+
+  function criarAlerta(resposta) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title:  `Alerta! o PC: ${resposta[0].apelidoPc} registrou ${resposta[0].descricao}`,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+
 
   function sair() {
     Swal.fire({

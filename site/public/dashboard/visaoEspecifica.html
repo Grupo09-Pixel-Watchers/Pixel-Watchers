@@ -9,9 +9,6 @@
 </head>
 
 <body>
-    <div class="alertas" id="alertas">
-
-    </div>
     <header>
         <h1 id="h1_pc"></h1>
     </header>
@@ -50,13 +47,14 @@
             </div>
             <div class="indicadores">
                 <div class="indicador">
-                    <p>Quantidade de alertas registrados nas ultimas 24 horas: 12</p>
+                    <p>Quantidade de alertas registrados nas ultimas 24 horas: <span id="qtdAlertasTotal"></span></p>
                 </div>
                 <div class="indicador">
-                    <p>Ultimo alerta: 13/11/2023 13:32:26 (Alta temperatura)</p>
+                    <p>Ultimo alerta: <span id="dtHoraUltimoAlerta"></span> (<span id="descUltimoAlerta"></span>)</p>
                 </div>
                 <div class="indicador">
-                    <p>Componente que mais gerou alertas nas últimas 24 horas: Memória (7)</p>
+                    <p>Componente que mais gerou alertas nas últimas 24 horas: <span id="tpAlertaMaisAlertas"></span>
+                        (<span id="qtdAlertasComponente"></span>)</p>
                 </div>
                 <div class="indicador">
                     <p>Status: revisão recomendada!</p>
@@ -117,7 +115,7 @@
                     resposta.reverse();
                     plotarGrafico('memoria', 'Uso de RAM em GigaBytes', resposta, 1);
                     plotarGrafico('processador', '% Uso de CPU', resposta, 2);
-                    plotarGrafico('disco', 'Uso de Disco em GigaBytes', resposta, 3);
+                    plotarGrafico('disco', 'Disco disponível em GigaBytes', resposta, 3);
 
                 });
             } else {
@@ -305,7 +303,7 @@
     // ...
 
     function buscarAlertas(idComputador) {
-        fetch(`/alertas/buscarAlertasPC/${idComputador}`, { cache: 'no-store' })
+        fetch(`/alertas/buscarAlertasPc/${idComputador}`, { cache: 'no-store' })
             .then(function (response) {
                 if (response.ok) {
                     response.json().then(function (resposta) {
@@ -320,7 +318,8 @@
                         // Se houver novos alertas, faça algo
                         if (novosAlertas.length > 0) {
                             console.log('Novo alerta cadastrado:', novosAlertas);
-                            // Adicione sua lógica para lidar com novos alertas aqui
+                            buscarTipoAlerta(resposta, idComputador)
+                            criarAlerta(resposta)
                         }
                     });
                 } else {
@@ -330,6 +329,42 @@
             .catch(function (error) {
                 console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
             });
+    }
+
+    function buscarTipoAlerta(respostaKpi1, idComputador) {
+        fetch(`/alertas/buscarTipoAlerta/${idComputador}`, { cache: 'no-store' })
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (resposta) {
+                        console.log(resposta);
+                        atualizarKpis(respostaKpi1, resposta)
+                        criarAlerta(respostaKpi1, resposta)
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                }
+            })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
+    }
+
+    function atualizarKpis(respostaKpi1, respostaKpi2) {
+        document.getElementById('qtdAlertasTotal').innerHTML = respostaKpi1[0].quantidadeAlertasUltimas24Horas
+        document.getElementById('dtHoraUltimoAlerta').innerHTML = respostaKpi1[0].dtHoraAlertaFormatada
+        document.getElementById('descUltimoAlerta').innerHTML = respostaKpi1[0].descricao
+        document.getElementById('tpAlertaMaisAlertas').innerHTML = respostaKpi2[0].tipoAlerta
+        document.getElementById('qtdAlertasComponente').innerHTML = respostaKpi2[0].qtdRepeticoes
+    }
+
+    function criarAlerta(resposta) {
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: `Alerta! este PC registrou ${resposta[0].descricao}`,
+            showConfirmButton: false,
+            timer: 3000
+        });
     }
 
 
