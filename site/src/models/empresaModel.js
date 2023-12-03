@@ -8,7 +8,7 @@ function buscarPorCnpj(cnpj) {
 
 
 function cadastrar(nomeEmpresa, razaoSocial, cnpj, telefone) {
-  var query = `INSERT INTO tbEmpresa VALUES (NULL, '${nomeEmpresa}', '${razaoSocial}', '${cnpj}', '${telefone}', 60);
+  var query = `INSERT INTO tbEmpresa (nomeFantasia, razaoSocial, cnpj, telefone, limiteAlerta) VALUES ('${nomeEmpresa}', '${razaoSocial}', '${cnpj}', '${telefone}', 60);
   `;
   return database.executar(query);
 }
