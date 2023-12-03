@@ -155,17 +155,26 @@ public class StatusPcDAO {
             psSQLServer.setString(1, computador.getId());
 
             rsSQLServer = psSQLServer.executeQuery();
-            if (rsSQLServer.next()) {
-                Double mediaMemoria = rsSQLServer.getDouble("mediaProcessador");
 
-                // Usar um valor epsilon para lidar com a precisão dos números de ponto flutuante
-                double epsilon = 0.001;  // Ajuste conforme necessário
-                if (mediaMemoria > limiteAlerta + epsilon) {
-                    Alerta alertaMemoria = new Alerta();
-                    alertaMemoria.setDescricao("Alerta de uso elevado de memória RAM. Média de uso: " + mediaMemoria + "%");
-                    alertaMemoria.setDtHoraAlerta(LocalDateTime.now().toString());
-                    // Adicione outras informações ao alerta, se necessário
-                    cadastrarAlerta(alertaMemoria, computador, "Memória RAM");
+            if (rsSQLServer.next()) {
+                String mediaProcessadorStr = rsSQLServer.getString("mediaProcessador");
+
+                // Verificar se mediaMemoriaStr não é nulo
+                if (mediaProcessadorStr != null) {
+                    mediaProcessadorStr = mediaProcessadorStr.replace("%", "").trim(); // Remover o símbolo de percentagem e espaços extras
+                    Double mediaProcessador = Double.parseDouble(mediaProcessadorStr);
+
+                    // Usar um valor epsilon para lidar com a precisão dos números de ponto flutuante
+                    double epsilon = 0.001;  // Ajuste conforme necessário
+                    if (mediaProcessador > limiteAlerta + epsilon) {
+                        Alerta alertaProcessador = new Alerta();
+                        alertaProcessador.setDescricao("Alerta de uso elevado de Processador. Média de uso: " + mediaProcessador + "%");
+                        alertaProcessador.setDtHoraAlerta(LocalDateTime.now().toString());
+                        // Adicione outras informações ao alerta, se necessário
+                        cadastrarAlerta(alertaProcessador, computador, "Processador");
+                    }
+                } else {
+                    System.out.println("A coluna 'mediaProcessador' está com valor nulo.");
                 }
             }
 
