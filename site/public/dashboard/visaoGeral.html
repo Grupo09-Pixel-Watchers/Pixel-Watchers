@@ -76,6 +76,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+  idArena = sessionStorage.ID_ARENA
   if (sessionStorage.TIPO_USUARIO == 'colab') {
     document.getElementById('add_user').style.display = 'none'
   }
@@ -88,7 +89,7 @@
   };
 
   function obterDadosGraficos() {
-    obterDadosGrafico(sessionStorage.ID_ARENA);
+    obterDadosGrafico(idArena);
   }
 
   function obterDadosGrafico(idArena) {
@@ -100,7 +101,7 @@
     fetch(`/status/geral/${idArena}`, { cache: 'no-store' }).then(function (response) {
       if (response.ok) {
         response.json().then(function (resposta) {
-          console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+          console.log(resposta)
           criarDivs(resposta);
 
         });
@@ -114,8 +115,6 @@
   }
 
   function criarDivs(pcs) {
-    console.log("criando divs com os valores:")
-    console.log(pcs)
     document.getElementById('dashboard').innerHTML = ''
     var graficoIds = [];
 
@@ -140,8 +139,6 @@
 
   function plotarGrafico(resposta, idGrafico) {
 
-    console.log('iniciando plotagem do gráfico...');
-
     // Criando estrutura para plotar gráfico - labels
     let labels = [];
 
@@ -156,10 +153,6 @@
       }]
     };
 
-    console.log('----------------------------------------------')
-    console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
-    console.log(resposta)
-    console.log(resposta.apelidoPC);
 
     // Inserindo valores recebidos em estrutura para plotar o gráfico
     labels.push('RAM');
@@ -169,13 +162,6 @@
     dados.datasets[0].data.push(resposta.usoProcessador);
     dados.datasets[0].data.push(resposta.usoDisco);
 
-    console.log('----------------------------------------------')
-    console.log('O gráfico será plotado com os respectivos valores:')
-    console.log('Labels:')
-    console.log(labels)
-    console.log('Dados:')
-    console.log(dados.datasets)
-    console.log('----------------------------------------------')
 
     // Criando estrutura para plotar gráfico - config
     const config = {
@@ -190,6 +176,43 @@
     );
 
     // setTimeout(() => obterDadosGrafico(1, sessionStorage.ID_ARENA), 2000);
+  }
+
+  const intervaloAtualizacao = 2000; // 2 segundos
+  setInterval(() => buscarAlertas(idArena), intervaloAtualizacao);
+
+  // ...
+
+  let alertasExistem = [];
+
+  // ...
+
+  function buscarAlertas(idArena) {
+    fetch(`/alertas/buscarAlertasArena/${idArena}`, { cache: 'no-store' })
+      .then(function (response) {
+        if (response.ok) {
+          response.json().then(function (resposta) {
+            console.log(resposta);
+
+            // Verifique se há novos alertas
+            const novosAlertas = resposta.filter(alerta => !alertasExistem.includes(alerta.idAlerta));
+
+            // Atualize a lista de alertas existentes
+            alertasExistem = resposta.map(alerta => alerta.idAlerta);
+
+            // Se houver novos alertas, faça algo
+            if (novosAlertas.length > 0) {
+              console.log('Novo alerta cadastrado:', novosAlertas);
+              // Adicione sua lógica para lidar com novos alertas aqui
+            }
+          });
+        } else {
+          console.error('Nenhum dado encontrado ou erro na API');
+        }
+      })
+      .catch(function (error) {
+        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+      });
   }
 
   function sair() {

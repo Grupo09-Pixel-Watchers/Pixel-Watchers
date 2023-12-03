@@ -15,6 +15,7 @@ var empresasRouter = require("./src/routes/empresas");
 var arenasRouter = require("./src/routes/arenas");
 var computadoresRouter = require("./src/routes/computadores");
 var statusRouter = require("./src/routes/status");
+var alertasRouter = require("./src/routes/alertas");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +30,7 @@ app.use("/empresas", empresasRouter);
 app.use("/arenas", arenasRouter);
 app.use("/computadores", computadoresRouter);
 app.use("/status", statusRouter);
+app.use("/alertas", alertasRouter);
 
 app.listen(PORTA, function () {
     console.log(`Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar: http://localhost:${PORTA}/cadastro.html \n

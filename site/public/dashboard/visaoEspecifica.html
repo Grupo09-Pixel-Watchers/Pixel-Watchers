@@ -100,7 +100,7 @@
 
     idComputador = sessionStorage.ID_PC;
 
-    window.onload = obterDadosPc(idComputador)
+    window.onload = buscarAlertas(idComputador), obterDadosPc(idComputador)
 
 
     function obterDadosPc(idComputador) {
@@ -112,7 +112,8 @@
         fetch(`/status/especifico/${idComputador}`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
-                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    JSON.stringify(resposta)
+                    console.log(resposta)
                     resposta.reverse();
                     plotarGrafico('memoria', 'Uso de RAM em GigaBytes', resposta, 1);
                     plotarGrafico('processador', '% Uso de CPU', resposta, 2);
@@ -149,9 +150,6 @@
             }]
         };
 
-        console.log('----------------------------------------------')
-        console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
-        console.log(resposta)
 
         // Inserindo valores recebidos em estrutura para plotar o gráfico
         if (dado == 'memoria') {
@@ -174,13 +172,6 @@
             }
         }
 
-        console.log('----------------------------------------------')
-        console.log('O gráfico será plotado com os respectivos valores:')
-        console.log('Labels:')
-        console.log(labels)
-        console.log('Dados:')
-        console.log(dados.datasets)
-        console.log('----------------------------------------------')
 
         // Criando estrutura para plotar gráfico - config
         const config = {
@@ -216,26 +207,16 @@
 
                     // obterdados(idComputador);
                     // alertar(novoRegistro, idAquario);
-                    console.log(`Dados recebidos (tempo real): ${JSON.stringify(novoRegistro)}`);
-                    console.log(`Dados atuais do gráfico:`);
-                    console.log(dados);
-                    console.log(novoRegistro[0], dado);
 
                     // let avisoCaptura = document.getElementById(`avisoCaptura${idAquario}`)
                     // avisoCaptura.innerHTML = ""
 
 
                     if (novoRegistro[0].dtHoraCaptura == dados.labels[dados.labels.length - 1]) {
-                        console.log("---------------------------------------------------------------")
-                        console.log("Como não há dados novos para captura, o gráfico não atualizará.")
-                        // avisoCaptura.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Foi trazido o dado mais atual capturado pelo sensor. <br> Como não há dados novos a exibir, o gráfico não atualizará."
-                        console.log("Horário do novo dado capturado:")
-                        console.log(novoRegistro[0].dtHoraCaptura)
-                        console.log("Horário do último dado capturado:")
-                        console.log(dados.labels[dados.labels.length - 1])
-                        console.log("---------------------------------------------------------------")
+                        // console.log("---------------------------------------------------------------")
+                        // console.log("Como não há dados novos para captura, o gráfico não atualizará.")
                     } else {
-                        checkarDados(novoRegistro[0], dado)
+                        // checkarDados(novoRegistro[0], dado)
                         // tirando e colocando valores no gráfico
                         dados.labels.shift(); // apagar o primeiro
                         dados.labels.push(novoRegistro[0].dtHoraCaptura); // incluir um novo momento
@@ -270,46 +251,85 @@
 
     }
 
-    function checkarDados(dadoAtual, dado) {
-        const alertasContainer = document.getElementById('alertas');
+    // function checkarDados(dadoAtual, dado) {
+    //     const alertasContainer = document.getElementById('alertas');
 
-        let alertaHTML = '';
+    //     let alertaHTML = '';
 
-        if (dado == 'memoria' && dadoAtual.PMemoria > 40.0) {
-            alertaHTML =
-                `<div class="alerta">
-            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
-            <div class="textoAlerta"><p>Sua memória atingiu ${dadoAtual.PMemoria}% de uso</p></div>
-        </div>`;
-        } else if (dado == 'disco' && dadoAtual.PDisco > 40.0) {
-            alertaHTML =
-                `<div class="alerta">
-            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
-            <div class="textoAlerta"><p>Seu disco está com ${dadoAtual.PDisco}% da capacidade ocupada</p></div>
-        </div>`;
-        } else if (dado == 'processador' && dadoAtual.processador > 10.0) {
-            alertaHTML =
-                `<div class="alerta">
-            <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
-            <div class="textoAlerta"><p>Seu processador atingiu ${dadoAtual.processador}% de uso</p></div>
-        </div>`;
-        }
+    //     if (dado == 'memoria' && dadoAtual.PMemoria > 40.0) {
+    //         alertaHTML =
+    //             `<div class="alerta">
+    //         <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+    //         <div class="textoAlerta"><p>Sua memória atingiu ${dadoAtual.PMemoria}% de uso</p></div>
+    //     </div>`;
+    //     } else if (dado == 'disco' && dadoAtual.PDisco > 40.0) {
+    //         alertaHTML =
+    //             `<div class="alerta">
+    //         <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+    //         <div class="textoAlerta"><p>Seu disco está com ${dadoAtual.PDisco}% da capacidade ocupada</p></div>
+    //     </div>`;
+    //     } else if (dado == 'processador' && dadoAtual.processador > 10.0) {
+    //         alertaHTML =
+    //             `<div class="alerta">
+    //         <div class="imagemAlerta"><img src="../assets/alerta-6.png" style="width: 45px;"></div>
+    //         <div class="textoAlerta"><p>Seu processador atingiu ${dadoAtual.processador}% de uso</p></div>
+    //     </div>`;
+    //     }
 
-        if (alertaHTML) {
-            const alertaElement = document.createElement('div');
-            alertaElement.innerHTML = alertaHTML;
-            alertasContainer.appendChild(alertaElement);
+    //     if (alertaHTML) {
+    //         const alertaElement = document.createElement('div');
+    //         alertaElement.innerHTML = alertaHTML;
+    //         alertasContainer.appendChild(alertaElement);
 
-            // Configurar um temporizador para remover a classe 'visible' após 2000 milissegundos (2 segundos)
-            const tempoExibicao = 4000;
-            setTimeout(() => {
-                alertaElement.classList.add('hidden');
-                // Remover o elemento do DOM após o tempo de exibição para evitar acumulação
-                setTimeout(() => {
-                    alertasContainer.removeChild(alertaElement);
-                }, 500); // 500 milissegundos para permitir a animação de fade-out
-            }, tempoExibicao);
-        }
+    //         // Configurar um temporizador para remover a classe 'visible' após 2000 milissegundos (2 segundos)
+    //         const tempoExibicao = 4000;
+    //         setTimeout(() => {
+    //             alertaElement.classList.add('hidden');
+    //             // Remover o elemento do DOM após o tempo de exibição para evitar acumulação
+    //             setTimeout(() => {
+    //                 alertasContainer.removeChild(alertaElement);
+    //             }, 500); // 500 milissegundos para permitir a animação de fade-out
+    //         }, tempoExibicao);
+    //     }
+    // }
+
+    // Defina um intervalo para chamar a função buscarAlertas a cada dois segundos
+
+    const intervaloAtualizacao = 2000; // 2 segundos
+    setInterval(() => buscarAlertas(idComputador), intervaloAtualizacao);
+
+    // ...
+
+    let alertasExistem = [];
+
+    // ...
+
+    function buscarAlertas(idComputador) {
+        fetch(`/alertas/buscarAlertasPC/${idComputador}`, { cache: 'no-store' })
+            .then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (resposta) {
+                        console.log(resposta);
+
+                        // Verifique se há novos alertas
+                        const novosAlertas = resposta.filter(alerta => !alertasExistem.includes(alerta.idAlerta));
+
+                        // Atualize a lista de alertas existentes
+                        alertasExistem = resposta.map(alerta => alerta.idAlerta);
+
+                        // Se houver novos alertas, faça algo
+                        if (novosAlertas.length > 0) {
+                            console.log('Novo alerta cadastrado:', novosAlertas);
+                            // Adicione sua lógica para lidar com novos alertas aqui
+                        }
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                }
+            })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            });
     }
 
 

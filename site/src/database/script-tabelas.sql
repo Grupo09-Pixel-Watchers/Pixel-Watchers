@@ -40,8 +40,8 @@ CREATE TABLE tbComputador(
     apelidoPc VARCHAR(100),
     sistemaOperacional VARCHAR(30),
     processador VARCHAR(100),
-    discoTotal VARCHAR(50),
-    memoriaTotal VARCHAR(50),
+    discoTotal DOUBLE,
+    memoriaTotal DOUBLE,
     qtdDiscos INT,
     fkArena INT,
     FOREIGN KEY (fkArena) REFERENCES tbArena (idArena)
@@ -52,7 +52,6 @@ CREATE TABLE status_pc(
     memoriaUso DOUBLE,
     processadorUso DOUBLE,
     discoDisponivel DOUBLE,
-	tempProcessador DOUBLE,
     dtHoraCaptura DATETIME DEFAULT now(),
 	fkComputador VARCHAR(100),
     FOREIGN KEY (fkComputador) REFERENCES tbComputador (idComputador)
@@ -158,4 +157,5 @@ INSERT INTO pastasProibidas (nomePasta, motivoProibicao) VALUES
 		insert into tbUsuario values (null, 'Kaua', 'Juhrs', 'a@gmail.com', 'a', 'admin', 1);
         insert into tbArena values (null, 'asd', '02932-000', 'Rua 1', '11', 'jd Flores', 'São Paulo', 'SP', 1);
 	*/
-    
+
+
