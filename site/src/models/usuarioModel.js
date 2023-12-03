@@ -8,12 +8,12 @@ function autenticar(email, senha) {
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
 function cadastrarAdmin(nomeUsuario, sobrenomeUsuario, emailUsuario, senhaUsuario, cnpj) {
-    var instrucao = `INSERT INTO tbUsuario VALUES (NULL, '${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', 'admin', fn_empresa('${cnpj}'))`;
+    var instrucao = `INSERT INTO tbUsuario (nome, sobrenome, email, senha, tipoUsuario, fkEmpresa) VALUES ('${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', 'admin', fn_empresa('${cnpj}'))`;
     return database.executar(instrucao);
 }
 
 function cadastrarNovoUser(nomeUsuario, sobrenomeUsuario, emailUsuario, senhaUsuario, tpUsuario, empresaUsuario) {
-    var instrucao = `INSERT INTO tbUsuario VALUES (NULL, '${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', '${tpUsuario}', '${empresaUsuario}')`;
+    var instrucao = `INSERT INTO tbUsuario (nome, sobrenome, email, senha, tipoUsuario, fkEmpresa) VALUES ('${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', '${tpUsuario}', '${empresaUsuario}')`;
     return database.executar(instrucao);
 }
 

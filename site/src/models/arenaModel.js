@@ -2,7 +2,9 @@ var database = require("../database/config")
 
 
 function cadastrarArena(nomeArena, cepArena, logradouroArena, numeroArena, bairroArena, cidadeArena, ufArena, empresaArena) {
-    var instrucao = `INSERT INTO tbArena VALUES (NULL, '${nomeArena}', '${cepArena}', '${logradouroArena}', '${numeroArena}', '${bairroArena}',  '${cidadeArena}', '${ufArena}', '${empresaArena}')`;
+    var instrucao = `INSERT INTO tbArena
+    (nomeArena, cep, logradouro, numero, bairro, cidade, uf, fkEmpresa) 
+    VALUES ('${nomeArena}', '${cepArena}', '${logradouroArena}', '${numeroArena}', '${bairroArena}',  '${cidadeArena}', '${ufArena}', '${empresaArena}')`;
     return database.executar(instrucao);
 }
 
