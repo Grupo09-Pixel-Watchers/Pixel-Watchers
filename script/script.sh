@@ -1,9 +1,8 @@
-  GNU nano 6.2                                                                              script.sh
 #!/bin/bash
 
 #Atualiza a lista de pacotes e atualiza o sistema
-# sudo apt update && sudo apt upgrade -y
-
+sudo apt update && sudo apt upgrade -y
+sudo apt install openjdk-17-jre -y
 
 rm -rf Sentinel-1.0-jar-with-dependencies.jar
 
