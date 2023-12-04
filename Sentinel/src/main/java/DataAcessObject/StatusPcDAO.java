@@ -84,7 +84,7 @@ public class StatusPcDAO {
         try {
             ps = Conexao.getConexao().prepareStatement(sql);
             Double memoriaUso = ExtrairDouble.extrairNumero(Conversor.formatarBytes(statusMemoria.getMemoriaUso()));
-            if (memoriaUso > 64.0){
+            if (memoriaUso > 64){
                 memoriaUso /= 1024;
             }
             ps.setDouble(1, memoriaUso);

@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.github.britooo.looca.api.util.Conversor.formatarBytes;
+
 public class ComputadorDAO {
     Integer idComputador = 0;
     Computador computador = new Computador();
@@ -24,8 +26,8 @@ public class ComputadorDAO {
             ps.setString(2, nomePC);
             ps.setString(3, computador.getSO());
             ps.setString(4, computador.getProcessador());
-            ps.setString(5, Conversor.formatarBytes(computador.getDiscoTotal()));
-            ps.setString(6, Conversor.formatarBytes(computador.getMemoriaTot()));
+            ps.setDouble(5, (computador.getDiscoTotal()));
+            ps.setDouble(6, computador.getMemoriaTot());
             ps.setInt(7, computador.getQtdDiscos());
             ps.setString(8,arena);
             ps.execute();
@@ -35,8 +37,8 @@ public class ComputadorDAO {
             psSQLServer.setString(2, nomePC);
             psSQLServer.setString(3, computador.getSO());
             psSQLServer.setString(4, computador.getProcessador());
-            psSQLServer.setLong(5, computador.getDiscoTotal());
-            psSQLServer.setLong(6, computador.getMemoriaTot());
+            psSQLServer.setDouble(5, computador.getDiscoTotal());
+            psSQLServer.setDouble(6, computador.getMemoriaTot());
             psSQLServer.setInt(7, computador.getQtdDiscos());
             psSQLServer.setString(8, arena);
             psSQLServer.execute();
