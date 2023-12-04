@@ -8,7 +8,7 @@ function autenticar(email, senha) {
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
 function cadastrarAdmin(nomeUsuario, sobrenomeUsuario, emailUsuario, senhaUsuario, cnpj) {
-    var instrucao = `INSERT INTO tbUsuario (nome, sobrenome, email, senha, tipoUsuario, fkEmpresa) VALUES ('${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', 'admin', fn_empresa('${cnpj}'))`;
+    var instrucao = `INSERT INTO tbUsuario (nome, sobrenome, email, senha, tipoUsuario, fkEmpresa) VALUES ('${nomeUsuario}', '${sobrenomeUsuario}', '${emailUsuario}', '${senhaUsuario}', 'admin', (select idEmpresa from tbEmpresa where cnpj = '${cnpj}'))`;
     return database.executar(instrucao);
 }
 
