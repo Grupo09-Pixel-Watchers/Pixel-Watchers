@@ -31,6 +31,7 @@ import static DataAcessObject.StatusPcDAO.verificarEAlertar;
 import static DataAcessObject.StatusPcDAO.verificarEMemoriaEAlertar;
 
 public class App {
+    private static boolean alertaJaCadastrado = false;
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("""
                 +===========================================================================================+ 
@@ -116,7 +117,7 @@ public class App {
                 } else {
                     System.out.println("Digite o apelido do computador:");
                     String apelido = entrada.next();
-                    if (!ComputadorDAO.JaExiste(apelido)) {
+                    if (!ComputadorDAO.JaExiste(computador ,apelido)) {
                         System.out.println();
                         System.out.println("Parece que essa é a primeira vez que você utiliza o Sentinel nesse PC");
                         System.out.println("Em qual arena você deseja cadastrar esse computador?");
@@ -150,6 +151,7 @@ public class App {
                     StatusPcDAO.pegarIdCaptura(idCaptura);
                     StatusPcDAO.exibirInformacoesMaquina(nomeProcessador, sistemaOperacional, memoriaTotal, discoTotal, qtdDicos);
 
+
                     Integer pontosMontagem = disco.getVolumes().size();
                     long TEMPO = (2000);
                     Timer timer = new Timer();
@@ -167,12 +169,30 @@ public class App {
                                 discoDisponivel.setDiscoDisponivel(discoEmUso);
 
                                 StatusPcDAO.cadastrarCapturas(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, computador);
+                                Integer verificacaoDisco = 0;
 
                                 if (disco.getVolumes().size() > pontosMontagem) {
+                                    verificacaoDisco = 1;
                                     System.out.println("ATENÇÃO!\nDISCO DESCONHECIDO CONECTADO ");
+
+                                    // Verifica se o alerta já foi cadastrado antes
+                                    if (verificacaoDisco == 1 && !alertaJaCadastrado) {
+                                        // Cadastra um alerta quando verificacaoDisco é igual a 1
+                                        Alerta alerta = new Alerta();
+                                        alerta.setDescricao("Disco Desconhecido Conectado");
+                                        alerta.setCaminhoArquivo("N/A"); // Você pode ajustar conforme necessário
+                                        alerta.setDtHoraAlerta(String.valueOf(LocalDateTime.now()));
+                                        String tipoAlerta = "Disco Desconhecido";
+
+                                        // Chama o método cadastrarAlerta da classe AlertaDAO
+                                        AlertaDAO.cadastrarAlerta(alerta, computador, tipoAlerta);
+                                        alertaJaCadastrado = true;  // Define que o alerta foi cadastrado
+                                        System.out.println("CADASTROU O ALERTA DE DISCO DESCONHECIDO");
+                                    }
                                 } else {
                                     System.out.println("QUANTIDADE DE DISCOS ESTÁ DE ACORDO :)");
-
+                                    // Reinicia a variável de controle quando não há mais alerta
+                                    alertaJaCadastrado = false;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -223,7 +243,7 @@ public class App {
                         verificarEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
                     }
                 };
-                long intervalo = 1 * 60 * 1000; // 1 minuto em milissegundos
+                long intervalo = 1 * 65 * 1000; // 1 minuto em milissegundos
                 timer.scheduleAtFixedRate(tarefaVerificacao, intervalo, intervalo);
 
                 Timer timerMemoria = new Timer();
@@ -233,11 +253,10 @@ public class App {
                         verificarEMemoriaEAlertar(computador, 90.0);  // 90.0 é o limite de alerta, ajuste conforme necessário
                     }
                 };
-                long intervaloMemoria = 1 * 60 * 1000; // 1 minuto em milissegundos
+                long intervaloMemoria = 1 * 70 * 1000; // 1 minuto e 30 segundos em milissegundos
                 timerMemoria.scheduleAtFixedRate(tarefaVerificacaoMemoria, intervaloMemoria, intervaloMemoria);
 
             }
-
         }
         while (!autenticado);
     }

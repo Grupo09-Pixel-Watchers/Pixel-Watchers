@@ -23,7 +23,6 @@ public class AlertaDAO {
         PreparedStatement psSQLServer = null;
         LocalDateTime dtHoraAtual = LocalDateTime.now();
         try {
-
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setString(1, alerta.getDescricao());
             ps.setString(2, String.valueOf(dtHoraAtual));

@@ -73,6 +73,11 @@ public class StatusPcDAO {
         String sql = "INSERT INTO status_pc " +
                 "(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, fkComputador) " +
                 "VALUES (?, ?, ?, ?, ?)";
+
+        String sqlServer = "INSERT INTO status_pc " +
+                "(memoriaUso, processadorUso, discoDisponivel, dtHoraCaptura, fkComputador) " +
+                "VALUES (?, ?, ?, GETDATE(), ?)";
+
         PreparedStatement ps = null;
         LocalDateTime dtHoraAtual = LocalDateTime.now();
 
@@ -89,12 +94,11 @@ public class StatusPcDAO {
             ps.setString(5, computador.getId());
             ps.execute();
 
-            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sqlServer);
             psSQLServer.setDouble(1, memoriaUso);
             psSQLServer.setDouble(2, statusProcessador.getProcessadorEmUso());
             psSQLServer.setDouble(3,  ExtrairDouble.extrairNumero(Conversor.formatarBytes(Disco.getDiscoDisponivel())));
-            psSQLServer.setObject(4, dtHoraAtual);
-            psSQLServer.setString(5, computador.getId());
+            psSQLServer.setString(4, computador.getId());
             psSQLServer.execute();
 
             String dataFormatadaa = String.valueOf(dtHora.getDtHoraCaptura());
@@ -126,9 +130,9 @@ public class StatusPcDAO {
         }
     }
     public static void verificarEAlertar(Computador computador, Double limiteAlerta) {
-        String sql = "SELECT AVG(processadorUso) AS mediaProcessador FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 10 MINUTE";
+        String sql = "SELECT AVG(processadorUso) AS mediaProcessador FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 1 MINUTE";
 
-        String sqlServer = "SELECT AVG(processadorUso) AS mediaProcessador FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= DATEADD(MINUTE, -10, GETDATE())";
+        String sqlServer = "SELECT AVG(processadorUso) AS mediaProcessador FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= DATEADD(MINUTE, -1, GETDATE())";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -143,15 +147,23 @@ public class StatusPcDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                Double mediaProcessador = rs.getDouble("mediaProcessador");
+                String mediaProcessadorStr = rs.getString("mediaProcessador");
 
                 // Verifica se a média é maior que o limite
-                if (mediaProcessador != null && mediaProcessador > limiteAlerta) {
-                    Alerta alerta = new Alerta();
-                    alerta.setDescricao("Alerta de uso elevado do processador. Média de uso: " + mediaProcessador + "%");
-                    alerta.setDtHoraAlerta(LocalDateTime.now().toString());
-                    // Adicione outras informações ao alerta, se necessário
-                    cadastrarAlerta(alerta, computador, "Processador");
+                if (mediaProcessadorStr != null) {
+                    mediaProcessadorStr = mediaProcessadorStr.replace("%", "").trim(); // Remover o símbolo de percentagem e espaços extras
+                    Double mediaProcessador = Double.parseDouble(mediaProcessadorStr);
+
+                    // Usar um valor epsilon para lidar com a precisão dos números de ponto flutuante
+                    double epsilon = 0.001;  // Ajuste conforme necessário
+                    if (mediaProcessador > limiteAlerta + epsilon) {
+                        Alerta alertaProcessador = new Alerta();
+                        alertaProcessador.setDescricao("Uso elevado de processador. Média de uso: %.2f%%".formatted(mediaProcessador));
+                        alertaProcessador.setDtHoraAlerta(LocalDateTime.now().toString());
+                        // Adicione outras informações ao alerta, se necessário
+                    }
+                } else {
+                    System.out.println("A coluna 'mediaProcessador' está com valor nulo.");
                 }
             }
 
@@ -172,7 +184,7 @@ public class StatusPcDAO {
                     double epsilon = 0.001;  // Ajuste conforme necessário
                     if (mediaProcessador > limiteAlerta + epsilon) {
                         Alerta alertaProcessador = new Alerta();
-                        alertaProcessador.setDescricao("Alerta de uso elevado de Processador. Média de uso: " + mediaProcessador + "%");
+                        alertaProcessador.setDescricao("Uso elevado de processador. Média de uso: %.2f%%".formatted(mediaProcessador));
                         alertaProcessador.setDtHoraAlerta(LocalDateTime.now().toString());
                         // Adicione outras informações ao alerta, se necessário
                         cadastrarAlerta(alertaProcessador, computador, "Processador");
@@ -182,8 +194,12 @@ public class StatusPcDAO {
                 }
             }
 
-        } catch (SQLException | IOException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             // Fechar recursos (ResultSet, PreparedStatement, etc.)
             try {
@@ -199,10 +215,11 @@ public class StatusPcDAO {
     }
 
 
-    public static void verificarEMemoriaEAlertar(Computador computador, Double limiteAlerta) {
-        String sql = "SELECT AVG(memoriaUso) AS mediaMemoria FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 10 MINUTE";
 
-        String sqlServer = "SELECT AVG(memoriaUso) AS mediaMemoria FROM status_pc WHERE fkComputador = ? AND dtHoraCaptura >= DATEADD(MINUTE, -10, GETDATE())";
+    public static void verificarEMemoriaEAlertar(Computador computador, Double limiteAlerta) {
+        String sql = "SELECT AVG((s.memoriaUso / c.memoriaTotal ) * 100) AS mediaMemoria FROM status_pc s JOIN tbComputador c ON c.idComputador = s.fkComputador WHERE fkComputador = ? AND dtHoraCaptura >= NOW() - INTERVAL 1  MINUTE;";
+
+        String sqlServer = "SELECT AVG((s.memoriaUso / c.memoriaTotal ) * 100) AS mediaMemoria FROM status_pc s JOIN tbComputador c ON c.idComputador = s.fkComputador WHERE fkComputador = ? AND dtHoraCaptura >= DATEADD(MINUTE, -1, GETDATE());";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -211,6 +228,7 @@ public class StatusPcDAO {
         ResultSet rsSQLServer = null;
 
         try {
+            // Código para MySQL
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setString(1, computador.getId());
 
@@ -228,7 +246,7 @@ public class StatusPcDAO {
                     double epsilon = 0.001;  // Ajuste conforme necessário
                     if (mediaMemoria > limiteAlerta + epsilon) {
                         Alerta alertaMemoria = new Alerta();
-                        alertaMemoria.setDescricao("Alerta de uso elevado de memória RAM. Média de uso: " + mediaMemoria + "%");
+                        alertaMemoria.setDescricao("Uso elevado de memória RAM. Média de uso: %.2f%%".formatted(mediaMemoria));
                         alertaMemoria.setDtHoraAlerta(LocalDateTime.now().toString());
                         // Adicione outras informações ao alerta, se necessário
                         cadastrarAlerta(alertaMemoria, computador, "Memória RAM");
@@ -238,6 +256,7 @@ public class StatusPcDAO {
                 }
             }
 
+            // Código para SQL Server
             psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sqlServer);
             psSQLServer.setString(1, computador.getId());
 
@@ -255,7 +274,7 @@ public class StatusPcDAO {
                     double epsilon = 0.001;  // Ajuste conforme necessário
                     if (mediaMemoria > limiteAlerta + epsilon) {
                         Alerta alertaMemoria = new Alerta();
-                        alertaMemoria.setDescricao("Alerta de uso elevado de memória RAM. Média de uso: " + mediaMemoria + "%");
+                        alertaMemoria.setDescricao("Uso elevado de memória RAM. Média de uso: %.2f%%".formatted(mediaMemoria));
                         alertaMemoria.setDtHoraAlerta(LocalDateTime.now().toString());
                         // Adicione outras informações ao alerta, se necessário
                         cadastrarAlerta(alertaMemoria, computador, "Memória RAM");
@@ -284,6 +303,4 @@ public class StatusPcDAO {
             }
         }
     }
-
-
 }
