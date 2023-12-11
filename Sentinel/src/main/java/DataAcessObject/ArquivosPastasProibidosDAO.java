@@ -33,17 +33,17 @@ public class ArquivosPastasProibidosDAO {
                 folderBlacklist.add(nomePasta);
             }
 
-//            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-//            rsSQLServer = psSQLServer.executeQuery();
-//
-//            while (rsSQLServer.next()) {
-//                String nomePasta = rsSQLServer.getString("nomePasta");
-//                arquivoPasta.setNomePasta(nomePasta);
-//                folderBlacklist.add(nomePasta);
-//            }
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+
+            while (rsSQLServer.next()) {
+                String nomePasta = rsSQLServer.getString("nomePasta");
+                arquivoPasta.setNomePasta(nomePasta);
+                folderBlacklist.add(nomePasta);
+            }
 
             ps.execute();
-//            psSQLServer.execute();
+            psSQLServer.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,17 +75,17 @@ public class ArquivosPastasProibidosDAO {
                 filesBlacklist.add(nomeArquivo);
             }
 
-//            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-//            rsSQLServer = psSQLServer.executeQuery();
-//
-//            while (rsSQLServer.next()) {
-//                String nomeArquivo = rsSQLServer.getString("nomeArquivo");
-//                arquivoPasta.setNomeArquivo(nomeArquivo);
-//                filesBlacklist.add(nomeArquivo);
-//            }
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            rsSQLServer = psSQLServer.executeQuery();
+
+            while (rsSQLServer.next()) {
+                String nomeArquivo = rsSQLServer.getString("nomeArquivo");
+                arquivoPasta.setNomeArquivo(nomeArquivo);
+                filesBlacklist.add(nomeArquivo);
+            }
 
             ps.execute();
-//            psSQLServer.execute();
+            psSQLServer.execute();
 
 
         } catch (SQLException e) {

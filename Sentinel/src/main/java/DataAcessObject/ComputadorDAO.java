@@ -19,7 +19,7 @@ public class ComputadorDAO {
         String sql = " INSERT INTO tbComputador (idComputador, apelidoPc, sistemaOperacional, processador, discoTotal, memoriaTotal, qtdDiscos, fkArena) VALUES (?, ?, ?, ?, ?, ?, ?, (SELECT idArena FROM tbArena WHERE nomeArena = ?))";
         PreparedStatement ps = null;
 
-//        PreparedStatement psSQLServer = null;
+        PreparedStatement psSQLServer = null;
         try{
             ps = Conexao.getConexao().prepareStatement(sql);
             ps.setString(1, computador.getId());
@@ -32,16 +32,16 @@ public class ComputadorDAO {
             ps.setString(8,arena);
             ps.execute();
 
-//            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-//            psSQLServer.setString(1, computador.getId());
-//            psSQLServer.setString(2, nomePC);
-//            psSQLServer.setString(3, computador.getSO());
-//            psSQLServer.setString(4, computador.getProcessador());
-//            psSQLServer.setDouble(5, ExtrairDouble.extrairNumero(Conversor.formatarBytes(computador.getDiscoTotal())));;
-//            psSQLServer.setDouble(6, ExtrairDouble.extrairNumero(Conversor.formatarBytes(computador.getMemoriaTot())));
-//            psSQLServer.setInt(7, computador.getQtdDiscos());
-//            psSQLServer.setString(8, arena);
-//            psSQLServer.execute();
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setString(1, computador.getId());
+            psSQLServer.setString(2, nomePC);
+            psSQLServer.setString(3, computador.getSO());
+            psSQLServer.setString(4, computador.getProcessador());
+            psSQLServer.setDouble(5, ExtrairDouble.extrairNumero(Conversor.formatarBytes(computador.getDiscoTotal())));;
+            psSQLServer.setDouble(6, ExtrairDouble.extrairNumero(Conversor.formatarBytes(computador.getMemoriaTot())));
+            psSQLServer.setInt(7, computador.getQtdDiscos());
+            psSQLServer.setString(8, arena);
+            psSQLServer.execute();
         } catch (SQLException e ){
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -74,37 +74,36 @@ public class ComputadorDAO {
                 }
             }
 
-//            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
-//            psSQLServer.setString(1, apelido);
-//
-//            rsSQLServer = psSQLServer.executeQuery();
+            psSQLServer = Conexao.getConexaoSQLServer().prepareStatement(sql);
+            psSQLServer.setString(1, apelido);
+
+            rsSQLServer = psSQLServer.executeQuery();
 
             // Verificar se há algum resultado
-//            if (rsSQLServer.next()) {
-//                int count = rsSQLServer.getInt("count");
-//                if (count > 0){
-//                    computador.setId(rs.getString("idComputador"));
-//                    return true;
-//                }
-//                else{
-//                    return false;
-//                }
-//            }
+            if (rsSQLServer.next()) {
+                int count = rsSQLServer.getInt("count");
+                if (count > 0){
+                    computador.setId(rs.getString("idComputador"));
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-//            try {
-////                if (rsSQLServer != null) {
-////                    rsSQLServer.close();
-////                }
-////                if (psSQLServer != null) {
-////                    psSQLServer.close();
-////                }
-////            } catch (SQLException e) {
-////                e.printStackTrace();
-////            }
-//        }
+            try {
+                if (rsSQLServer != null) {
+                    rsSQLServer.close();
+                }
+                if (psSQLServer != null) {
+                    psSQLServer.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return false;
     }
-}
 }
